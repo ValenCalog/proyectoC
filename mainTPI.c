@@ -71,7 +71,53 @@ int ObtenerAnioActual();
 
 
 int main() {
-	
+	int opc;
+	printf("---------------------SUBE---------------\n");
+	printf("\nQue desea hacer?");
+	printf("\n1. Modificar o registrar en los archivos.");
+	printf("\n2. Realizar consultas o ver listados.");
+	printf("\n3. Salir del programa");
+	printf("\nIngrese su opcion: ");
+	scanf("%d", opc);
+	switch(opc){
+		case 1:
+				printf("\n1. Choferes");
+				printf("\n2. Unidades");
+				printf("\n3. Usuarios");
+				printf("\n4. Ir atras");
+				scanf("%d", opc);
+				switch (opc){
+				case 1:
+					printf("\n1. Agregar choferes");
+					printf("\n2. Modificar choferes");
+					switch (expression)
+					{
+					case 1:
+							do{
+								
+							}while 
+						break;
+					
+					default:
+						break;
+					}
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+				case 4:
+					break;
+				default:
+					break;
+				}
+				break;
+		case 2:
+				break;
+		case 3:
+				break;
+	}
+
 	return 0;
 }
 
