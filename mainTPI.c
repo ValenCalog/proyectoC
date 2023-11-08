@@ -42,7 +42,7 @@ struct Chofer{
 	int id;
 	long int DNI, telefono;
 	char NomApe[40], direccion[40], email[40];
-};
+}chofer;
 
 struct Movimiento{
 	long int DNI, NroTarjeta;
@@ -177,10 +177,27 @@ void agregarChofer(){
 	
 	if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
 		
+		if(generarIdChofer==(-1)){
+			printf("Hubo un error al intentar abrir el archivo chofer");
+		}
 
 
 	}else{
 		printf("No se pudo abrir el archivo choferes");
 	}
 
+}
+
+
+int generarIdChofer(){
+	CHOFERES  = fopen("choferes.dat","rb");
+	if(CHOFERES!=NULL){
+		
+		fseek(CHOFERES,sizeof(chofer)*-1,SEEK_END);
+		fread(&chofer,sizeof(chofer),1,CHOFERES);
+		fclose(CHOFERES);
+		return(chofer.id);
+	}else{
+		return -1;
+    }
 }
