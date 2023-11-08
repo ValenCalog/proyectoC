@@ -56,8 +56,16 @@ struct Movimiento{
 //archivos miedo
 FILE *USUARIOS, *CUENTAS, *RECARGAS, *MOVIMIENTOS, *CHOFERES, *UNIDADES;
 
+/* Nombres de los archivos(anotar si faltan mas):
+   Usuarios.dat
+   choferes.dat
+   movimientos.dat
+   unidades.dat
+*/
+
 //prototipos
 int GenerarUsuario();
+void agregarChofer();
 int ObtenerAnioActual();
 
 
@@ -76,8 +84,6 @@ int ObtenerAnioActual() {
 
     return tiempoinfo->tm_year + 1900; // Devuelve el año actual
 }
-
-
 int GenerarUsuario(){
 	int BandId = 0, anio = ObtenerAnioActual();
 	long int CompDNI;
@@ -167,4 +173,10 @@ int GenerarUsuario(){
 	fclose(USUARIOS);
 }
 
+void agregarChofer(){
+	
+	if((CHOFERES = fopen("choferes.dat", "a+b"))){
 
+	}
+
+}
