@@ -50,7 +50,7 @@ struct Movimiento{
 	float SaldoUso;
 	struct Fecha fecha;
 	struct Hora hora;
-	struct Unidades NroUnidades;
+	struct Unidad NroUnidades;
 };
 
 //archivos miedo
@@ -86,7 +86,7 @@ int ObtenerAnioActual() {
 }
 int GenerarUsuario(){
 	int BandId = 0, anio = ObtenerAnioActual();
-	long int CompDNI;
+	long int compDNI;
 	
 	if((USUARIOS = fopen("Usuarios.dat","a+b")) != NULL){
 		
@@ -123,7 +123,7 @@ int GenerarUsuario(){
 			}
 			fread(&us,sizeof(us),1,USUARIOS);
 		}
-		rewind(USUARIOS)
+		rewind(USUARIOS);
 		//ingresar nombre y apellido
 		printf("ingrese el nombre y apellido del usuario\n");
 		gets(us.NomApe);
@@ -166,7 +166,7 @@ int GenerarUsuario(){
 			printf("\ningrese un dato valido: ");
 			scanf("%d",&us.tipo);
 		}
-		fwrite(us,sizeof(us),1,USUARIOS);
+		fwrite(&us,sizeof(us),1,USUARIOS);
 	}
 	else
 		printf("error al abrir el archivo de usuarios\n");
