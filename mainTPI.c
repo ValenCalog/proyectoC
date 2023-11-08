@@ -74,52 +74,121 @@ int main() {
 	int opc,confirmar;
 	printf("---------------------SUBE---------------\n");
 	printf("\nQue desea hacer?");
-	printf("\n1. Modificar o registrar en los archivos.");
+	printf("\n1. Modificar o registrar en los archivos (USUARIOS-UNIDADES-CHOFERES).");
 	printf("\n2. Realizar consultas o ver listados.");
-	printf("\n3. Salir del programa");
+	printf("\n3. Cargar saldo.");
+	printf("\n4. Pagar boleto con tarjeta.");
+	printf("\n5. Pagar boleto con numero de telefono.");
+	printf("\n6. Salir del programa");
 	printf("\nIngrese su opcion: ");
 	scanf("%d", &opc);
+	system("cls");
 	switch(opc){
 		case 1:
 				printf("\n1. Choferes");
 				printf("\n2. Unidades");
 				printf("\n3. Usuarios");
-				printf("\n4. Ir atras");
+				printf("\n4. Volver al menu principal");
+				printf("\nIngrese su opcion: ");
 				scanf("%d", &opc);
 				system("cls");
 				switch (opc){
 				case 1:
+					//choferes
 					printf("\n1. Agregar choferes");
 					printf("\n2. Modificar choferes");
 					printf("\n3. Volver atras");
+					printf("\nIngrese su opcion: ");
 					scanf("%d", &opc);
+					system("cls");
 					switch (opc){
 					case 1:
+						
 							do{
 								agregarChofer();
 								printf("\nDesea agregar otro chofer? Ingrese 1 si la respuesta es si, cualquier otro numero si es no: ");
 								scanf("%d", &confirmar);
 							}while(confirmar==1); 
 						break;
-					
+					case 2:
+							//modificarUsuarios
+						break;
+					case 3:
+						break;
 					default:
+						printf("\nNo se ingreso una opcion valida.");
 						break;
 					}
 					break;
 				case 2:
+					//UNIDADES
+					printf("\n1. Agregar unidades");
+					printf("\n2. Modificar unidades");
+					printf("\n3. Volver atras");
+					printf("\nIngrese su opcion: ");
+					scanf("%d", &opc);
+					system("cls");
+					switch (opc){
+						case 1:
+						//agregar unidades
+							break;
+						case 2:
+						//modificar unidades
+							break;
+						case 3:
+							break; //vuelve atras
+						default:
+							break;
+					}
 					break;
 				case 3:
+					//USUARIOS
+					printf("\n1. Agregar usuarios");
+					printf("\n2. Modificar usuarios");
+					printf("\n3. Volver atras");
+					printf("\nIngrese su opcion: ");
+					scanf("%d", &opc);
+					system("cls");
+					switch (opc){
+						case 1:
+							//agregar usuarios
+							break;
+						case 2:
+							//modificar usuarios
+							break;
+						default:
+							break;
+						}
 					break;
 				case 4:
 					break;
 				default:
+					printf("\nNo se ingreso una opcion valida.");
 					break;
 				}
 				break;
 		case 2:
+				//2. Realizar consultas o ver listados
+				printf("\n1.Consultar saldo");
+				printf("\n2.Listar usuarios");
+				printf("\n3.Mostrar movimientos efectuados entre dos fechas");
+				printf("\n4.Listar las recargas efectuadas por un usuario indicando su DNI");
+				printf("\n5.Cantidad de usuarios con beneficios.");
+				printf("\n6.Buscar movimientos de un usario particular ingresando su nombre.");
+				printf("\n7.Buscar chofer o choferes con mas pasajeros en un mes en especifico");
+				printf("\n8.Ver porcentaje de pasajeros que viajan en el primer turno del año");
 				break;
 		case 3:
+				//3.Cargar saldo
 				break;
+		case 4:
+			//4. Pagar boleto con tarjeta
+				break;
+		case 5:
+			//5. Pagar boleto con numero de telefono
+				break;
+		case 6:
+			//6. Salir del programa
 	}
 
 	return 0;
