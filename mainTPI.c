@@ -174,11 +174,22 @@ int GenerarUsuario(){
 }
 
 void agregarChofer(){
-	
+	int ultimoId;
 	if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
 		
-		if(generarIdChofer==(-1)){
+
+		ultimoId = generarIdChofer();
+		if(ultimoId==(-1)){
 			printf("Hubo un error al intentar abrir el archivo chofer");
+		}else{
+			chofer.id = ultimoId+1;
+			printf("Ingrese nombre del chofer");
+			scanf("%s",chofer.NomApe);
+			
+			chofer.DNI;
+			chofer.direccion;
+			chofer.email;
+			chofer.telefono;
 		}
 
 
@@ -187,6 +198,7 @@ void agregarChofer(){
 	}
 
 }
+
 int generarIdChofer(){
 	CHOFERES  = fopen("choferes.dat","rb");
 	if(CHOFERES!=NULL){
