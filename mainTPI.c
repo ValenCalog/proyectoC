@@ -48,9 +48,9 @@ struct Movimiento{
 	long int DNI, NroTarjeta;
 	char origen[25], destino [25];
 	float SaldoUso;
+	int nroUnidad;
 	struct Fecha fecha;
 	struct Hora hora;
-	struct Unidad NroUnidades;
 };
 
 //archivos miedo
