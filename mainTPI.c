@@ -187,12 +187,9 @@ void agregarChofer(){
 	}
 
 }
-
-
 int generarIdChofer(){
 	CHOFERES  = fopen("choferes.dat","rb");
 	if(CHOFERES!=NULL){
-		
 		fseek(CHOFERES,sizeof(chofer)*-1,SEEK_END);
 		fread(&chofer,sizeof(chofer),1,CHOFERES);
 		fclose(CHOFERES);
