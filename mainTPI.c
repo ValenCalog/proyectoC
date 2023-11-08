@@ -66,6 +66,7 @@ FILE *USUARIOS, *CUENTAS, *RECARGAS, *MOVIMIENTOS, *CHOFERES, *UNIDADES;
 //prototipos
 int GenerarUsuario();
 void agregarChofer();
+int generarIdChofer();
 int ObtenerAnioActual();
 
 
@@ -184,14 +185,21 @@ void agregarChofer(){
 		}else{
 			chofer.id = ultimoId+1;
 			printf("Ingrese nombre del chofer");
-			scanf("%s",chofer.NomApe);
-			
-			chofer.DNI;
-			chofer.direccion;
-			chofer.email;
-			chofer.telefono;
+			fflush(stdin);
+			fgets(chofer.NomApe, sizeof(chofer.NomApe), stdin);
+			printf("\nIngrese su DNI: ");
+			scanf("%ld", &DNI);
+			printf("\nIngrese direccion: ");
+			fflush(stdin);
+			fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
+			printf("\nIngrese email: ");
+			fflush(stdin);
+			fgets(chofer.email, sizeof(chofer.email), stdin);
+			printf("\nIngrese su telefono: ");
+			scanf("%ld", &chofer.telefono);
+			fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
+			fclose(CHOFERES);
 		}
-
 
 	}else{
 		printf("No se pudo abrir el archivo choferes");
