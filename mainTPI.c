@@ -71,31 +71,35 @@ int ObtenerAnioActual();
 
 
 int main() {
-	int opc;
+	int opc,confirmar;
 	printf("---------------------SUBE---------------\n");
 	printf("\nQue desea hacer?");
 	printf("\n1. Modificar o registrar en los archivos.");
 	printf("\n2. Realizar consultas o ver listados.");
 	printf("\n3. Salir del programa");
 	printf("\nIngrese su opcion: ");
-	scanf("%d", opc);
+	scanf("%d", &opc);
 	switch(opc){
 		case 1:
 				printf("\n1. Choferes");
 				printf("\n2. Unidades");
 				printf("\n3. Usuarios");
 				printf("\n4. Ir atras");
-				scanf("%d", opc);
+				scanf("%d", &opc);
+				system("cls");
 				switch (opc){
 				case 1:
 					printf("\n1. Agregar choferes");
 					printf("\n2. Modificar choferes");
-					switch (expression)
-					{
+					printf("\n3. Volver atras");
+					scanf("%d", &opc);
+					switch (opc){
 					case 1:
 							do{
-								
-							}while 
+								agregarChofer();
+								printf("\nDesea agregar otro chofer? Ingrese 1 si la respuesta es si, cualquier otro numero si es no: ");
+								scanf("%d", &confirmar);
+							}while(confirmar==1); 
 						break;
 					
 					default:
@@ -234,7 +238,7 @@ void agregarChofer(){
 			fflush(stdin);
 			fgets(chofer.NomApe, sizeof(chofer.NomApe), stdin);
 			printf("\nIngrese su DNI: ");
-			scanf("%ld", &DNI);
+			scanf("%ld", &chofer.DNI);
 			printf("\nIngrese direccion: ");
 			fflush(stdin);
 			fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
