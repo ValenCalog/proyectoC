@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <tring.h>
+#include <string.h>
 #include <time.h>
 
 //otras estructuras
@@ -175,8 +175,12 @@ int GenerarUsuario(){
 
 void agregarChofer(){
 	
-	if((CHOFERES = fopen("choferes.dat", "a+b"))){
+	if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
+		
 
+
+	}else{
+		printf("No se pudo abrir el archivo choferes");
 	}
 
 }
