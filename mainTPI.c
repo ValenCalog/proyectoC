@@ -72,6 +72,7 @@ void ListarUsuarios();
 void CantBeneficios();
 void agregarChofer();
 int generarIdChofer();
+void ModificarChofer();
 long generarNroDeControl();
 int ObtenerAnioActual();
 void cargaDeSaldo();
@@ -100,7 +101,7 @@ int main() {
 				menuConsultas();
 				break;
 		case 3:
-				//3.Cargar saldo
+				cargaDeSaldo();
 				break;
 		case 4:
 			//4. Pagar boleto con tarjeta
@@ -353,6 +354,50 @@ int generarIdChofer(){
     }
 }
 
+ModificarChofer(){
+	int buscarId, band = 0;
+	
+	if((CHOFERES = fopen("choferes.dat","a+b")) != NULL){
+		printf("ingrese el ID del chofer para modificar sus datos\n");
+		scanf("%d",&buscarId);
+		
+		fread(&chofer,sizeof(chofer),1,CHOFERES);
+		while(!feof(CHOFERES)){
+			
+			if(buscarId == choferes.id){
+				fseek(CHOFERES,sizeof(chofer) * (-1),SEEK_CUR);
+				band++;
+				
+				printf("-----------\n|ingrese los nuevos datos|\n-----------\n Nombre y apellido: ");
+				gets(chofer.NomApe);
+				printf("\n|Fecha de nacimiento|\n");
+				printf("Dia: ");
+				scnaf("%d",&chofer.dia);
+				printf("\nmes: ");
+				scnaf("%d",&chofer.mes);
+				printf("\nanio: ");
+				scnaf("%d",&chofer.anio);
+				printf("\nIngrese la direccion nueva: ");
+				gets(chofer.direccion);
+				printf("\ningrese el nuevo numero telefonico: ");
+				scnaf("%ld",&chofer.telefono);
+				printf("\nIngrese el nuevo correo electronico: ");
+				gets(chofer.email);
+				printf("\nIngrese el nuevo DNI: ");
+				scnaf("%ld",&chofer.DNI);
+
+				fwrite(&chofer,sizeof(chofer),1,CHOFERES);
+			}
+			fread(&chofer,sizeof(chofer),1,CHOFERES);
+		}
+		if(band == 0)
+			prinf("\nNo se pudo encontrar el ID del chofer\n");
+	}
+	else
+		printf("error al abrir el archivo choferes\n);
+	fclose(CHOFERES);
+}
+
 void menuModificaciones(){
 	int opc, confirmar;
 
@@ -388,7 +433,7 @@ void menuModificaciones(){
 		}while(confirmar==1); 
 		break;
 	case 4:
-		//modificar chofer
+		ModificarChofer();
 		break;
 	case 5:
 		//Agregar unidad
