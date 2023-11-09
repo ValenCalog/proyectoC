@@ -67,7 +67,8 @@ FILE *USUARIOS, *CUENTAS, *RECARGAS, *MOVIMIENTOS, *CHOFERES, *UNIDADES;
 
 //prototipos
 void GenerarUsuario();
-void ModificarUsuario(); 
+void ModificarUsuario();
+void ListarUsuarios();
 void agregarChofer();
 int generarIdChofer();
 long generarNroDeControl();
@@ -130,6 +131,7 @@ int ObtenerAnioActual() {
 
     return tiempoinfo->tm_year + 1900; // Devuelve el año actual
 }
+
 void GenerarUsuario(){
 	int BandId = 0, anio = ObtenerAnioActual();
 	long int compDNI;
@@ -259,6 +261,21 @@ void ModificarUsuario(){
 	fclose(USUARIOS)
 }
 
+void ListarUsuarios(){
+	
+	if((USUARIOS = fopen("Usuarios.dat","rb")) != NULL){
+		
+		fread(&us,sizeof(us),1,USUARIOS);
+		while(!feof(USUARIOS)){
+			printf("----------------\n +Id: %d\n +Nombre y apellido: %s\n +fecha de nacimiento: %d/%d/%d\n +DNI: %ld\n +Telefono: %ld\n +Direccion: %s\n----------------\n",us.id,us.NomApe,us.FechaNac.dia,us.FechaNac.mes,us.FechaNac.anio,us.DNI,us.telefono,us.direccion);
+			fread(&us,sizeof(us),1,USUARIOS);
+		}
+	}
+	else
+		printf("error al abrir el archivo usuarios\n");
+	fclose(USUARIOS);
+}
+
 void agregarChofer(){
 	int ultimoId;
 	if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
@@ -386,7 +403,7 @@ void menuConsultas(){
 					//1.Consultar saldo");
 					break;
 				case 2:
-					//2.Listar usuarios");
+					ListarUsuarios();
 					break;
 				case 3:
 					//3.Mostrar movimientos efectuados entre dos fechas");
