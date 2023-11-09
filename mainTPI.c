@@ -29,7 +29,7 @@ struct Recarga{
 	float monto;
 	float BocaPago;
 	struct Hora hora;
-};
+}rec;
 
 struct Unidad{
 	int NroUnidad, DNIC, turno, asientos, adaptado;
@@ -70,11 +70,12 @@ void GenerarUsuario();
 void ModificarUsuario(); 
 void agregarChofer();
 int generarIdChofer();
+long generarNroDeControl(){
 int ObtenerAnioActual();
 void cargaDeSaldo();
 void menuModificaciones();
 void menuConsultas();
-
+void seEncuentraDniUsuario(long dni);
 int main() {
 	int opc,confirmar;
 	do{
@@ -417,7 +418,60 @@ void menuConsultas(){
 				
 }
 
-void cargaDeSaldo(){
+long generarNroDeControl(){
+	long numControl, tamanio;
+	FILE *nrosDeControl;
+	if((nrosDeControl = fopen("nrosControlAux.dat", "a+b")) != NULL{
+		fseek(nrosDeControl, 0, SEEK_END);
+		
+		if(ftell(nrosDeControl) > 0){
+			fseek(nrosDeControl, sizeof(numControl) *-1,SEEK_END);
+			fread(&numControl, sizeof(numControl), 1, nrosDeControl);
+			return(numControl);
+		}else{
+			return 10000;
+		}
+		
+	}else{
+		return -1;
+	}
 
 }
 
+void cargaDeSaldo(){
+		long dniBuscar, aux;
+		char nombre[30];
+		printf("Ingrese un numero de dni");
+		scanf("%ld", &dniBuscar);
+		if(seEncuentraDniUsuario(dniBuscar)){
+			rec.DNI = dniBuscar;
+			aux= buscarNroDeControl();
+			if(aux !=-1){
+				rec.NroCtrl = aux+1;
+			}else{
+				printf("Hubo un error al intentar general el numero de control");
+			}
+
+		}else{
+			printf("No se encontro el dni del usario (o no se pudo abrir el archivo para buscar.)");
+		}
+
+}
+
+void seEncuentraDniUsuario(long dni){
+	int encontro = 0;
+	if((USUARIOS = fopen("Usuarios.dat", "rb")) != NULL){
+		fread(&us, sizeof(us), 1, USUARIOS);
+
+		while((!eof(USUARIOS)) && (!encontro)){
+			if(us.DNI == dni){
+				encontro = 1;
+			}else{
+				fread(&us, sizeof(us), 1, USUARIOS);
+			}
+		}
+		return encontro;
+	}else{
+		return 0;
+	}
+}
