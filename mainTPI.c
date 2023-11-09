@@ -509,13 +509,12 @@ void menuConsultas(){
 
 long generarNroDeControl(){
 	long numControl, tamanio;
-	FILE *nrosDeControl;
-	if((nrosDeControl = fopen("nrosControlAux.dat", "a+b")) != NULL){
-		fseek(nrosDeControl, 0, SEEK_END);
+	if((RECARGAS = fopen("recargas.dat", "a+b")) != NULL){
+		fseek(RECARGAS, 0, SEEK_END);
 		
-		if(ftell(nrosDeControl) > 0){
-			fseek(nrosDeControl, sizeof(numControl) *-1,SEEK_END);
-			fread(&numControl, sizeof(numControl), 1, nrosDeControl);
+		if(ftell(RECARGAS) > 0){
+			fseek(RECARGAS, sizeof(numControl) *-1,SEEK_END);
+			fread(&numControl, sizeof(numControl), 1, RECARGAS);
 			return(numControl);
 		}else{
 			return 10000;
@@ -539,8 +538,7 @@ void cargaDeSaldo(){
 			aux= buscarNroDeControl();
 			if(aux !=-1){
 				rec.NroCtrl = aux+1;
-				FILE *auxNroCtrl;
-				if((auxNroCtrl = fopen("nrosControlAux.dat", "a+b"))!= NULL){
+				if((RECARGAS = fopen("recargas.dat", "a+b"))!= NULL){
 					sprintf(nombre, "%ld%ld", rec.DNI, rec.NroCtrl);
 				    strcat(nombre, ".txt");
 				   	if((archivo = fopen(nombre, "wb"))!= NULL){
@@ -583,14 +581,18 @@ void cargaDeSaldo(){
 							rec.hora.hora = tiempoLocal->tm_hour;/*enseguida sigo*/
 							rec.hora.min = tiempoLocal->tm_min;
 							rec.hora.seg = tiempoLocal->tm_sec;
-							fprintf("DNI:%ld Nro. Control: %ld, Monto: %f, Boca de pago: %s, Fecha y hora ");
-					/*charBocaPago;
-	                struct Hora hora;*/
+							rec.fecha.anio = tiempoLocal->tm_year+1900;
+							rec.fecha.mes = tiempoLocal->tm_mon;
+							rec.fecha.dia = tiempoLocal->tm_mday;
+							fprintf(archivo, "DNI: %ld , Nro. Control: %ld, Monto: %f, Boca de pago: %s, Fecha: %d/%d/%d, Hora: %d:%d:%d", rec.DNI, rec.NroCtrl, rec.monto, rec.BocaPago, rec.fecha.dia, rec.fecha.mes, rec.fecha.anio, rec.hora.hora, rec.hora.min, rec.hora.seg);
+							fclose(archivo);
+							fwrite(&rec, sizeof(rec), 1, RECARGAS);
 					}else{
 						printf("\nHubo un error al generar el ticket de la recarga.");
 					}
+							fclose(RECARGAS);
 				}else{
-					printf("\nNo se pudo guardar el nroDeControl en el archivo auxiliar");
+					printf("\nNo se pudo guardar el nroDeControl en el archivo auxiliar de recargas");
 				}
 				
 			}else{
