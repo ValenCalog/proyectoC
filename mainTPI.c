@@ -65,7 +65,8 @@ FILE *USUARIOS, *CUENTAS, *RECARGAS, *MOVIMIENTOS, *CHOFERES, *UNIDADES;
 */
 
 //prototipos
-int GenerarUsuario();
+void GenerarUsuario();
+void ModificarUsuario(); 
 void agregarChofer();
 int generarIdChofer();
 int ObtenerAnioActual();
@@ -126,7 +127,7 @@ int ObtenerAnioActual() {
 
     return tiempoinfo->tm_year + 1900; // Devuelve el año actual
 }
-int GenerarUsuario(){
+void GenerarUsuario(){
 	int BandId = 0, anio = ObtenerAnioActual();
 	long int compDNI;
 	
@@ -213,6 +214,46 @@ int GenerarUsuario(){
 	else
 		printf("error al abrir el archivo de usuarios\n");
 	fclose(USUARIOS);
+}
+
+void ModificarUsuario(){
+	int buscarid;
+	
+	if((USUARIO = fopen("Usuarios.dat","a+b")) != NULL){
+		printf("ingrese el id del usuario a buscar: \n");
+		scanf("%d",&buscarid);
+		fread(&us,sizeof(us),1,USUARIOS);
+		while(!feof(USUARIOS)){
+			if(buscarid == us.id){
+				//ingresar los datos nuevamente (menos el id)
+				printf("ingrese el Nombre y Apellido nuenvamente: \n");
+				gets(us.NomApe);
+				fflush(stdin);
+				printf("ingresar el DNI nuevamente\n");
+				scanf("%d",&us.DNI);
+				printf("ingrese la nueva Fecha de nacimiento\n Dia:\n");
+				scanf("%d",&us.FechaNac.dia);
+				printf("mes:\n");
+				scanf("%d",&us.FechaNac.mes);
+				printf("anio:\n");
+				scanf("%d",&us.FechaNac.anio);
+				printf("ingrese la nueva direccion:\n");
+				gets(us.direccion);
+				fflush(stdin);
+				printf("ingrese el telefono nuevamente:\n");
+				scanf("%ld",&us.telefono);
+				printf("\ningrese el nuevo tipo de beneficios:\n 0- sin beneficios\n 1- estudiante\n 2- persona con discapacidad\n 3- persona mayor de edad\n respuesta: ");
+				scanf("%d",&us.tipo);
+				while(us.tipo != 0 || us.tipo != 1 || us.tipo != 2 || us.tipo != 3){
+					printf("\ningrese un dato valido: ");
+					scanf("%d",&us.tipo);
+				}
+			}
+		}
+	}
+	else
+		printf("error al abrir el archivo Usuarios\n");
+	fclose(USUARIOS)
 }
 
 void agregarChofer(){
