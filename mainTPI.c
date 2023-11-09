@@ -508,7 +508,7 @@ void menuConsultas(){
 long generarNroDeControl(){
 	long numControl, tamanio;
 	FILE *nrosDeControl;
-	if((nrosDeControl = fopen("nrosControlAux.dat", "a+b")) != NULL{
+	if((nrosDeControl = fopen("nrosControlAux.dat", "a+b")) != NULL){
 		fseek(nrosDeControl, 0, SEEK_END);
 		
 		if(ftell(nrosDeControl) > 0){
