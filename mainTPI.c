@@ -69,6 +69,7 @@ int GenerarUsuario();
 void agregarChofer();
 int generarIdChofer();
 int ObtenerAnioActual();
+
 void menuModificaciones();
 void menuConsultas();
 
