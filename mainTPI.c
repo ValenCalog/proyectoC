@@ -69,6 +69,7 @@ FILE *USUARIOS, *CUENTAS, *RECARGAS, *MOVIMIENTOS, *CHOFERES, *UNIDADES;
 void GenerarUsuario();
 void ModificarUsuario();
 void ListarUsuarios();
+void CantBeneficios();
 void agregarChofer();
 int generarIdChofer();
 long generarNroDeControl();
@@ -274,6 +275,31 @@ void ListarUsuarios(){
 	else
 		printf("error al abrir el archivo usuarios\n");
 	fclose(USUARIOS);
+}
+
+void CantBeneficios(){
+	int cant = 0, contEst = 0, contDisc = 0, contMay = 0;
+	if((USUARIOS = fopen("Usuarios.dat","rb")) != NULL){
+		
+		fread(&us,sizeof(us),1,USUARIOS);
+		while(!feof(USUARIOS)){
+			if(us.tipo != 0){
+				cont++;
+				switch(us.tipo){
+					case 1: contEst++;break;
+					case 2: contDisc++;break;
+					default: contMay++;break;
+				}
+			}
+			fread(&us,sizeof(us),1,USUARIOS);
+		}
+		if(cont != 0){
+			printf("La cantidad de usuarios con beneficios son: %d\n",cant\n);
+			printf("Cantidad de usuarios con beneficio estudiantil: %d\n Cantidad de usuarios con beneficio por discapacidad: %d\n Cantidad de usuarios con beneficio por ser mayor de edad: %d\n",contEst,contDisc,ContMay);
+		}
+		else
+			printf("No hay usuarios con beneficios\n");
+	}
 }
 
 void agregarChofer(){
