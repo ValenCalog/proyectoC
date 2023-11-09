@@ -575,6 +575,7 @@ void cargaDeSaldo(){
 							break;
 						}
 						}while((opc <1) || (opc >5));
+
 						rec.Hora.hora = ;/*enseguida sigo*/
 
 					/*charBocaPago;
@@ -596,7 +597,7 @@ void cargaDeSaldo(){
 
 }
 
-void seEncuentraDniUsuario(long dni){
+int seEncuentraDniUsuario(long dni){
 	int encontro = 0;
 	if((USUARIOS = fopen("Usuarios.dat", "rb")) != NULL){
 		fread(&us, sizeof(us), 1, USUARIOS);
