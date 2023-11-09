@@ -451,26 +451,27 @@ void menuModificaciones(){
 	}while(opc!=7);
 
 }
+
 void menuConsultas(){
 
 	int opc, confirmar;
 
 	do{
 		printf("\n1.Consultar saldo");
-				printf("\n2.Listar usuarios");
-				printf("\n3.Mostrar movimientos efectuados entre dos fechas");
-				printf("\n4.Listar las recargas efectuadas por un usuario indicando su DNI");
-				printf("\n5.Cantidad de usuarios con beneficios.");
-				printf("\n6.Buscar movimientos de un usario particular ingresando su nombre.");
-				printf("\n7.Buscar chofer o choferes con mas pasajeros en un mes en especifico");
-				printf("\n8.Ver porcentaje de pasajeros que viajan en el primer turno del año");
-				printf("\n9.Volver atras");
+		printf("\n2.Listar usuarios");
+		printf("\n3.Mostrar movimientos efectuados entre dos fechas");
+		printf("\n4.Listar las recargas efectuadas por un usuario indicando su DNI");
+		printf("\n5.Cantidad de usuarios con beneficios.");
+		printf("\n6.Buscar movimientos de un usario particular ingresando su nombre.");
+		printf("\n7.Buscar chofer o choferes con mas pasajeros en un mes en especifico");
+		printf("\n8.Ver porcentaje de pasajeros que viajan en el primer turno del año");
+		printf("\n9.Volver atras");
 				printf("\nIngrese su opcion:");
 				scanf("%d", &opc);
 				system("cls");
 				switch (opc){
 				case 1:
-					//1.Consultar saldo";
+					//1.Consultar saldo"
 					break;
 				case 2:
 					ListarUsuarios();
@@ -485,7 +486,7 @@ void menuConsultas(){
 					CantBeneficios();
 					break;
 				case 6:
-					//6.Buscar movimientos de un usario particular ingresando su nombre.");
+					//6.Buscar movimientos de un usario particular ingresando su nombre.")
 					break;
 					
 				case 7:
