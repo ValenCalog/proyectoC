@@ -28,6 +28,7 @@ struct Recarga{
 	long int DNI, NroCtrl;
 	float monto;
 	char BocaPago[30];
+	struct Fecha fecha;
 	struct Hora hora;
 }rec;
 
@@ -575,9 +576,14 @@ void cargaDeSaldo(){
 							break;
 						}
 						}while((opc <1) || (opc >5));
-
-						rec.Hora.hora = ;/*enseguida sigo*/
-
+						    time_t segundosUnix;
+    						struct tm * tiempoLocal;
+    						segundosUnix = time(NULL);
+    						tiempoLocal = localtime(&segundosUnix);
+							rec.hora.hora = tiempoLocal->tm_hour;/*enseguida sigo*/
+							rec.hora.min = tiempoLocal->tm_min;
+							rec.hora.seg = tiempoLocal->tm_sec;
+							fprintf("DNI:%ld Nro. Control: %ld, Monto: %f, Boca de pago: %s, Fecha y hora ");
 					/*charBocaPago;
 	                struct Hora hora;*/
 					}else{
