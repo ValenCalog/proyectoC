@@ -97,7 +97,6 @@ int main() {
 				menuModificaciones();
 				break;
 		case 2:
-				//2. Realizar consultas o ver listados
 				menuConsultas();
 				break;
 		case 3:
@@ -379,7 +378,7 @@ void menuModificaciones(){
 		}while(confirmar==1); 
 		break;
 	case 2:
-		//modificar usuario
+		ModificarUsuario();
 		break;
 	case 3:
 		do{
@@ -426,7 +425,7 @@ void menuConsultas(){
 				system("cls");
 				switch (opc){
 				case 1:
-					//1.Consultar saldo");
+					//1.Consultar saldo";
 					break;
 				case 2:
 					ListarUsuarios();
