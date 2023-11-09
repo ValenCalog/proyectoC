@@ -354,7 +354,7 @@ int generarIdChofer(){
     }
 }
 
-ModificarChofer(){
+void ModificarChofer(){
 	int buscarId, band = 0;
 	
 	if((CHOFERES = fopen("choferes.dat","a+b")) != NULL){
