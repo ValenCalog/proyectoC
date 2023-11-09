@@ -394,7 +394,7 @@ void ModificarChofer(){
 			prinf("\nNo se pudo encontrar el ID del chofer\n");
 	}
 	else
-		printf("error al abrir el archivo choferes\n);
+		printf("error al abrir el archivo choferes\n");
 	fclose(CHOFERES);
 }
 
