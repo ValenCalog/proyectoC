@@ -438,7 +438,7 @@ void menuConsultas(){
 					//4.Listar las recargas efectuadas por un usuario indicando su DNI");
 					break;
 				case 5:
-					//5.Cantidad de usuarios con beneficios.");
+					CantBeneficios();
 					break;
 				case 6:
 					//6.Buscar movimientos de un usario particular ingresando su nombre.");
