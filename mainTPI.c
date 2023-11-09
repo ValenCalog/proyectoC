@@ -294,7 +294,7 @@ void CantBeneficios(){
 			fread(&us,sizeof(us),1,USUARIOS);
 		}
 		if(cont != 0){
-			printf("La cantidad de usuarios con beneficios son: %d\n",cant\n);
+			printf("La cantidad de usuarios con beneficios son: %d\n",cant);
 			printf("Cantidad de usuarios con beneficio estudiantil: %d\n Cantidad de usuarios con beneficio por discapacidad: %d\n Cantidad de usuarios con beneficio por ser mayor de edad: %d\n",contEst,contDisc,ContMay);
 		}
 		else
