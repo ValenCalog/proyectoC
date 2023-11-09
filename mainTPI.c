@@ -70,7 +70,7 @@ void GenerarUsuario();
 void ModificarUsuario(); 
 void agregarChofer();
 int generarIdChofer();
-long generarNroDeControl(){
+long generarNroDeControl();
 int ObtenerAnioActual();
 void cargaDeSaldo();
 void menuModificaciones();
@@ -457,7 +457,8 @@ void cargaDeSaldo(){
 				   	if((archivo = fopen(nombre, "wb"))!= NULL){
 						printf("\nIngrese el monto a cargar: ");
 						scanf("%f", rec.monto);
-						printf("\nBoca de pago: ");
+						do{
+							printf("\nBoca de pago: ");
 						printf("\n1. Rapipago");
 						printf("\n2. Terminal de omnibus");
 						printf("\n3. Mini Super Ayacucho");
@@ -465,15 +466,29 @@ void cargaDeSaldo(){
 						printf("\n5. Quiosco");
 						printf("\nIngrese su opcion: ");
 						scanf("%d", &opc);
-						switch (opc)
-						{
+						switch (opc){
 						case 1:
-							
+							strcpy(rec.BocaPago, "Rapipago");
 							break;
-						
+						case 2:
+							strcpy(rec.BocaPago, "Terminal de omnibus");
+							break;
+						case 3:
+							strcpy(rec.BocaPago, "Mini Super Ayacucho");
+							break;
+						case 4:
+							strcpy(rec.BocaPago, "Agencia IPLyC");
+							break;
+						case 5:
+							strcpy(rec.BocaPago, "Quiosco");
+							break;
 						default:
+							printf("\nNo es numero valido.");
 							break;
 						}
+						}while((opc <1) || (opc >5));
+						rec.Hora.hora = ;/*enseguida sigo*/
+
 					/*charBocaPago;
 	                struct Hora hora;*/
 					}else{
