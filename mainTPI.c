@@ -27,7 +27,7 @@ struct Cuenta{
 struct Recarga{
 	long int DNI, NroCtrl;
 	float monto;
-	float BocaPago;
+	char BocaPago[30];
 	struct Hora hora;
 }rec;
 
@@ -439,8 +439,10 @@ long generarNroDeControl(){
 }
 
 void cargaDeSaldo(){
+		FILE *archivo;
 		long dniBuscar, aux;
 		char nombre[30];
+		int opc;
 		printf("Ingrese un numero de dni");
 		scanf("%ld", &dniBuscar);
 		if(seEncuentraDniUsuario(dniBuscar)){
@@ -448,6 +450,39 @@ void cargaDeSaldo(){
 			aux= buscarNroDeControl();
 			if(aux !=-1){
 				rec.NroCtrl = aux+1;
+				FILE *auxNroCtrl;
+				if((auxNroCtrl = fopen("nrosControlAux.dat", "a+b"))!= NULL){
+					sprintf(nombre, "%ld%ld", rec.DNI, rec.NroCtrl);
+				    strcat(nombre, ".txt");
+				   	if((archivo = fopen(nombre, "wb"))!= NULL){
+						printf("\nIngrese el monto a cargar: ");
+						scanf("%f", rec.monto);
+						printf("\nBoca de pago: ");
+						printf("\n1. Rapipago");
+						printf("\n2. Terminal de omnibus");
+						printf("\n3. Mini Super Ayacucho");
+						printf("\n4. Agencia IPLyC");
+						printf("\n5. Quiosco");
+						printf("\nIngrese su opcion: ");
+						scanf("%d", &opc);
+						switch (opc)
+						{
+						case 1:
+							
+							break;
+						
+						default:
+							break;
+						}
+					/*charBocaPago;
+	                struct Hora hora;*/
+					}else{
+						printf("\nHubo un error al generar el ticket de la recarga.");
+					}
+				}else{
+					printf("\nNo se pudo guardar el nroDeControl en el archivo auxiliar");
+				}
+				
 			}else{
 				printf("Hubo un error al intentar general el numero de control");
 			}
