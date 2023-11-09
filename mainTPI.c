@@ -578,7 +578,7 @@ void cargaDeSaldo(){
     						struct tm * tiempoLocal;
     						segundosUnix = time(NULL);
     						tiempoLocal = localtime(&segundosUnix);
-							rec.hora.hora = tiempoLocal->tm_hour;/*enseguida sigo*/
+							rec.hora.hora = tiempoLocal->tm_hour;
 							rec.hora.min = tiempoLocal->tm_min;
 							rec.hora.seg = tiempoLocal->tm_sec;
 							rec.fecha.anio = tiempoLocal->tm_year+1900;
