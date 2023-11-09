@@ -42,6 +42,7 @@ struct Chofer{
 	int id;
 	long int DNI, telefono;
 	char NomApe[40], direccion[40], email[40];
+	struct Fecha fechaNac;
 }chofer;
 
 struct Movimiento{
@@ -70,7 +71,7 @@ void ModificarUsuario();
 void agregarChofer();
 int generarIdChofer();
 int ObtenerAnioActual();
-
+void cargaDeSaldo();
 void menuModificaciones();
 void menuConsultas();
 
@@ -278,6 +279,13 @@ void agregarChofer(){
 			printf("\nIngrese email: ");
 			fflush(stdin);
 			fgets(chofer.email, sizeof(chofer.email), stdin);
+			printf("\nIngrese fecha de nacimiento ");
+			printf("\nDia: ");
+			scanf("%d", &chofer.fechaNac.dia);
+			printf("\nMes: ");
+			scanf("%d", &chofer.fechaNac.mes);
+			printf("\nAnio: ");
+			scanf("%d",&chofer.fechaNac.anio);
 			printf("\nIngrese su telefono: ");
 			scanf("%ld", &chofer.telefono);
 			fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
@@ -356,6 +364,7 @@ void menuModificaciones(){
 
 }
 void menuConsultas(){
+
 	int opc, confirmar;
 
 	do{
@@ -407,3 +416,8 @@ void menuConsultas(){
 
 				
 }
+
+void cargaDeSaldo(){
+
+}
+
