@@ -64,6 +64,7 @@ FILE *USUARIOS, *CUENTAS, *RECARGAS, *MOVIMIENTOS, *CHOFERES, *UNIDADES;
    movimientos.dat
    unidades.dat
    cuentas.dat
+   recargas.dat
 */
 
 //prototipos
