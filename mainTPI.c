@@ -80,7 +80,7 @@ int ObtenerAnioActual();
 void cargaDeSaldo();
 void menuModificaciones();
 void menuConsultas();
-void seEncuentraDniUsuario(long dni);
+int seEncuentraDniUsuario(long dni);
 int main() {
 	int opc,confirmar;
 	do{
@@ -227,7 +227,7 @@ void GenerarUsuario(){
 void ModificarUsuario(){
 	int buscarid;
 	
-	if((USUARIO = fopen("Usuarios.dat","a+b")) != NULL){
+	if((USUARIOS = fopen("Usuarios.dat","a+b")) != NULL){
 		printf("ingrese el id del usuario a buscar: \n");
 		scanf("%d",&buscarid);
 		fread(&us,sizeof(us),1,USUARIOS);
@@ -261,7 +261,7 @@ void ModificarUsuario(){
 	}
 	else
 		printf("error al abrir el archivo Usuarios\n");
-	fclose(USUARIOS)
+	fclose(USUARIOS);
 }
 
 void ListarUsuarios(){
@@ -286,7 +286,7 @@ void CantBeneficios(){
 		fread(&us,sizeof(us),1,USUARIOS);
 		while(!feof(USUARIOS)){
 			if(us.tipo != 0){
-				cont++;
+				cant++;
 				switch(us.tipo){
 					case 1: contEst++;break;
 					case 2: contDisc++;break;
@@ -295,9 +295,9 @@ void CantBeneficios(){
 			}
 			fread(&us,sizeof(us),1,USUARIOS);
 		}
-		if(cont != 0){
+		if(cant != 0){
 			printf("La cantidad de usuarios con beneficios son: %d\n",cant);
-			printf("Cantidad de usuarios con beneficio estudiantil: %d\n Cantidad de usuarios con beneficio por discapacidad: %d\n Cantidad de usuarios con beneficio por ser mayor de edad: %d\n",contEst,contDisc,ContMay);
+			printf("Cantidad de usuarios con beneficio estudiantil: %d\n Cantidad de usuarios con beneficio por discapacidad: %d\n Cantidad de usuarios con beneficio por ser mayor de edad: %d\n",contEst,contDisc,contMay);
 		}
 		else
 			printf("No hay usuarios con beneficios\n");
@@ -366,7 +366,7 @@ void ModificarChofer(){
 		fread(&chofer,sizeof(chofer),1,CHOFERES);
 		while(!feof(CHOFERES)){
 			
-			if(buscarId == choferes.id){
+			if(buscarId == chofer.id){
 				fseek(CHOFERES,sizeof(chofer) * (-1),SEEK_CUR);
 				band++;
 				
@@ -374,11 +374,11 @@ void ModificarChofer(){
 				gets(chofer.NomApe);
 				printf("\n|Fecha de nacimiento|\n");
 				printf("Dia: ");
-				scnaf("%d",&chofer.dia);
+				scnaf("%d",&chofer.fechaNac.mes);
 				printf("\nmes: ");
-				scnaf("%d",&chofer.mes);
+				scnaf("%d",&chofer.fechaNac.mes);
 				printf("\nanio: ");
-				scnaf("%d",&chofer.anio);
+				scnaf("%d",&chofer.fechaNac.anio);
 				printf("\nIngrese la direccion nueva: ");
 				gets(chofer.direccion);
 				printf("\ningrese el nuevo numero telefonico: ");
