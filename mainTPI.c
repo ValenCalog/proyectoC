@@ -619,7 +619,7 @@ void cargaDeSaldo(){
 									
 									if(encontroCuenta){
 										cuenta.saldo = cuenta.saldo + rec.monto;
-										fseek(CUENTAS,sizeof(cuenta) *-1, SEEK_CUR);
+										fseek(CUENTAS,(long int)sizeof(cuenta) *-1, SEEK_CUR);
 										fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
 									}else{
 										printf("\nNo se encontro el Id de usuario en el archivo cuentas.");
@@ -831,7 +831,7 @@ void addunit(){
 		fflush(stdin);
 		fgets(unidad.marca,sizeof(unidad.marca),stdin);
 		printf("ingrese el modelo de la unidad\n");
-		flush(stdin);
+		fflush(stdin);
 		fgets(unidad.modelo, sizeof(unidad.modelo),stdin);
 		printf("Ingrese el kilometraje de la unidad\n");
 		scanf("%f", &unidad.km);
