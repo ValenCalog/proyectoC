@@ -182,8 +182,9 @@ void GenerarUsuario(){
 		rewind(USUARIOS);
 		//ingresar nombre y apellido
 		printf("ingrese el nombre y apellido del usuario\n");
-		gets(us.NomApe);
 		fflush(stdin);
+		fgets(us.NomApe, sizeof(us.NomApe), stdin);
+
 		
 		//pedir y controlar fecha de nacimiento
 		printf("ingrese la fecha de nacimiento del usuario:\n dia: ");
@@ -208,9 +209,9 @@ void GenerarUsuario(){
 		
 		//ingresar direccion
 		printf("\ningrese la direccion del ususario: ");
-		gets(us.direccion);
-		fflush;
-		
+		fflush(stdin);
+		fgets(us.direccion, sizeof(us.direccion), stdin);
+
 		//ingresar telefono
 		printf("\ningrese el numero de su telefono: ");
 		scanf("%ld",&us.telefono);
@@ -827,11 +828,11 @@ void addunit(){
 			scanf("%d", &unidad.turno);
 		}
 		printf("Ingrese el nombre de la compañia manufacturera de la unidad\n");
-		fgets(unidad.marca,sizeof(unidad.marca),stdin);
-		fflush(stdin);	
-		printf("ingrese el modelo de la unidad\n");
-		fgets(unidad.modelo, sizeof(unidad.modelo),stdin);
 		fflush(stdin);
+		fgets(unidad.marca,sizeof(unidad.marca),stdin);
+		printf("ingrese el modelo de la unidad\n");
+		flush(stdin);
+		fgets(unidad.modelo, sizeof(unidad.modelo),stdin);
 		printf("Ingrese el kilometraje de la unidad\n");
 		scanf("%f", &unidad.km);
 		printf("Ingrese la fecha de alta de la unidad\n Año");
