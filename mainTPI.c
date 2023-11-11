@@ -152,7 +152,7 @@ void GenerarUsuario(){
 		
 		//existe un registro
 		if(!feof(USUARIOS)){
-			fseek(USUARIOS,sizeof(us) * (-1), SEEK_END);
+			fseek(USUARIOS,(long int)sizeof(us) * (-1), SEEK_END);
 			fread(&us,sizeof(us),1,USUARIOS);
 			us.id++;
 			fwrite(&us,sizeof(us),1,USUARIOS);
@@ -354,7 +354,7 @@ int generarIdChofer(){
 		fseek(CHOFERES, 0, SEEK_END);
 		
 		if(ftell(CHOFERES) > 0){
-			fseek(CHOFERES,sizeof(chofer)*-1,SEEK_END);
+			fseek(CHOFERES,(long int)sizeof(chofer)*-1,SEEK_END);
 			fread(&chofer,sizeof(chofer),1,CHOFERES);
 			fclose(CHOFERES);
 			return(chofer.id);
@@ -378,7 +378,7 @@ void ModificarChofer(){
 		while(!feof(CHOFERES)){
 			
 			if(buscarId == chofer.id){
-				fseek(CHOFERES,sizeof(chofer) * (-1),SEEK_CUR);
+				fseek(CHOFERES,(long int)sizeof(chofer) * (-1),SEEK_CUR);
 				band++;
 				
 				printf("-----------\n|ingrese los nuevos datos|\n-----------\n Nombre y apellido: ");
@@ -529,7 +529,7 @@ long generarNroDeControl(){
 		fseek(RECARGAS, 0, SEEK_END);
 		
 		if(ftell(RECARGAS) > 0){
-			fseek(RECARGAS, sizeof(rec) *-1,SEEK_END);
+			fseek(RECARGAS, (long int)sizeof(rec) *-1,SEEK_END);
 			fread(&rec, sizeof(rec), 1, RECARGAS);
 			return(rec.NroCtrl);
 		}else{
@@ -617,7 +617,7 @@ void cargaDeSaldo(){
 								
 								if(encontroCuenta){
 									cuenta.saldo = cuenta.saldo + rec.monto;
-									fseek(CUENTAS, sizeof(cuenta) *-1, SEEK_CUR);
+									fseek(CUENTAS, (long int) sizeof(cuenta) *-1, SEEK_CUR);
 									fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
 								}else{
 									printf("No se encontro el DNI en el archivo cuentas.");
