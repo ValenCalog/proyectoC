@@ -20,7 +20,8 @@ struct Usuario{
 }us;
 
 struct Cuenta{
-	long int DNI, id;
+	long DNI, telefono;
+	int idCuenta, idUsuario;
 	float saldo;
 }cuenta;
 
@@ -48,7 +49,7 @@ struct Chofer{
 
 struct Movimiento{
 	long int DNI, NroTarjeta;
-	char origen[25], destino [25];
+	char origen[25], destino[25];
 	float SaldoUso;
 	int nroUnidad;
 	struct Fecha fecha;
@@ -651,18 +652,32 @@ int seEncuentraDniUsuario(long dni){
 		}
 		return encontro;
 	}else{
-		return 0;
+		return -1;
 	}
 }
 
 void usoDeBilleteraVirtual(){
-
+	int band = 0;
 	if((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL){
 
 		if((MOVIMIENTOS = fopen("movimientos.dat", "a+b")) != NULL){
 
-			printf("\nIngrese su DNI");
+			printf("\nIngrese su numero de telefono: ");
 			scanf("%ld", &mov.DNI);
+
+				do{
+					if(seEncuentraDniUsuario(mov.DNI) == 1){
+						printf("\nIngrese su numero de telefono.");
+			   		}else if(seEncuentraDniUsuario(mov.DNI) == -1){
+						printf("\nHubo un error al abrir el archivo usuarios");
+			    	}else{
+						printf("\nEl dni no se encuentra registrado en el archivo de Usuarios. Ingrese uno valido");
+						scanf("%ld", &mov.DNI);
+						band = 1;
+					}
+				}while(band == 1);
+				
+			
 		}else{
 			printf("\nNo se pudo abrir el archivo movimientos");
 		}
