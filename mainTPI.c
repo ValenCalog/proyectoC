@@ -345,15 +345,21 @@ void agregarChofer(){
 }
 
 int generarIdChofer(){
-	CHOFERES  = fopen("choferes.dat","rb");
-	if(CHOFERES!=NULL){
-		fseek(CHOFERES,sizeof(chofer)*-1,SEEK_END);
-		fread(&chofer,sizeof(chofer),1,CHOFERES);
-		fclose(CHOFERES);
-		return(chofer.id);
+	if((CHOFERES = fopen("choferes.dat","rb")) != NULL){
+		fseek(CHOFERES, 0, SEEK_END);
+		
+		if(ftell(CHOFERES) > 0){
+			fseek(CHOFERES,sizeof(chofer)*-1,SEEK_END);
+			fread(&chofer,sizeof(chofer),1,CHOFERES);
+			fclose(CHOFERES);
+			return(chofer.id);
+		}else{
+			return 0;
+		}
+		
 	}else{
 		return -1;
-    }
+	}
 }
 
 void ModificarChofer(){
@@ -509,14 +515,13 @@ void menuConsultas(){
 }
 
 long generarNroDeControl(){
-	long numControl, tamanio;
-	if((RECARGAS = fopen("recargas.dat", "a+b")) != NULL){
+	if((RECARGAS = fopen("recargas.dat", "rb")) != NULL){
 		fseek(RECARGAS, 0, SEEK_END);
 		
 		if(ftell(RECARGAS) > 0){
-			fseek(RECARGAS, sizeof(numControl) *-1,SEEK_END);
-			fread(&numControl, sizeof(numControl), 1, RECARGAS);
-			return(numControl);
+			fseek(RECARGAS, sizeof(rec) *-1,SEEK_END);
+			fread(&rec, sizeof(rec), 1, RECARGAS);
+			return(rec.NroCtrl);
 		}else{
 			return 10000;
 		}
