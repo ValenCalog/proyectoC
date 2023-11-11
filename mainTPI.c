@@ -387,17 +387,17 @@ void ModificarChofer(){
 				printf("Dia: ");
 				scanf("%d",&chofer.fechaNac.mes);
 				printf("\nmes: ");
-				scnaf("%d",&chofer.fechaNac.mes);
+				scanf("%d",&chofer.fechaNac.mes);
 				printf("\nanio: ");
 				scanf("%d",&chofer.fechaNac.anio);
 				printf("\nIngrese la direccion nueva: ");
 				gets(chofer.direccion);
 				printf("\ningrese el nuevo numero telefonico: ");
-				scnaf("%ld",&chofer.telefono);
+				scanf("%ld",&chofer.telefono);
 				printf("\nIngrese el nuevo correo electronico: ");
 				gets(chofer.email);
 				printf("\nIngrese el nuevo DNI: ");
-				scnaf("%ld",&chofer.DNI);
+				scanf("%ld",&chofer.DNI);
 
 				fwrite(&chofer,sizeof(chofer),1,CHOFERES);
 			}
@@ -742,7 +742,7 @@ void usoDeBilleteraVirtual(){
 							if(encontroCuenta){
 
 								cuenta.saldo = cuenta.saldo - mov.SaldoUso;
-								fseek(CUENTAS, sizeof(cuenta)*-1, SEEK_CUR);
+								fseek(CUENTAS, (long int)sizeof(cuenta)*-1, SEEK_CUR);
 								fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
 								fwrite(&mov, sizeof(mov), 1, MOVIMIENTOS);
 							}else{
