@@ -38,7 +38,7 @@ struct Unidad{
 	char marca[30], modelo[30];
 	float km;
 	struct Fecha FechaAlta;
-};
+}unidad;
 
 struct Chofer{
 	int id;
@@ -84,6 +84,7 @@ void menuModificaciones();
 void menuConsultas();
 int seEncuentraDniUsuario(long dni);
 void usoDeBilleteraVirtual();
+void addunit();
 
 int main() {
 	int opc,confirmar;
@@ -151,7 +152,7 @@ void GenerarUsuario(){
 		
 		//existe un registro
 		if(!feof(USUARIOS)){
-			fseek(USUARIOS,sizeof(us) * (-1), SEEK_END);
+			fseek(USUARIOS,(long int)sizeof(us) * (-1), SEEK_END);
 			fread(&us,sizeof(us),1,USUARIOS);
 			us.id++;
 			fwrite(&us,sizeof(us),1,USUARIOS);
@@ -353,7 +354,7 @@ int generarIdChofer(){
 		fseek(CHOFERES, 0, SEEK_END);
 		
 		if(ftell(CHOFERES) > 0){
-			fseek(CHOFERES,sizeof(chofer)*-1,SEEK_END);
+			fseek(CHOFERES,(long int)sizeof(chofer)*-1,SEEK_END);
 			fread(&chofer,sizeof(chofer),1,CHOFERES);
 			fclose(CHOFERES);
 			return(chofer.id);
@@ -377,7 +378,7 @@ void ModificarChofer(){
 		while(!feof(CHOFERES)){
 			
 			if(buscarId == chofer.id){
-				fseek(CHOFERES,sizeof(chofer) * (-1),SEEK_CUR);
+				fseek(CHOFERES,(long int)sizeof(chofer) * (-1),SEEK_CUR);
 				band++;
 				
 				printf("-----------\n|ingrese los nuevos datos|\n-----------\n Nombre y apellido: ");
@@ -448,7 +449,12 @@ void menuModificaciones(){
 		ModificarChofer();
 		break;
 	case 5:
-		//Agregar unidad
+		do
+		{
+			addunit();
+			printf("desea añadir otra unidad? ingrese 1 para confirmar\n");
+			scanf("%d", &confirmar);
+		} while (confirmar!=1);
 		break;
 	case 6:
 		//modificar unidad
@@ -523,7 +529,7 @@ long generarNroDeControl(){
 		fseek(RECARGAS, 0, SEEK_END);
 		
 		if(ftell(RECARGAS) > 0){
-			fseek(RECARGAS, sizeof(rec) *-1,SEEK_END);
+			fseek(RECARGAS, (long int)sizeof(rec) *-1,SEEK_END);
 			fread(&rec, sizeof(rec), 1, RECARGAS);
 			return(rec.NroCtrl);
 		}else{
@@ -611,7 +617,7 @@ void cargaDeSaldo(){
 								
 								if(encontroCuenta){
 									cuenta.saldo = cuenta.saldo + rec.monto;
-									fseek(CUENTAS, sizeof(cuenta) *-1, SEEK_CUR);
+									fseek(CUENTAS, (long int) sizeof(cuenta) *-1, SEEK_CUR);
 									fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
 								}else{
 									printf("No se encontro el DNI en el archivo cuentas.");
@@ -758,4 +764,81 @@ void usoDeBilleteraVirtual(){
 	}else{
 		printf("\nNo se pudo abrir el archivo cuentas");
 	}
+}
+
+
+void addunit(){
+	int checkunitdoesnotexist = 0, foundunit;
+	
+	if ((UNIDADES = fopen("UNIDADES.dat", "a+b")) != NULL)
+	{
+		fread(&unidad, sizeof(unidad),1, UNIDADES);
+		
+		if (feof(UNIDADES))
+		{
+			unidad.idUnidad=1;
+			fwrite (&unidad, sizeof(unidad),1,UNIDADES);
+			rewind(UNIDADES);
+		}
+		else {
+			fseek(UNIDADES, (long int)sizeof(unidad) * (-1), SEEK_END);
+			fread(&unidad, sizeof(unidad),1, UNIDADES);
+			unidad.idUnidad++;
+			fwrite(&unidad, sizeof(unidad),1, UNIDADES);
+			rewind(UNIDADES);
+		}
+		do {
+    	printf("ingrese el numero de la unidad\n");
+    	scanf("%d", &unidad.NroUnidad);
+   		rewind(UNIDADES);
+		checkunitdoesnotexist = unidad.NroUnidad;
+		foundunit = 0; 
+    	while (!feof(UNIDADES) && !foundunit)
+    	{
+        fread(&unidad,sizeof(unidad),1,UNIDADES);
+        if (unidad.NroUnidad == checkunitdoesnotexist)
+        {
+            foundunit = 1;
+            printf("La unidad ya existe, por favor ingrese otro numero de unidad\n");
+        }
+    	}
+		} while (foundunit);
+	
+		rewind(UNIDADES);
+
+		printf("ingrese dni del chofer\n");
+		scanf("%d", &unidad.DNIC);
+		printf("Ingrese 0 para asignar turno mañana o 1 para asignar turno tarde\n");	
+		scanf("%d", &unidad.turno);
+		while(unidad.turno != 0 && unidad.turno !=1)
+		{
+			printf("El identificador de turno proporcionado no es valido, por favor ingrese 0 para am y 1 para pm\n");
+			scanf("%d", &unidad.turno);
+		}
+		printf("Ingrese el nombre de la compañia manufacturera de la unidad\n");
+		fgets(unidad.marca,sizeof(unidad.marca),stdin);
+		fflush(stdin);	
+		printf("ingrese el modelo de la unidad\n");
+		fgets(unidad.modelo, sizeof(unidad.modelo),stdin);
+		fflush(stdin);
+		printf("Ingrese el kilometraje de la unidad\n");
+		scanf("%f", &unidad.km);
+		printf("Ingrese la fecha de alta de la unidad\n Año");
+			scanf("%d", &unidad.FechaAlta.anio);
+			printf("mes\n");
+			scanf("%d", &unidad.FechaAlta.mes);
+			printf("día\n");
+			scanf("%d", &unidad.FechaAlta.dia);
+		printf("Esta adaptada la unidad para discapacitados? presione 1 para confirmar y 0 para negar\n");
+		scanf("%d", &unidad.adaptado);
+		while(unidad.adaptado != 0 && unidad.adaptado !=1)
+		{
+			printf("El identificador de discapacitados proporcionado no es valido, por favor ingrese 0 para am y 1 para pm\n");
+			scanf("%d", &unidad.adaptado);
+		}
+		fwrite(&unidad, sizeof(unidad),1, UNIDADES);	
+		}
+	else 
+		printf("error al abrir el archivo unidades\n");
+	fclose(UNIDADES);
 }
