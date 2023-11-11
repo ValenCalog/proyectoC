@@ -81,6 +81,7 @@ void cargaDeSaldo();
 void menuModificaciones();
 void menuConsultas();
 int seEncuentraDniUsuario(long dni);
+void usoDeBilleteraVirtual();
 int main() {
 	int opc,confirmar;
 	do{
@@ -651,5 +652,14 @@ int seEncuentraDniUsuario(long dni){
 		return encontro;
 	}else{
 		return 0;
+	}
+}
+
+void usoDeBilleteraVirtual(){
+
+	if((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL){
+
+	}else{
+		printf("No se pudo abrir el archivo cuentas");
 	}
 }
