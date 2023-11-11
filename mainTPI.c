@@ -48,7 +48,7 @@ struct Chofer{
 }chofer;
 
 struct Movimiento{
-	long int DNI, NroTarjeta;
+	long int DNI, NroTarjetaOTelefono;
 	char origen[25], destino[25];
 	float SaldoUso;
 	int nroUnidad;
@@ -545,7 +545,7 @@ void cargaDeSaldo(){
 		scanf("%ld", &dniBuscar);
 		if(seEncuentraDniUsuario(dniBuscar)){
 			rec.DNI = dniBuscar;
-			aux= buscarNroDeControl();
+			aux= generarNroDeControl();
 			if(aux !=-1){
 				rec.NroCtrl = aux+1;
 				if((RECARGAS = fopen("recargas.dat", "a+b"))!= NULL){
@@ -647,7 +647,7 @@ int seEncuentraDniUsuario(long dni){
 
 		while((!feof(USUARIOS)) && (!encontro)){
 			if(us.DNI == dni){
-				encontro = 1;
+				encontro = us.id;
 			}else{
 				fread(&us, sizeof(us), 1, USUARIOS);
 			}
@@ -700,28 +700,49 @@ void usoDeBilleteraVirtual(){
 			scanf("%ld", &mov.DNI);
 
 				do{
-					if(seEncuentraDniUsuario(mov.DNI) == 1){
-						printf("\nIngrese su numero de telefono: ");
-						scanf("%ld", mov.NroTarjeta);
-						printf("\nNumero de unidad: ");
-						scanf("%d", mov.nroUnidad);
-						printf("\nOrigen: ");
-						fflush(stdin);
-						fgets(mov.origen, sizeof(mov.origen), stdin);
-						printf("\nDestino: ");
-						fflush(stdin);
-						fgets(mov.destino, sizeof(mov.destino), stdin);
-						printf("\nCantidad de saldo usado: ");
-						scanf("%f", mov.SaldoUso);
-						mov.hora.hora = tiempoActual(1);
-						mov.hora.min = tiempoActual(2);
-						mov.hora.seg = tiempoActual(3);
-						mov.fecha.anio = tiempoActual(4);
-						mov.fecha.mes = tiempoActual(5);
-						mov.fecha.dia = tiempoActual(6);
-						
+					band = 0;
+					int IdUsuario = seEncuentraDniUsuario(mov.DNI);
+					if( (IdUsuario != -1) && (IdUsuario !=0)){
+							printf("\nIngrese su numero de telefono: ");
+							scanf("%ld", mov.NroTarjetaOTelefono);
+							printf("\nNumero de unidad: ");
+							scanf("%d", mov.nroUnidad);
+							printf("\nOrigen: ");
+							fflush(stdin);
+							fgets(mov.origen, sizeof(mov.origen), stdin);
+							printf("\nDestino: ");
+							fflush(stdin);
+							fgets(mov.destino, sizeof(mov.destino), stdin);
+							printf("\nCantidad de saldo usado: ");
+							scanf("%f", mov.SaldoUso);
+							mov.hora.hora = tiempoActual(1);
+							mov.hora.min = tiempoActual(2);
+							mov.hora.seg = tiempoActual(3);
+							mov.fecha.anio = tiempoActual(4);
+							mov.fecha.mes = tiempoActual(5);
+							mov.fecha.dia = tiempoActual(6);
+							int encontroCuenta = 0;
+							fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
 
-			   		}else if(seEncuentraDniUsuario(mov.DNI) == -1){
+							while((!feof(CUENTAS)) && (!encontroCuenta)){
+
+								if(cuenta.idUsuario == idUsuario){
+									encontroCuenta = 1;
+								}else{
+									fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
+								}
+							}
+
+							if(encontroCuenta){
+
+								cuenta.saldo = cuenta.saldo - mov.SaldoUso;
+								fseek(CUENTAS, sizeof(cuenta)*-1, SEEK_CUR);
+								fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
+								fwrite(&mov, sizeof(mov), 1, MOVIMIENTOS);
+							}else{
+								printf("\nSe produjo un error.");
+							}
+			   		}else if(IdUsuario == -1){
 						printf("\nHubo un error al abrir el archivo usuarios");
 			    	}else{
 						printf("\nEl dni no se encuentra registrado en el archivo de Usuarios. Ingrese uno valido");
@@ -729,11 +750,11 @@ void usoDeBilleteraVirtual(){
 						band = 1;
 					}
 				}while(band == 1);
-				
-			
+			fclose(MOVIMIENTOS);
 		}else{
 			printf("\nNo se pudo abrir el archivo movimientos");
 		}
+		fclose(CUENTAS);
 	}else{
 		printf("\nNo se pudo abrir el archivo cuentas");
 	}
