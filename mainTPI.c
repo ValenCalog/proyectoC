@@ -704,10 +704,10 @@ void usoDeBilleteraVirtual(){
 
 			printf("\nIngrese su numero de DNI: ");
 			scanf("%ld", &mov.DNI);
-
+				int IdUsuario;
 				do{
 					band = 0;
-					int IdUsuario = seEncuentraDniUsuario(mov.DNI);
+					IdUsuario = seEncuentraDniUsuario(mov.DNI);
 					if( (IdUsuario != -1) && (IdUsuario !=0)){
 							printf("\nIngrese su numero de telefono: ");
 							scanf("%ld", mov.NroTarjetaOTelefono);
@@ -732,7 +732,7 @@ void usoDeBilleteraVirtual(){
 
 							while((!feof(CUENTAS)) && (!encontroCuenta)){
 
-								if(cuenta.idUsuario == idUsuario){
+								if(cuenta.idUsuario == IdUsuario){
 									encontroCuenta = 1;
 								}else{
 									fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
