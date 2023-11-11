@@ -168,7 +168,7 @@ void GenerarUsuario(){
 		
 		//pedir y verificar DNI
 		printf("ingrese el DNI del usuario\n");
-		fscanf("%ld",&us.DNI);
+		scanf("%ld",&us.DNI);
 		
 		compDNI = us.DNI;
 		fread(&us,sizeof(us),1,USUARIOS);
@@ -712,7 +712,7 @@ void usoDeBilleteraVirtual(){
 							printf("\nIngrese su numero de telefono: ");
 							scanf("%ld", mov.NroTarjetaOTelefono);
 							printf("\nNumero de unidad: ");
-							scanf("%d", mov.nroUnidad);
+							scanf("%d", mov.nroUnidad); // se tiene que verificar si existe numero de unidad
 							printf("\nOrigen: ");
 							fflush(stdin);
 							fgets(mov.origen, sizeof(mov.origen), stdin);
