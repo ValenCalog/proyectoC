@@ -22,7 +22,7 @@ struct Usuario{
 struct Cuenta{
 	long int DNI, id;
 	float saldo;
-};
+}cuenta;
 
 struct Recarga{
 	long int DNI, NroCtrl;
@@ -543,51 +543,76 @@ void cargaDeSaldo(){
 					sprintf(nombre, "%ld%ld", rec.DNI, rec.NroCtrl);
 				    strcat(nombre, ".txt");
 				   	if((archivo = fopen(nombre, "wb"))!= NULL){
-						printf("\nIngrese el monto a cargar: ");
-						scanf("%f", rec.monto);
-						do{
-							printf("\nBoca de pago: ");
-						printf("\n1. Rapipago");
-						printf("\n2. Terminal de omnibus");
-						printf("\n3. Mini Super Ayacucho");
-						printf("\n4. Agencia IPLyC");
-						printf("\n5. Quiosco");
-						printf("\nIngrese su opcion: ");
-						scanf("%d", &opc);
-						switch (opc){
-						case 1:
-							strcpy(rec.BocaPago, "Rapipago");
-							break;
-						case 2:
-							strcpy(rec.BocaPago, "Terminal de omnibus");
-							break;
-						case 3:
-							strcpy(rec.BocaPago, "Mini Super Ayacucho");
-							break;
-						case 4:
-							strcpy(rec.BocaPago, "Agencia IPLyC");
-							break;
-						case 5:
-							strcpy(rec.BocaPago, "Quiosco");
-							break;
-						default:
-							printf("\nNo es numero valido.");
-							break;
-						}
-						}while((opc <1) || (opc >5));
-						    time_t segundosUnix;
-    						struct tm * tiempoLocal;
-    						segundosUnix = time(NULL);
-    						tiempoLocal = localtime(&segundosUnix);
-							rec.hora.hora = tiempoLocal->tm_hour;
-							rec.hora.min = tiempoLocal->tm_min;
-							rec.hora.seg = tiempoLocal->tm_sec;
-							rec.fecha.anio = tiempoLocal->tm_year+1900;
-							rec.fecha.mes = tiempoLocal->tm_mon;
-							rec.fecha.dia = tiempoLocal->tm_mday;
-							fprintf(archivo, "DNI: %ld , Nro. Control: %ld, Monto: %f, Boca de pago: %s, Fecha: %d/%d/%d, Hora: %d:%d:%d", rec.DNI, rec.NroCtrl, rec.monto, rec.BocaPago, rec.fecha.dia, rec.fecha.mes, rec.fecha.anio, rec.hora.hora, rec.hora.min, rec.hora.seg);
-							fclose(archivo);
-							fwrite(&rec, sizeof(rec), 1, RECARGAS);
+							if((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL){
+								printf("\nIngrese el monto a cargar: ");
+								scanf("%f", rec.monto);
+								do{
+									printf("\nBoca de pago: ");
+									printf("\n1. Rapipago");
+									printf("\n2. Terminal de omnibus");
+									printf("\n3. Mini Super Ayacucho");
+									printf("\n4. Agencia IPLyC");
+									printf("\n5. Quiosco");
+									printf("\nIngrese su opcion: ");
+									scanf("%d", &opc);
+									switch (opc){
+									case 1:
+										strcpy(rec.BocaPago, "Rapipago");
+										break;
+									case 2:
+										strcpy(rec.BocaPago, "Terminal de omnibus");
+										break;
+									case 3:
+										strcpy(rec.BocaPago, "Mini Super Ayacucho");
+										break;
+									case 4:
+										strcpy(rec.BocaPago, "Agencia IPLyC");
+										break;
+									case 5:
+										strcpy(rec.BocaPago, "Quiosco");
+										break;
+									default:
+										printf("\nNo es numero valido.");
+										break;
+									}
+								}while((opc <1) || (opc >5));
+						    	time_t segundosUnix;
+    							struct tm * tiempoLocal;
+    							segundosUnix = time(NULL);
+    							tiempoLocal = localtime(&segundosUnix);
+								rec.hora.hora = tiempoLocal->tm_hour;
+								rec.hora.min = tiempoLocal->tm_min;
+								rec.hora.seg = tiempoLocal->tm_sec;
+								rec.fecha.anio = tiempoLocal->tm_year+1900;
+								rec.fecha.mes = tiempoLocal->tm_mon;
+								rec.fecha.dia = tiempoLocal->tm_mday;
+								fprintf(archivo, "DNI: %ld , Nro. Control: %ld, Monto: %f, Boca de pago: %s, Fecha: %d/%d/%d, Hora: %d:%d:%d", rec.DNI, rec.NroCtrl, rec.monto, rec.BocaPago, rec.fecha.dia, rec.fecha.mes, rec.fecha.anio, rec.hora.hora, rec.hora.min, rec.hora.seg);
+								fclose(archivo);
+								fwrite(&rec, sizeof(rec), 1, RECARGAS);
+								fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
+								int encontroCuenta = 0;
+
+								while((!feof(CUENTAS)) && (!encontroCuenta)){
+									if(cuenta.DNI == rec.DNI){
+										encontroCuenta = 1;
+									}else{
+										fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
+									}
+								}
+								
+								if(encontroCuenta){
+									cuenta.saldo = cuenta.saldo + rec.monto;
+									fseek(CUENTAS, sizeof(cuenta) *-1, SEEK_CUR);
+									fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
+								}else{
+									printf("No se encontro el DNI en el archivo cuentas.");
+								}
+
+								fclose(CUENTAS);
+
+							}else{
+								printf("No se puedo abrir el archivo cuentas para actualizar el saldo.");
+							}
 					}else{
 						printf("\nHubo un error al generar el ticket de la recarga.");
 					}
@@ -611,7 +636,7 @@ int seEncuentraDniUsuario(long dni){
 	if((USUARIOS = fopen("Usuarios.dat", "rb")) != NULL){
 		fread(&us, sizeof(us), 1, USUARIOS);
 
-		while((!eof(USUARIOS)) && (!encontro)){
+		while((!feof(USUARIOS)) && (!encontro)){
 			if(us.DNI == dni){
 				encontro = 1;
 			}else{
