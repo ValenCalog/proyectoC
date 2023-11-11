@@ -53,7 +53,7 @@ struct Movimiento{
 	int nroUnidad;
 	struct Fecha fecha;
 	struct Hora hora;
-};
+}mov;
 
 //archivos miedo
 FILE *USUARIOS, *CUENTAS, *RECARGAS, *MOVIMIENTOS, *CHOFERES, *UNIDADES;
@@ -659,7 +659,14 @@ void usoDeBilleteraVirtual(){
 
 	if((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL){
 
+		if((MOVIMIENTOS = fopen("movimientos.dat", "a+b")) != NULL){
+
+			printf("\nIngrese su DNI");
+			scanf("%ld", &mov.DNI);
+		}else{
+			printf("\nNo se pudo abrir el archivo movimientos");
+		}
 	}else{
-		printf("No se pudo abrir el archivo cuentas");
+		printf("\nNo se pudo abrir el archivo cuentas");
 	}
 }
