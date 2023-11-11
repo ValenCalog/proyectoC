@@ -404,7 +404,7 @@ void ModificarChofer(){
 			fread(&chofer,sizeof(chofer),1,CHOFERES);
 		}
 		if(band == 0)
-			prinf("\nNo se pudo encontrar el ID del chofer\n");
+			printf("\nNo se pudo encontrar el ID del chofer\n");
 	}
 	else
 		printf("error al abrir el archivo choferes\n");
