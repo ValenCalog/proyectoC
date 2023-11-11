@@ -69,7 +69,7 @@ FILE *USUARIOS, *CUENTAS, *RECARGAS, *MOVIMIENTOS, *CHOFERES, *UNIDADES;
 */
 
 //prototipos
-int tiempoActual();
+int tiempoActual(int tipo);
 void GenerarUsuario();
 void ModificarUsuario();
 void ListarUsuarios();
