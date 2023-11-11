@@ -175,7 +175,7 @@ void GenerarUsuario(){
 		while(!feof(USUARIOS)){
 			while(compDNI == us.DNI){
 				printf("los usuarios no pueden tener el mismo DNI\n ingreselo nuevamente: ");
-				fscanf("%ld",&us.DNI);
+				scanf("%ld",&us.DNI);
 			}
 			fread(&us,sizeof(us),1,USUARIOS);
 		}
@@ -385,11 +385,11 @@ void ModificarChofer(){
 				gets(chofer.NomApe);
 				printf("\n|Fecha de nacimiento|\n");
 				printf("Dia: ");
-				scnaf("%d",&chofer.fechaNac.mes);
+				scanf("%d",&chofer.fechaNac.mes);
 				printf("\nmes: ");
 				scnaf("%d",&chofer.fechaNac.mes);
 				printf("\nanio: ");
-				scnaf("%d",&chofer.fechaNac.anio);
+				scanf("%d",&chofer.fechaNac.anio);
 				printf("\nIngrese la direccion nueva: ");
 				gets(chofer.direccion);
 				printf("\ningrese el nuevo numero telefonico: ");
