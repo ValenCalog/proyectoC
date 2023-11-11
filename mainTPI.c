@@ -69,6 +69,7 @@ FILE *USUARIOS, *CUENTAS, *RECARGAS, *MOVIMIENTOS, *CHOFERES, *UNIDADES;
 */
 
 //prototipos
+int tiempoActual();
 void GenerarUsuario();
 void ModificarUsuario();
 void ListarUsuarios();
@@ -592,7 +593,7 @@ void cargaDeSaldo(){
 								rec.hora.min = tiempoLocal->tm_min;
 								rec.hora.seg = tiempoLocal->tm_sec;
 								rec.fecha.anio = tiempoLocal->tm_year+1900;
-								rec.fecha.mes = tiempoLocal->tm_mon;
+								rec.fecha.mes = tiempoLocal->tm_mon+1;
 								rec.fecha.dia = tiempoLocal->tm_mday;
 								fprintf(archivo, "DNI: %ld , Nro. Control: %ld, Monto: %f, Boca de pago: %s, Fecha: %d/%d/%d, Hora: %d:%d:%d", rec.DNI, rec.NroCtrl, rec.monto, rec.BocaPago, rec.fecha.dia, rec.fecha.mes, rec.fecha.anio, rec.hora.hora, rec.hora.min, rec.hora.seg);
 								fclose(archivo);
@@ -657,6 +658,38 @@ int seEncuentraDniUsuario(long dni){
 	}
 }
 
+
+int tiempoActual(int tipo){
+	time_t segundosUnix;
+    struct tm * tiempoLocal;
+    segundosUnix = time(NULL);
+    tiempoLocal = localtime(&segundosUnix);
+	if(tipo == 1){
+		return tiempoLocal->tm_hour; // horas
+	}else{
+		if(tipo == 2){
+			return tiempoLocal->tm_min; //minutos
+		}else{
+			if(tipo == 3){
+				return tiempoLocal->tm_sec; //Segundos
+			}else{
+				if(tipo == 4){
+					return tiempoLocal->tm_year+1900; //anio
+				}else{
+					if (tipo == 5){
+						return tiempoLocal->tm_mon+1; //mes
+					}else{
+						if(tipo == 6){
+							return tiempoLocal->tm_mday; // dia
+						}
+					}
+					
+				}
+			}
+		}
+	}
+}
+
 void usoDeBilleteraVirtual(){
 	int band = 0;
 	if((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL){
@@ -668,10 +701,25 @@ void usoDeBilleteraVirtual(){
 
 				do{
 					if(seEncuentraDniUsuario(mov.DNI) == 1){
-						printf("\nIngrese su numero de telefono.");
+						printf("\nIngrese su numero de telefono: ");
 						scanf("%ld", mov.NroTarjeta);
-						printf("\n");
+						printf("\nNumero de unidad: ");
 						scanf("%d", mov.nroUnidad);
+						printf("\nOrigen: ");
+						fflush(stdin);
+						fgets(mov.origen, sizeof(mov.origen), stdin);
+						printf("\nDestino: ");
+						fflush(stdin);
+						fgets(mov.destino, sizeof(mov.destino), stdin);
+						printf("\nCantidad de saldo usado: ");
+						scanf("%f", mov.SaldoUso);
+						mov.hora.hora = tiempoActual(1);
+						mov.hora.min = tiempoActual(2);
+						mov.hora.seg = tiempoActual(3);
+						mov.fecha.anio = tiempoActual(4);
+						mov.fecha.mes = tiempoActual(5);
+						mov.fecha.dia = tiempoActual(6);
+						
 
 			   		}else if(seEncuentraDniUsuario(mov.DNI) == -1){
 						printf("\nHubo un error al abrir el archivo usuarios");
