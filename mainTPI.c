@@ -759,7 +759,8 @@ void choferesConMasPasajeros(){
 								fread(&aux, sizeof(aux), 1, auxParaContar);
 									
 							}
-							delete(auxParaContar);	
+							fclose(auxParaContar);
+							remove("auxParaContar.dat");	
 						}else{
 							printf("\nHubo un error al abrir el archivo auxiliar para contar.");
 						}
@@ -768,8 +769,8 @@ void choferesConMasPasajeros(){
 						printf("\nHubo un error al crear el archivo auxiliar para contar");
 					}
 
-					
-				delete(auxDniChoferes);
+				fclose(auxDniChoferes);
+				remove("auxDniChoferes.dat");
 				}else{
 					printf("\nHubo un crear o abrir al abrir el archivo auxDniChoferes");
 				}
