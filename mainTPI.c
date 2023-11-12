@@ -704,7 +704,7 @@ void choferesConMasPasajeros(){
 								while((!feof(auxParaContar)) && (!encontroAux)){
 
 									if(unidad.DNIC == aux.DNIC){
-										encontro = 1;
+										encontroAux = 1;
 									}else{
 										fread(&aux, sizeof(aux), 1, auxParaContar);
 									}
@@ -730,7 +730,7 @@ void choferesConMasPasajeros(){
 							int max = aux.cantidadPasajeros;
 							while(!feof(auxParaContar)){
 
-								if(aux.cantidadPasajeros => max){
+								if(aux.cantidadPasajeros >= max){
 									max = aux.cantidadPasajeros;
 								}
 								fread(&aux, sizeof(aux), 1, auxParaContar);
