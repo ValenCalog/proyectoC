@@ -223,21 +223,24 @@ void GenerarUsuario(){
 			printf("\ningrese un dato valido: ");
 			scanf("%d",&us.tipo);
 		}
-		fwrite(&us,sizeof(us),1,USUARIOS);
 
 			//genero la cuenta:
 			if((CUENTAS = fopen("cuentas.dat", "a+b")) != NULL){
 
 				if(generarIdCuenta() != -1){
-					if (generarIdCuenta() != -1){
+					if (generarNroDeTarjeta != -1){
 						cuenta.idCuenta = generarIdCuenta()+1;
 						cuenta.idUsuario = us.id;	
 						cuenta.nroDeTarjeta = generarNroDeTarjeta()+1;
 						cuenta.saldo = 0;
 						fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
+						fwrite(&us,sizeof(us),1,USUARIOS); //recien se registra el usuario cuando la cuenta tambien se registra correctamnete
 					}else{
 						printf("\nHubo un error al generar el id de la cuenta.");
 					}
+					
+					
+					
 				}else{
 					printf("\nHubo un error al generar el id de la cuenta. ");
 				}
