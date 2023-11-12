@@ -775,6 +775,22 @@ void choferesConMasPasajeros(){
 	}
 }
 
+void buscarRecargas(long dni){
+
+	/*char nombre[45];
+	char nroDeControlTexto[45];
+	long nroDeControl = 90000;
+	sprintf(nombre, "%ld", dni);
+	sprintf(nroDeControlTexto, "%ld", nroDeControl+1);
+	strcat(nombre, nroDeControlTexto);
+	FILE *archivo;
+	while(){
+		if((archivo = fopen(nombre, "r")) != NULL){
+			//imprimo el contenido
+		}
+	}*/
+}
+
 long generarNroDeControl(){
 	if((RECARGAS = fopen("recargas.dat", "rb")) != NULL){
 		fseek(RECARGAS, 0, SEEK_END);
@@ -784,7 +800,7 @@ long generarNroDeControl(){
 			fread(&rec, sizeof(rec), 1, RECARGAS);
 			return(rec.NroCtrl);
 		}else{
-			return 10000;
+			return 900000;
 		}
 		
 	}else{
@@ -811,7 +827,7 @@ void cargaDeSaldo(){
 					if((RECARGAS = fopen("recargas.dat", "a+b"))!= NULL){
 						sprintf(nombre, "%ld%ld", rec.DNI, rec.NroCtrl);
 						strcat(nombre, ".txt");
-						if((archivo = fopen(nombre, "wb"))!= NULL){
+						if((archivo = fopen(nombre, "w"))!= NULL){
 								if((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL){
 									printf("\nIngrese el monto a cargar: ");
 									scanf("%f", rec.monto);
