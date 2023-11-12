@@ -92,6 +92,7 @@ void choferesConMasPasajeros();
 void buscarRecargasPorDni();
 int seEncuentraDniChofer(long dni);
 void pagarPasajeTarjeta();
+void PrimerTurno();
 
 int main() {
 	int opc,confirmar;
@@ -248,10 +249,9 @@ void menuConsultas(){
 					
 				case 7:
 					choferesConMasPasajeros();
-					//7.Buscar chofer o choferes con mas pasajeros en un mes en especifico
 					break;	
 				case 8:
-					//8.Ver porcentaje de pasajeros que viajan en el primer turno del año
+					PrimerTurno();
 					break;
 				case 9:
 					break;
@@ -1271,4 +1271,33 @@ void pagarPasajeTarjeta(){
 			puts("Error al abrir el archivo CUENTAS");	
 	} else 
 		puts("Error al abrir el archivo MOVIMIENTOS");
+}
+
+void PrimerTurno(){
+	int cont = 0, Ctotal = 0,anio;
+	float por;
+	
+	if((MOVIMIENTOS = fopen("Movimientos.dat","rb")) != NULL){
+		
+		printf("\ningrese el anio: ");
+		scanf("%d",&anio);
+		
+		fread(&mov,sizeof(mov),1,MOVIMIENTOS);
+		
+		while(!feof(MOVIMIENTOS)){
+			if(anio = mov.fecha.anio){
+				
+				if(mov.hora.hora >= 00 && (mov.hora.hora <= 11 && mov.hora.min <= 59)){
+					cont++;
+				}
+			}
+			Ctotal++;
+			fread(&mov,sizeof(mov),1,MOVIMIENTOS);
+		}
+		por = (cont * 100) / Ctotal;
+		printf("el porcentaje de pasajeros que viajaron en el anio es de: %.2f \n", por);
+	}
+	else
+		printf("no se abrio el archivo\n");
+	fclose(MOVIMIENTOS);
 }
