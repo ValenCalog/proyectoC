@@ -359,7 +359,7 @@ void GenerarUsuario(){
 			if((CUENTAS = fopen("cuentas.dat", "a+b")) != NULL){
 
 				if(generarIdCuenta() != -1){
-					if (generarNroDeTarjeta != -1){
+					if (generarNroDeTarjeta() != -1){
 						cuenta.idCuenta = generarIdCuenta()+1;
 						cuenta.idUsuario = us.id;	
 						cuenta.nroDeTarjeta = generarNroDeTarjeta()+1;
