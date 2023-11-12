@@ -87,7 +87,7 @@ void usoDeBilleteraVirtual();
 void addunit();
 int generarIdCuenta();
 long generarNroDeTarjeta();
-
+void choferesConMasPasajeros();
 
 int main() {
 	int opc,confirmar;
@@ -231,6 +231,7 @@ void menuConsultas(){
 					break;
 					
 				case 7:
+					choferesConMasPasajeros();
 					//7.Buscar chofer o choferes con mas pasajeros en un mes en especifico");
 					break;	
 				case 8:
@@ -621,7 +622,157 @@ void ModificarChofer(){
 	fclose(CHOFERES);
 }
 
+void choferesConMasPasajeros(){
+	int mesIngresado, encontroUnidad = 0, encontroAux = 0;
+	do{
+			
+		printf("\nIngrese un mes (numero del 1 al 12): ");
+		scanf("%d", &mesIngresado);
+		if((mesIngresado < 1) || (mesIngresado > 12)){
+			printf("\nPor favor ingrese un numero valido.");
+		}
+	}while((mesIngresado < 1) || (mesIngresado > 12));
 
+	FILE *auxDniChoferes;
+	FILE *auxParaContar = fopen("auxParaContar.dat", "wb");
+	struct Aux{
+		long DNIC;
+		int cantidadPasajeros;
+	}aux;
+	if((CHOFERES = fopen("choferes.dat", "rb")) != NULL){
+
+		if((MOVIMIENTOS = fopen("movimientos.dat", "rb")) != NULL){
+
+			if((UNIDADES = fopen("UNIDADES.dat", "rb")) != NULL){
+
+				if((auxDniChoferes = fopen("auxDniChoferes.dat", "a+b")) != NULL){
+
+					if(auxParaContar!= NULL){
+						if((auxParaContar = fopen("auxParaContar.dat", "r+b")) != NULL){
+							
+
+							fread(&mov, sizeof(mov), 1, MOVIMIENTOS);
+							while(!feof(MOVIMIENTOS)){
+								if(mov.fecha.mes == mesIngresado){
+								
+									fread(&unidad, sizeof(unidad), 1, UNIDADES);
+									//busco en unidades el nro de unidad que se encuentra en el movimiento para sacar el dni del chofer:
+									while((!feof(UNIDADES)) && (!encontroUnidad)){
+										
+										if(unidad.NroUnidad == mov.nroUnidad){
+											encontroUnidad = 1;
+										}else{
+											fread(&unidad, sizeof(unidad), 1, UNIDADES);
+										}
+									}
+
+									if(encontroUnidad){
+										//al encontrar la unidad, escribo en un archivo auxiliar solo el dni
+										fwrite(&unidad.DNIC, sizeof(unidad.DNIC), 1, auxDniChoferes);
+									}
+								}
+								fread(&mov, sizeof(mov), 1, MOVIMIENTOS);
+								rewind(UNIDADES);
+								encontroUnidad = 0;	
+									
+							}
+
+							encontroAux = 0;
+							rewind(auxDniChoferes);
+							fread(&unidad.DNIC, sizeof(unidad.DNIC), 1, auxDniChoferes);
+							while(!feof(auxDniChoferes)){
+
+								encontroAux = 0;
+								fread(&aux, sizeof(aux), 1, auxParaContar);
+								while((!feof(auxParaContar)) && (!encontroAux)){
+
+									if(unidad.DNIC == aux.DNIC){
+										encontro = 1;
+									}else{
+										fread(&aux, sizeof(aux), 1, auxParaContar);
+									}
+								}
+								if(encontroAux){
+									//si ya esta escrito el dni, le sumo uno a la cantidad de pasajeros
+									aux.cantidadPasajeros = aux.cantidadPasajeros +1;
+									fseek(auxParaContar, sizeof(aux) * -1, SEEK_CUR);
+									fwrite(&aux, sizeof(aux), 1, auxParaContar);
+								}else{
+									//si no esta escrito el dni, lo escribo y seteo los pasajeros en uno
+									aux.DNIC = unidad.DNIC;
+									aux.cantidadPasajeros = 1;
+									fwrite(&aux, sizeof(aux), 1, auxParaContar);
+								}
+								
+								rewind(auxParaContar);
+
+								fread(&unidad.DNIC, sizeof(unidad.DNIC), 1, auxDniChoferes);
+							}
+
+							fread(&aux, sizeof(aux), 1, auxParaContar);
+							int max = aux.cantidadPasajeros;
+							while(!feof(auxParaContar)){
+
+								if(aux.cantidadPasajeros => max){
+									max = aux.cantidadPasajeros;
+								}
+								fread(&aux, sizeof(aux), 1, auxParaContar);
+							}
+							encontroAux = 0;
+							rewind(auxParaContar);
+							printf("\nEl chofer o los choferes con mas pasajeros son: ");
+							fread(&aux, sizeof(aux), 1, auxParaContar);
+							while(!feof(auxParaContar)){
+
+								if(aux.cantidadPasajeros == max){
+									fread(&chofer, sizeof(chofer), 1, CHOFERES);
+									while((!feof(CHOFERES)) && (!encontroAux)){
+										if(chofer.DNI == aux.DNIC){
+											encontroAux = 1;
+										}else{
+											fread(&chofer, sizeof(chofer), 1, CHOFERES);
+										}
+									}
+									if(encontroAux){
+										printf("\nNombre: %s, DNI: %ld", chofer.NomApe, chofer.DNI);
+									}
+								}
+								encontroAux = 0;
+								rewind(CHOFERES);
+								fread(&aux, sizeof(aux), 1, auxParaContar);
+									
+							}
+							remove(auxParaContar);	
+						}else{
+							printf("\nHubo un error al abrir el archivo auxiliar para contar.");
+						}
+						
+					}else{
+						printf("\nHubo un error al crear el archivo auxiliar para contar");
+					}
+
+					
+				remove(auxDniChoferes);
+				}else{
+					printf("\nHubo un crear o abrir al abrir el archivo auxDniChoferes");
+				}
+				
+
+
+				
+			fclose(UNIDADES);
+			}else{
+				printf("\nHubo un error al abrir el archivo unidades");
+			}
+		fclose(MOVIMIENTOS);
+		}else{
+			printf("\nHubo un error al abrir el archivo movimientos");
+		}
+	fclose(CHOFERES);
+	}else{
+		printf("\nHubo un error al intentar abrir el archivo choferes");
+	}
+}
 
 long generarNroDeControl(){
 	if((RECARGAS = fopen("recargas.dat", "rb")) != NULL){
@@ -719,6 +870,7 @@ void cargaDeSaldo(){
 										cuenta.saldo = cuenta.saldo + rec.monto;
 										fseek(CUENTAS,(long int)sizeof(cuenta) *-1, SEEK_CUR);
 										fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
+										printf("\nLa recarga se realizo con exito. ");
 									}else{
 										printf("\nNo se encontro el Id de usuario en el archivo cuentas.");
 									}
