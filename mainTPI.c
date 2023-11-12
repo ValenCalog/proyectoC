@@ -1244,6 +1244,8 @@ void pagarPasajeTarjeta(){
 				} else 
 					fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
 				}
+				puts("Ingrese nro de Unidad");
+				scanf("%s",&mov.nroUnidad);
 				puts("Ingrese origen del pasajero:");
 				scanf("%s",&mov.origen);
 				puts("Ingrese destino del pasajero:");
@@ -1253,20 +1255,15 @@ void pagarPasajeTarjeta(){
 				//Si no tenes plata te saca.
 				if(cuenta.saldo < mov.SaldoUso){
 					puts("SALDO INSUFICIENTE");
-					return 0;
 				}
-				time_t segundosUnix;
-    				struct tm * tiempoLocal;
-   				segundosUnix = time(NULL);
-    				tiempoLocal = localtime(&segundosUnix);
-				mov.hora.hora = tiempoLocal->tm_hour;
-				mov.hora.min = tiempoLocal->tm_min;
-				mov.hora.seg = tiempoLocal->tm_sec;
-				mov.fecha.anio = tiempoLocal->tm_year+1900;
-				mov.fecha.mes = tiempoLocal->tm_mon+1;
-				mov.fecha.dia = tiempoLocal->tm_mday;
+				mov.hora.hora = tiempoActual(1);
+				mov.hora.min = tiempoActual(2);
+				mov.hora.seg = tiempoActual(3);
+				mov.fecha.anio = tiempoActual(4);
+				mov.fecha.mes = tiempoActual(5);
+				mov.fecha.dia = tiempoActual(6);
 				fwrite(&mov,sizeof(mov),1,MOVIMIENTOS);
-				cuenta.saldo -= mov.SaldoUso;
+				cuenta.saldo = cuenta.saldo - mov.SaldoUso;
 				fwrite(&cuenta,sizeof(cuenta),1,CUENTAS);	
 				fclose(MOVIMIENTOS);
 				fclose(CUENTAS);		
