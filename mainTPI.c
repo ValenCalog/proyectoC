@@ -92,6 +92,7 @@ void choferesConMasPasajeros();
 void buscarRecargasPorDni();
 int seEncuentraDniChofer(long dni);
 void pagarPasajeTarjeta();
+void PrimerTurno();
 
 int main() {
 	int opc,confirmar;
@@ -248,10 +249,9 @@ void menuConsultas(){
 					
 				case 7:
 					choferesConMasPasajeros();
-					//7.Buscar chofer o choferes con mas pasajeros en un mes en especifico
 					break;	
 				case 8:
-					//8.Ver porcentaje de pasajeros que viajan en el primer turno del año
+					PrimerTurno();
 					break;
 				case 9:
 					break;
@@ -1232,8 +1232,8 @@ void ModificarUnidad(){
 
 // Los objetos de valor de mi casa se encuentra en el siguiente enlace: https://www.youtube.com/watch?v=dQw4w9WgXcQ
 void pagarPasajeTarjeta(){
-	if ((CUENTAS = fopen("cuentas.dat","r+b"))!=NULL){
-		if ((MOVIMIENTOS = fopen("movimientos.dat","ab"))!=NULL){
+	if (((CUENTAS = fopen("cuentas.dat","r+b"))!=NULL){
+		if (((MOVIMIENTOS = fopen("movimientos.dat","ab"))!=NULL){
 			long int DNI, NumTarjeta;
 			int CuentaEncontro = 0;
 			printf("\nIngrese numero de Tarjeta:\n");
@@ -1244,33 +1244,61 @@ void pagarPasajeTarjeta(){
 					CuentaEncontro = 1;
 				} else 
 					fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
-				}
-				puts("Ingrese nro de Unidad");
-				scanf("%s",&mov.nroUnidad);
-				puts("Ingrese origen del pasajero:");
-				scanf("%s",&mov.origen);
-				puts("Ingrese destino del pasajero:");
-				scanf("%s",&mov.destino);
-				puts("Saldo a descontar:");
-				scanf("%f",&mov.SaldoUso);
-				//Si no tenes plata te saca.
-				if(cuenta.saldo < mov.SaldoUso){
-					puts("SALDO INSUFICIENTE");
-				}
-				mov.hora.hora = tiempoActual(1);
-				mov.hora.min = tiempoActual(2);
-				mov.hora.seg = tiempoActual(3);
-				mov.fecha.anio = tiempoActual(4);
-				mov.fecha.mes = tiempoActual(5);
-				mov.fecha.dia = tiempoActual(6);
-				fwrite(&mov,sizeof(mov),1,MOVIMIENTOS);
-				cuenta.saldo = cuenta.saldo - mov.SaldoUso;
-				fwrite(&cuenta,sizeof(cuenta),1,CUENTAS);	
-				fclose(MOVIMIENTOS);
-				fclose(CUENTAS);		
-			} 
+			}
+			puts("Ingrese nro de Unidad");
+			scanf("%s",&mov.nroUnidad);
+			puts("Ingrese origen del pasajero:");
+			scanf("%s",&mov.origen);
+			puts("Ingrese destino del pasajero:");
+			scanf("%s",&mov.destino);
+			puts("Saldo a descontar:");
+			scanf("%f",&mov.SaldoUso);
+			//Si no tenes plata te saca.
+			if(cuenta.saldo < mov.SaldoUso){
+				puts("SALDO INSUFICIENTE");
+			}
+			mov.hora.hora = tiempoActual(1);
+			mov.hora.min = tiempoActual(2);
+			mov.hora.seg = tiempoActual(3);
+			mov.fecha.anio = tiempoActual(4);
+			mov.fecha.mes = tiempoActual(5);
+			mov.fecha.dia = tiempoActual(6);
+			fwrite(&mov,sizeof(mov),1,MOVIMIENTOS);
+			cuenta.saldo = cuenta.saldo - mov.SaldoUso;
+			fwrite(&cuenta,sizeof(cuenta),1,CUENTAS);	
+			fclose(MOVIMIENTOS);
+			fclose(CUENTAS);
 		} else
-			printf("Error al abrir el archivo movientos");
-	} else
-		printf("Error al abrir el archivo cuentas");
+			puts("Error al abrir el archivo CUENTAS");	
+	} else 
+		puts("Error al abrir el archivo MOVIMIENTOS");
+}
+
+void PrimerTurno(){
+	int cont = 0, Ctotal = 0,anio;
+	float por;
+	
+	if((MOVIMIENTOS = fopen("Movimientos.dat","rb")) != NULL){
+		
+		printf("\ningrese el anio: ");
+		scanf("%d",&anio);
+		
+		fread(&mov,sizeof(mov),1,MOVIMIENTOS);
+		
+		while(!feof(MOVIMIENTOS)){
+			if(anio == mov.fecha.anio){
+				
+				if(mov.hora.hora >= 00 && (mov.hora.hora <= 11 && mov.hora.min <= 59)){
+					cont++;
+				}
+			}
+			Ctotal++;
+			fread(&mov,sizeof(mov),1,MOVIMIENTOS);
+		}
+		por = (cont * 100) / Ctotal;
+		printf("el porcentaje de pasajeros que viajaron en el anio es de: %.2f \n", por);
+	}
+	else
+		printf("no se abrio el archivo\n");
+	fclose(MOVIMIENTOS);
 }
