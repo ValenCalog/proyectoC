@@ -89,6 +89,7 @@ int generarIdCuenta();
 long generarNroDeTarjeta();
 void choferesConMasPasajeros();
 void buscarRecargasPorDni();
+int seEncuentraDniChofer(long dni);
 
 int main() {
 	int opc,confirmar;
