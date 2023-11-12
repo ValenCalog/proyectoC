@@ -1285,7 +1285,7 @@ void PrimerTurno(){
 		fread(&mov,sizeof(mov),1,MOVIMIENTOS);
 		
 		while(!feof(MOVIMIENTOS)){
-			if(anio = mov.fecha.anio){
+			if(anio == mov.fecha.anio){
 				
 				if(mov.hora.hora >= 00 && (mov.hora.hora <= 11 && mov.hora.min <= 59)){
 					cont++;
