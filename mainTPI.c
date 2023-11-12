@@ -485,37 +485,71 @@ void CantBeneficios(){
 	}
 }
 
-void agregarChofer(){
-	int ultimoId;
-	if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
+int seEncuentraDniChofer(long dni){
+	int encontro = 0;
+	if((CHOFERES = fopen("choferes.dat", "rb")) != NULL){
 		
+		fread(&chofer, sizeof(chofer), 1, CHOFERES);
+
+		while((!feof(CHOFERES)) && (!encontro)){
+			if(chofer.DNI == dni){
+				encontro = chofer.id;
+			}else{
+				fread(&us, sizeof(us), 1, USUARIOS);
+			}
+		}
+		return encontro;
+	}else{
+		return -1;
+	}
+}
+
+void agregarChofer(){
+	int ultimoId, band, existe;
+	if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
 
 		ultimoId = generarIdChofer();
 		if(ultimoId==(-1)){
 			printf("Hubo un error al intentar abrir el archivo chofer");
 		}else{
 			chofer.id = ultimoId+1;
-			printf("Ingrese nombre del chofer");
-			fflush(stdin);
-			fgets(chofer.NomApe, sizeof(chofer.NomApe), stdin);
-			printf("\nIngrese su DNI: ");
-			scanf("%ld", &chofer.DNI);
-			printf("\nIngrese direccion: ");
-			fflush(stdin);
-			fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
-			printf("\nIngrese email: ");
-			fflush(stdin);
-			fgets(chofer.email, sizeof(chofer.email), stdin);
-			printf("\nIngrese fecha de nacimiento ");
-			printf("\nDia: ");
-			scanf("%d", &chofer.fechaNac.dia);
-			printf("\nMes: ");
-			scanf("%d", &chofer.fechaNac.mes);
-			printf("\nAnio: ");
-			scanf("%d",&chofer.fechaNac.anio);
-			printf("\nIngrese su telefono: ");
-			scanf("%ld", &chofer.telefono);
-			fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
+			
+			do{
+				band = 0;
+				printf("\nIngrese DNI del chofer: ");
+				scanf("%ld", &chofer.DNI);
+				existe = seEncuentraDniChofer(chofer.DNI);
+				if(existe==0){
+						printf("\nIngrese nombre del chofer: ");
+						fflush(stdin);
+						fgets(chofer.NomApe, sizeof(chofer.NomApe), stdin);
+						printf("\nIngrese direccion: ");
+						fflush(stdin);
+						fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
+						printf("\nIngrese email: ");
+						fflush(stdin);
+						fgets(chofer.email, sizeof(chofer.email), stdin);
+						printf("\nIngrese fecha de nacimiento ");
+						printf("\nDia: ");
+						scanf("%d", &chofer.fechaNac.dia);
+						printf("\nMes: ");
+						scanf("%d", &chofer.fechaNac.mes);
+						printf("\nAnio: ");
+						scanf("%d",&chofer.fechaNac.anio);
+						printf("\nIngrese su telefono: ");
+						scanf("%ld", &chofer.telefono);
+						fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
+				}else{
+					if(existe==-1){
+						printf("\nHubo un error al intentar verificar si existia el registro de un chofer con ese DNI.");
+					}else{
+						band =1;
+						printf("\nUn chofer con ese DNI ya se encuentra registrado. Por favor ingrese uno nuevo.");
+					}
+				}
+				
+			}while(band==1);
+			
 			fclose(CHOFERES);
 		}
 
