@@ -85,6 +85,7 @@ void menuConsultas();
 int seEncuentraDniUsuario(long dni);
 void usoDeBilleteraVirtual();
 void addunit();
+void ModificarUnidad();
 int generarIdCuenta();
 long generarNroDeTarjeta();
 void choferesConMasPasajeros();
@@ -1148,3 +1149,66 @@ void addunit(){
 	fclose(UNIDADES);
 }
 
+void ModificarUnidad(){
+	int buscarID, encontro = 0;
+	
+	if((UNIDADES = fopen("Unidades.dat","r+b")) != NULL){
+		printf("ingrese el ID de la unidad a buscar: ");
+		scnaf("%d",&buscarID);
+		
+		fread(&unidad,sizeof(unidad),1,UNIDADES);
+		while(!feof(UNIDADES)){
+			if(buscarID == unidad.idUnidad){
+				encontro = 1;
+				//id
+				unidad.idUnidad =  buscarID;
+				//pedir datos nuevos
+				printf("ingrese el numero de la unidad\n");
+   				scanf("%d", &unidad.NroUnidad);
+   				
+				printf("ingrese dni del chofer\n");
+				scanf("%d", &unidad.DNIC);
+				
+				printf("Ingrese 0 para asignar turno mañana o 1 para asignar turno tarde\n");	
+				scanf("%d", &unidad.turno);
+				
+				while(unidad.turno != 0 && unidad.turno !=1)
+				{
+					printf("El identificador de turno proporcionado no es valido, por favor ingrese 0 para am y 1 para pm\n");
+					scanf("%d", &unidad.turno);
+				}
+				
+				printf("Ingrese el nombre de la compañia manufacturera de la unidad\n");
+				fflush(stdin);
+				gets(unidad.marca);
+				
+				printf("ingrese el modelo de la unidad\n");
+				fflush(stdin);
+				gets(unidad.modelo);
+				
+				printf("Ingrese el kilometraje de la unidad\n");
+				scanf("%f", &unidad.km);
+				
+				printf("Ingrese la fecha de alta de la unidad\n Año");
+				scanf("%d", &unidad.FechaAlta.anio);
+				printf("mes\n");
+				scanf("%d", &unidad.FechaAlta.mes);
+				printf("día\n");
+				scanf("%d", &unidad.FechaAlta.dia);
+				
+				printf("Esta adaptada la unidad para discapacitados? presione 1 para confirmar y 0 para negar\n");
+				scanf("%d", &unidad.adaptado);
+				while(unidad.adaptado != 0 && unidad.adaptado !=1)
+				{
+					printf("El identificador de discapacitados proporcionado no es valido, por favor ingrese 0 para am y 1 para pm\n");
+					scanf("%d", &unidad.adaptado);
+				}
+				fseek(UNIDADES, sizeof(unidad) * (-1),SEEK_CUR);
+				fwrite(&unidad, sizeof(unidad),1, UNIDADES);
+			}
+		}
+	}
+	else
+		printf("error al abrir el archivo para realizar la modificacion\n");
+	fclose(UNIDADES):
+}
