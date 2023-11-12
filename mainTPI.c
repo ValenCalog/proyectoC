@@ -162,7 +162,11 @@ void menuModificaciones(){
 		}while(confirmar==1); 
 		break;
 	case 2:
-		ModificarUsuario();
+		do{
+			ModificarUsuario();
+			printf("\nDesea modificar otro usuario? Ingrese 1 si la respuesta es si, cualquier otro numero si es no: ");
+			scanf("%d", &confirmar);
+		}while(confirmar==1); 
 		break;
 	case 3:
 		do{
@@ -172,7 +176,11 @@ void menuModificaciones(){
 		}while(confirmar==1); 
 		break;
 	case 4:
-		ModificarChofer();
+		do{
+			ModificarChofer();
+			printf("\nDesea modificar otro chofer? Ingrese 1 si la respuesta es si, cualquier otro numero si es no: ");
+			scanf("%d", &confirmar);
+		}while(confirmar==1); 
 		break;
 	case 5:
 		do
@@ -183,7 +191,11 @@ void menuModificaciones(){
 		} while (confirmar==1);
 		break;
 	case 6:
-		//modificar unidad
+		do{
+			ModificarUnidad();
+			printf("\nDesea modificar otra unidad? Ingrese 1 si la respuesta es si, cualquier otro numero si es no: ");
+			scanf("%d", &confirmar);
+		}while(confirmar==1); 
 		break;
 	case 7:
 		//salir
@@ -221,24 +233,24 @@ void menuConsultas(){
 					ListarUsuarios();
 					break;
 				case 3:
-					//3.Mostrar movimientos efectuados entre dos fechas");
+					//3.Mostrar movimientos efectuados entre dos fechas
 					break;
 				case 4:
-					//4.Listar las recargas efectuadas por un usuario indicando su DNI");
+					//4.Listar las recargas efectuadas por un usuario indicando su DNI
 					break;
 				case 5:
 					CantBeneficios();
 					break;
 				case 6:
-					//6.Buscar movimientos de un usario particular ingresando su nombre.")
+					//6.Buscar movimientos de un usario particular ingresando su nombre
 					break;
 					
 				case 7:
 					choferesConMasPasajeros();
-					//7.Buscar chofer o choferes con mas pasajeros en un mes en especifico");
+					//7.Buscar chofer o choferes con mas pasajeros en un mes en especifico
 					break;	
 				case 8:
-					//8.Ver porcentaje de pasajeros que viajan en el primer turno del año");
+					//8.Ver porcentaje de pasajeros que viajan en el primer turno del año
 					break;
 				case 9:
 					break;
@@ -1206,6 +1218,9 @@ void ModificarUnidad(){
 				fseek(UNIDADES, sizeof(unidad) * (-1),SEEK_CUR);
 				fwrite(&unidad, sizeof(unidad),1, UNIDADES);
 			}
+		}
+		if(encontro == 0){
+			printf("no se encontro a la unidad");
 		}
 	}
 	else
