@@ -85,6 +85,9 @@ void menuConsultas();
 int seEncuentraDniUsuario(long dni);
 void usoDeBilleteraVirtual();
 void addunit();
+int generarIdCuenta();
+long generarNroDeTarjeta();
+
 
 int main() {
 	int opc,confirmar;
@@ -114,7 +117,7 @@ int main() {
 			//4. Pagar boleto con tarjeta
 				break;
 		case 5:
-			//5. Pagar boleto con numero de telefono
+				usoDeBilleteraVirtual();
 				break;
 		case 0:
 			//0. Salir del programa
@@ -130,6 +133,120 @@ int main() {
 }
 
 //funciones
+
+void menuModificaciones(){
+	int opc, confirmar;
+
+	do{
+		
+	printf("\n1. Agregar usuarios");
+	printf("\n2. Modificar usuarios");
+	printf("\n3. Agregar choferes");
+	printf("\n4. Modificar choferes");
+	printf("\n5. Agregar unidades");
+	printf("\n6. Modificar unidades");
+	printf("\n7. Volver al menu principal");
+	printf("\nIngrese su opcion: ");
+	scanf("%d", &opc);
+	confirmar = 0;
+	system("cls");
+	switch(opc){
+	case 1:
+		do{
+			GenerarUsuario();
+			printf("\nDesea agregar otro Usuario? Ingrese 1 si la respuesta es si, cualquier otro numero si es no: ");
+			scanf("%d", &confirmar);
+		}while(confirmar==1); 
+		break;
+	case 2:
+		ModificarUsuario();
+		break;
+	case 3:
+		do{
+			agregarChofer();
+			printf("\nDesea agregar otro chofer? Ingrese 1 si la respuesta es si, cualquier otro numero si es no: ");
+			scanf("%d", &confirmar);
+		}while(confirmar==1); 
+		break;
+	case 4:
+		ModificarChofer();
+		break;
+	case 5:
+		do
+		{
+			addunit();
+			printf("desea añadir otra unidad? ingrese 1 para confirmar\n");
+			scanf("%d", &confirmar);
+		} while (confirmar==1);
+		break;
+	case 6:
+		//modificar unidad
+		break;
+	case 7:
+		//salir
+		break;
+	default:
+		break;
+	}
+	
+	}while(opc!=7);
+
+}
+
+void menuConsultas(){
+
+	int opc, confirmar;
+
+	do{
+		printf("\n1.Consultar saldo");
+		printf("\n2.Listar usuarios");
+		printf("\n3.Mostrar movimientos efectuados entre dos fechas");
+		printf("\n4.Listar las recargas efectuadas por un usuario indicando su DNI");
+		printf("\n5.Cantidad de usuarios con beneficios.");
+		printf("\n6.Buscar movimientos de un usario particular ingresando su nombre.");
+		printf("\n7.Buscar chofer o choferes con mas pasajeros en un mes en especifico");
+		printf("\n8.Ver porcentaje de pasajeros que viajan en el primer turno del año");
+		printf("\n9.Volver atras");
+				printf("\nIngrese su opcion:");
+				scanf("%d", &opc);
+				system("cls");
+				switch (opc){
+				case 1:
+					//1.Consultar saldo"
+					break;
+				case 2:
+					ListarUsuarios();
+					break;
+				case 3:
+					//3.Mostrar movimientos efectuados entre dos fechas");
+					break;
+				case 4:
+					//4.Listar las recargas efectuadas por un usuario indicando su DNI");
+					break;
+				case 5:
+					CantBeneficios();
+					break;
+				case 6:
+					//6.Buscar movimientos de un usario particular ingresando su nombre.")
+					break;
+					
+				case 7:
+					//7.Buscar chofer o choferes con mas pasajeros en un mes en especifico");
+					break;	
+				case 8:
+					//8.Ver porcentaje de pasajeros que viajan en el primer turno del año");
+					break;
+				case 9:
+					break;
+				default:
+					printf("No se ingreso una opcion valida");
+					break;
+				}
+	}while(opc!=9);
+
+				
+}
+
 int ObtenerAnioActual() {
     time_t tiempo;
     struct tm *tiempoinfo;
@@ -146,7 +263,7 @@ void GenerarUsuario(){
 	
 	if((USUARIOS = fopen("Usuarios.dat","a+b")) != NULL){
 		
-		//generar una id\\
+		//generar una id
 		
 		fread(&us,sizeof(us),1,USUARIOS);
 		
@@ -155,14 +272,11 @@ void GenerarUsuario(){
 			fseek(USUARIOS,(long int)sizeof(us) * (-1), SEEK_END);
 			fread(&us,sizeof(us),1,USUARIOS);
 			us.id++;
-			fwrite(&us,sizeof(us),1,USUARIOS);
 			rewind(USUARIOS);
 		}
-		
 		//no existe un registro aun
 		else{
 			us.id = 1;
-			fwrite(&us,sizeof(us),1,USUARIOS);
 			rewind(USUARIOS);
 		}
 		
@@ -223,11 +337,72 @@ void GenerarUsuario(){
 			printf("\ningrese un dato valido: ");
 			scanf("%d",&us.tipo);
 		}
-		fwrite(&us,sizeof(us),1,USUARIOS);
+
+			//genero la cuenta:
+			if((CUENTAS = fopen("cuentas.dat", "a+b")) != NULL){
+
+				if(generarIdCuenta() != -1){
+					if (generarNroDeTarjeta != -1){
+						cuenta.idCuenta = generarIdCuenta()+1;
+						cuenta.idUsuario = us.id;	
+						cuenta.nroDeTarjeta = generarNroDeTarjeta()+1;
+						cuenta.saldo = 0;
+						fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
+						fwrite(&us,sizeof(us),1,USUARIOS); //recien se registra el usuario cuando la cuenta tambien se registra correctamnete
+					}else{
+						printf("\nHubo un error al generar el id de la cuenta.");
+					}
+					
+					
+					
+				}else{
+					printf("\nHubo un error al generar el id de la cuenta. ");
+				}
+				fclose(CUENTAS);
+			}else{
+				printf("Hubo un error al abrir el archivo cuentas");
+			}
+		fclose(USUARIOS);
 	}
 	else
 		printf("error al abrir el archivo de usuarios\n");
-	fclose(USUARIOS);
+
+}
+
+int generarIdCuenta(){
+	if((CUENTAS = fopen("cuentas.dat","rb")) != NULL){
+		fseek(CUENTAS, 0, SEEK_END);
+		
+		if(ftell(CUENTAS) > 0){
+			fseek(CUENTAS,sizeof(cuenta)*-1,SEEK_END);
+			fread(&cuenta,sizeof(cuenta),1,CUENTAS);
+			fclose(CUENTAS);
+			return(cuenta.idCuenta);
+		}else{
+			return 0;
+		}
+		
+	}else{
+		return -1;
+	}
+}
+
+long generarNroDeTarjeta(){
+	if((CUENTAS = fopen("cuentas.dat","rb")) != NULL){
+		fseek(CUENTAS, 0, SEEK_END);
+		
+		if(ftell(CUENTAS) > 0){
+			fseek(CUENTAS,sizeof(cuenta)*-1,SEEK_END);
+			fread(&cuenta,sizeof(cuenta),1,CUENTAS);
+			fclose(CUENTAS);
+			return(cuenta.nroDeTarjeta);
+		}else{
+			return 100000;
+		}
+		
+	}else{
+		return -1;
+	}
 }
 
 void ModificarUsuario(){
@@ -412,118 +587,7 @@ void ModificarChofer(){
 	fclose(CHOFERES);
 }
 
-void menuModificaciones(){
-	int opc, confirmar;
 
-	do{
-		
-	printf("\n1. Agregar usuarios");
-	printf("\n2. Modificar usuarios");
-	printf("\n3. Agregar choferes");
-	printf("\n4. Modificar choferes");
-	printf("\n5. Agregar unidades");
-	printf("\n6. Modificar unidades");
-	printf("\n7. Volver al menu principal");
-	printf("\nIngrese su opcion: ");
-	scanf("%d", &opc);
-	confirmar = 0;
-	system("cls");
-	switch(opc){
-	case 1:
-		do{
-			GenerarUsuario();
-			printf("\nDesea agregar otro Usuario? Ingrese 1 si la respuesta es si, cualquier otro numero si es no: ");
-			scanf("%d", &confirmar);
-		}while(confirmar==1); 
-		break;
-	case 2:
-		ModificarUsuario();
-		break;
-	case 3:
-		do{
-			agregarChofer();
-			printf("\nDesea agregar otro chofer? Ingrese 1 si la respuesta es si, cualquier otro numero si es no: ");
-			scanf("%d", &confirmar);
-		}while(confirmar==1); 
-		break;
-	case 4:
-		ModificarChofer();
-		break;
-	case 5:
-		do
-		{
-			addunit();
-			printf("desea añadir otra unidad? ingrese 1 para confirmar\n");
-			scanf("%d", &confirmar);
-		} while (confirmar!=1);
-		break;
-	case 6:
-		//modificar unidad
-		break;
-	case 7:
-		//salir
-		break;
-	default:
-		break;
-	}
-	
-	}while(opc!=7);
-
-}
-
-void menuConsultas(){
-
-	int opc, confirmar;
-
-	do{
-		printf("\n1.Consultar saldo");
-		printf("\n2.Listar usuarios");
-		printf("\n3.Mostrar movimientos efectuados entre dos fechas");
-		printf("\n4.Listar las recargas efectuadas por un usuario indicando su DNI");
-		printf("\n5.Cantidad de usuarios con beneficios.");
-		printf("\n6.Buscar movimientos de un usario particular ingresando su nombre.");
-		printf("\n7.Buscar chofer o choferes con mas pasajeros en un mes en especifico");
-		printf("\n8.Ver porcentaje de pasajeros que viajan en el primer turno del año");
-		printf("\n9.Volver atras");
-				printf("\nIngrese su opcion:");
-				scanf("%d", &opc);
-				system("cls");
-				switch (opc){
-				case 1:
-					//1.Consultar saldo"
-					break;
-				case 2:
-					ListarUsuarios();
-					break;
-				case 3:
-					//3.Mostrar movimientos efectuados entre dos fechas");
-					break;
-				case 4:
-					//4.Listar las recargas efectuadas por un usuario indicando su DNI");
-					break;
-				case 5:
-					CantBeneficios();
-					break;
-				case 6:
-					//6.Buscar movimientos de un usario particular ingresando su nombre.")
-					break;
-					
-				case 7:
-					//7.Buscar chofer o choferes con mas pasajeros en un mes en especifico");
-					break;	
-				case 8:
-					//8.Ver porcentaje de pasajeros que viajan en el primer turno del año");
-					break;
-				case 9:
-					break;
-				default:
-					printf("No se ingreso una opcion valida");
-					break;
-				}
-	}while(opc!=9);
-
-				
-}
 
 long generarNroDeControl(){
 	if((RECARGAS = fopen("recargas.dat", "rb")) != NULL){
