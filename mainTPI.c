@@ -236,7 +236,7 @@ void menuConsultas(){
 					//3.Mostrar movimientos efectuados entre dos fechas
 					break;
 				case 4:
-					//4.Listar las recargas efectuadas por un usuario indicando su DNI
+					buscarRecargasPorDni();
 					break;
 				case 5:
 					CantBeneficios();
