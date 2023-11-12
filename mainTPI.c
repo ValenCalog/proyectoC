@@ -13,7 +13,7 @@ struct Hora{
 
 //estructuras principales
 struct Usuario{
-	int id, tipo;
+	int id, tipo, idCuenta;
 	long int DNI, telefono;
 	char NomApe[40], direccion[40];
 	struct Fecha FechaNac;
@@ -349,6 +349,7 @@ void GenerarUsuario(){
 						cuenta.nroDeTarjeta = generarNroDeTarjeta()+1;
 						cuenta.saldo = 0;
 						fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
+						us.idCuenta = cuenta.idCuenta;
 						fwrite(&us,sizeof(us),1,USUARIOS); //recien se registra el usuario cuando la cuenta tambien se registra correctamnete
 					}else{
 						printf("\nHubo un error al generar el id de la cuenta.");
@@ -926,7 +927,6 @@ int seEncuentraDniUsuario(long dni){
 	}
 }
 
-
 int tiempoActual(int tipo){
 	time_t segundosUnix;
     struct tm * tiempoLocal;
@@ -1104,3 +1104,4 @@ void addunit(){
 		printf("error al abrir el archivo unidades\n");
 	fclose(UNIDADES);
 }
+
