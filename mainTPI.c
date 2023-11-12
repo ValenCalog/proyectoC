@@ -88,11 +88,12 @@ void addunit();
 int generarIdCuenta();
 long generarNroDeTarjeta();
 void choferesConMasPasajeros();
+void buscarRecargasPorDni();
 
 int main() {
 	int opc,confirmar;
 	do{
-		printf("---------------------SUBE---------------\n");
+	printf("\n---------------------SUBE---------------\n");
 	printf("\nQue desea hacer?");
 	printf("\n1. Modificar o registrar en los archivos (USUARIOS-UNIDADES-CHOFERES).");
 	printf("\n2. Realizar consultas o ver listados.");
@@ -775,20 +776,45 @@ void choferesConMasPasajeros(){
 	}
 }
 
-void buscarRecargas(long dni){
+void buscarRecargasPorDni(){
+	long dni;
+	printf("\nIngrese el dni que desea buscar: ");
+	scanf("%ld", &dni);
 
-	/*char nombre[45];
-	char nroDeControlTexto[45];
-	long nroDeControl = 90000;
-	sprintf(nombre, "%ld", dni);
-	sprintf(nroDeControlTexto, "%ld", nroDeControl+1);
-	strcat(nombre, nroDeControlTexto);
-	FILE *archivo;
-	while(){
-		if((archivo = fopen(nombre, "r")) != NULL){
-			//imprimo el contenido
+	if((RECARGAS = fopen("recargas.dat", "rb")) != NULL){
+
+		fread(&rec, sizeof(rec), 1, RECARGAS);
+		while(!feof(RECARGAS)){
+			if(rec.DNI == dni){
+				printf("\nDNI: %ld , Nro. Control: %ld, Monto: %f, Boca de pago: %s, Fecha: %d/%d/%d, Hora: %d:%d:%d", rec.DNI, rec.NroCtrl, rec.monto, rec.BocaPago, rec.fecha.dia, rec.fecha.mes, rec.fecha.anio, rec.hora.hora, rec.hora.min, rec.hora.seg);
+			}
+			fread(&rec, sizeof(rec), 1, RECARGAS);
 		}
-	}*/
+	}
+
+	/*Forma diferente abriendo archivo por archivo de texto: 
+			char nombre[45];
+			char nroDeControlTexto[45], cadena[200];
+			long nroDeControl = 9000001;
+			sprintf(nombre, "%ld", dni);
+			sprintf(nroDeControlTexto, "%ld", nroDeControl+1);
+			strcat(nombre, nroDeControlTexto);
+			FILE *archivo;
+			while(nroDeControl <= generarNroDeControl()){
+				if((archivo = fopen(nombre, "r")) != NULL){
+					fgets(cadena, sizeof(cadena), archivo);
+					while (!feof(archivo)) {
+						printf("%s", archivo);
+						fgets(cadena, sizeof(cadena), archivo);
+					}
+				}
+				nroDeControl++;
+				sprintf(nombre, "%ld", dni);
+				sprintf(nroDeControlTexto, "%ld", nroDeControl);
+				strcat(nombre, nroDeControlTexto);
+			}	
+	*/
+
 }
 
 long generarNroDeControl(){
