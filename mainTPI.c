@@ -91,6 +91,7 @@ long generarNroDeTarjeta();
 void choferesConMasPasajeros();
 void buscarRecargasPorDni();
 int seEncuentraDniChofer(long dni);
+void pagarPasajeTarjeta();
 
 int main() {
 	int opc,confirmar;
@@ -117,7 +118,7 @@ int main() {
 				cargaDeSaldo();
 				break;
 		case 4:
-			//4. Pagar boleto con tarjeta
+				pagarPasajeTarjeta();
 				break;
 		case 5:
 				usoDeBilleteraVirtual();
@@ -1226,4 +1227,52 @@ void ModificarUnidad(){
 	else
 		printf("error al abrir el archivo para realizar la modificacion\n");
 	fclose(UNIDADES):
+}
+
+// Los objetos de valor de mi casa se encuentra en el siguiente enlace: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+void pagarPasajeTarjeta(){
+	if ((CUENTAS = fopen("cuentas.dat","r+b"))!=NULL){
+		if ((MOVIMIENTOS = fopen("movimientos.dat","ab"))!=NULL){
+			long int DNI, NumTarjeta;
+			int CuentaEncontro = 0;
+			printf("\nIngrese numero de Tarjeta:\n");
+			scanf("%ld",&NumTarjeta);
+			// Busca la cuenta de la tarjeta Fisica
+			while(!feof(CUENTAS) && !CuentaEncontro){
+				if (NumTarjeta == cuenta.nroDeTarjeta){
+					CuentaEncontro = 1;
+				} else 
+					fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
+				}
+				puts("Ingrese origen del pasajero:");
+				scanf("%s",&mov.origen);
+				puts("Ingrese destino del pasajero:");
+				scanf("%s",&mov.destino);
+				puts("Saldo a descontar:");
+				scanf("%f",&mov.SaldoUso);
+				//Si no tenes plata te saca.
+				if(cuenta.saldo < mov.SaldoUso){
+					puts("SALDO INSUFICIENTE");
+					return 0;
+				}
+				time_t segundosUnix;
+    				struct tm * tiempoLocal;
+   				segundosUnix = time(NULL);
+    				tiempoLocal = localtime(&segundosUnix);
+				mov.hora.hora = tiempoLocal->tm_hour;
+				mov.hora.min = tiempoLocal->tm_min;
+				mov.hora.seg = tiempoLocal->tm_sec;
+				mov.fecha.anio = tiempoLocal->tm_year+1900;
+				mov.fecha.mes = tiempoLocal->tm_mon+1;
+				mov.fecha.dia = tiempoLocal->tm_mday;
+				fwrite(&mov,sizeof(mov),1,MOVIMIENTOS);
+				cuenta.saldo -= mov.SaldoUso;
+				fwrite(&cuenta,sizeof(cuenta),1,CUENTAS);	
+				fclose(MOVIMIENTOS);
+				fclose(CUENTAS);		
+			} 
+		} else
+			printf("Error al abrir el archivo movientos");
+	} else
+		printf("Error al abrir el archivo cuentas");
 }
