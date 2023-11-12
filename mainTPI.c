@@ -85,6 +85,9 @@ void menuConsultas();
 int seEncuentraDniUsuario(long dni);
 void usoDeBilleteraVirtual();
 void addunit();
+int generarIdCuenta();
+long generarNroDeTarjeta();
+
 
 int main() {
 	int opc,confirmar;
@@ -146,7 +149,7 @@ void GenerarUsuario(){
 	
 	if((USUARIOS = fopen("Usuarios.dat","a+b")) != NULL){
 		
-		//generar una id\\
+		//generar una id
 		
 		fread(&us,sizeof(us),1,USUARIOS);
 		
@@ -155,14 +158,11 @@ void GenerarUsuario(){
 			fseek(USUARIOS,(long int)sizeof(us) * (-1), SEEK_END);
 			fread(&us,sizeof(us),1,USUARIOS);
 			us.id++;
-			fwrite(&us,sizeof(us),1,USUARIOS);
 			rewind(USUARIOS);
 		}
-		
 		//no existe un registro aun
 		else{
 			us.id = 1;
-			fwrite(&us,sizeof(us),1,USUARIOS);
 			rewind(USUARIOS);
 		}
 		
@@ -224,10 +224,68 @@ void GenerarUsuario(){
 			scanf("%d",&us.tipo);
 		}
 		fwrite(&us,sizeof(us),1,USUARIOS);
+
+			//genero la cuenta:
+			if((CUENTAS = fopen("cuentas.dat", "a+b")) != NULL){
+
+				if(generarIdCuenta() != -1){
+					if (generarIdCuenta() != -1){
+						cuenta.idCuenta = generarIdCuenta()+1;
+						cuenta.idUsuario = us.id;	
+						cuenta.nroDeTarjeta = generarNroDeTarjeta()+1;
+						cuenta.saldo = 0;
+						fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
+					}else{
+						printf("\nHubo un error al generar el id de la cuenta.");
+					}
+				}else{
+					printf("\nHubo un error al generar el id de la cuenta. ");
+				}
+				fclose(CUENTAS);
+			}else{
+				printf("Hubo un error al abrir el archivo cuentas");
+			}
+		fclose(USUARIOS);
 	}
 	else
 		printf("error al abrir el archivo de usuarios\n");
-	fclose(USUARIOS);
+
+}
+
+int generarIdCuenta(){
+	if((CUENTAS = fopen("cuentas.dat","rb")) != NULL){
+		fseek(CUENTAS, 0, SEEK_END);
+		
+		if(ftell(CUENTAS) > 0){
+			fseek(CUENTAS,sizeof(cuenta)*-1,SEEK_END);
+			fread(&cuenta,sizeof(cuenta),1,CUENTAS);
+			fclose(CUENTAS);
+			return(cuenta.idCuenta);
+		}else{
+			return 0;
+		}
+		
+	}else{
+		return -1;
+	}
+}
+
+long generarNroDeTarjeta(){
+	if((CUENTAS = fopen("cuentas.dat","rb")) != NULL){
+		fseek(CUENTAS, 0, SEEK_END);
+		
+		if(ftell(CUENTAS) > 0){
+			fseek(CUENTAS,sizeof(cuenta)*-1,SEEK_END);
+			fread(&cuenta,sizeof(cuenta),1,CUENTAS);
+			fclose(CUENTAS);
+			return(cuenta.nroDeTarjeta);
+		}else{
+			return 100000;
+		}
+		
+	}else{
+		return -1;
+	}
 }
 
 void ModificarUsuario(){
