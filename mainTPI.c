@@ -507,6 +507,9 @@ void CantBeneficios(){
 		}
 		else
 			printf("No hay usuarios con beneficios\n");
+		fclose(USUARIOS);
+	}else{
+		printf("\nError al abrir archivo usuarios");
 	}
 }
 
