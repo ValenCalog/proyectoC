@@ -281,7 +281,7 @@ int ObtenerAnioActual() {
 }
 
 void GenerarUsuario(){
-	int BandId = 0, anio = ObtenerAnioActual();
+	int BandId = 0, anio = ObtenerAnioActual(), aux;
 	long int compDNI;
 	
 	if((USUARIOS = fopen("Usuarios.dat","a+b")) != NULL){
@@ -305,8 +305,13 @@ void GenerarUsuario(){
 		
 		//pedir y verificar DNI
 		printf("ingrese el DNI del usuario\n");
-		scanf("%ld",&us.DNI);
-		
+		aux = scanf("%ld",&us.DNI);
+		while(aux==0){
+			printf("\nNo se ingresaron numeros validos, el dni no debe contener letras.");
+			fflush(stdin);
+			aux = scanf("%ld",&us.DNI);
+		}
+
 		compDNI = us.DNI;
 		fread(&us,sizeof(us),1,USUARIOS);
 		while(!feof(USUARIOS)){
