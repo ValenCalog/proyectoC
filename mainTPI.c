@@ -622,7 +622,6 @@ void ModificarChofer(){
 	if((CHOFERES = fopen("choferes.dat","a+b")) != NULL){
 		printf("ingrese el ID del chofer para modificar sus datos\n");
 		scanf("%d",&buscarId);
-		
 		fread(&chofer,sizeof(chofer),1,CHOFERES);
 		while(!feof(CHOFERES) && band == 0){
 			
@@ -1438,17 +1437,46 @@ void movimientosEntreDosFechas(){
 	printf("\nPrimera fecha.");
 	printf("\nAño: ");
 	scanf("%d", &fechaInicio.anio);
+	while(fechaInicio.anio < 1){
+		printf("\nIngrese un anio valido: ");
+		scanf("%d", &fechaInicio.anio);
+	}
+
 	printf("\nMes: ");
 	scanf("%d", &fechaInicio.mes);
+	while(fechaInicio.mes < 1 || fechaInicio.mes > 12){
+		printf("\nIngrese un mes valido: ");
+		scanf("%d", &fechaInicio.mes);
+	}
+
 	printf("\nDia: ");
 	scanf("%d", &fechaInicio.dia);
+	while(fechaInicio.dia < 1 || fechaInicio.dia > 31){
+		printf("\nIngrese un dia valido: ");
+		scanf("%d", &fechaInicio.dia);
+	}
+
 	printf("\n\nFecha final.");
 	printf("\nAño: ");
 	scanf("%d", &fechaFinal.anio);
+	while(fechaFinal.anio < 1){
+		printf("\nIngrese un anio valido: ");
+		scanf("%d", &fechaFinal.anio);
+	}
+
 	printf("\nMes: ");
 	scanf("%d", &fechaFinal.mes);
+	while(fechaFinal.mes < 1 || fechaFinal.mes > 12){
+		printf("\nIngrese un mes valido: ");
+		scanf("%d", &fechaFinal.mes);
+	}
+
 	printf("\nDia: ");
 	scanf("%d", &fechaFinal.dia);
+	while(fechaFinal.dia < 1 || fechaFinal.dia > 31){
+		printf("\nIngrese un dia valido: ");
+		scanf("%d", &fechaFinal.dia);
+	}
 	if((MOVIMIENTOS = fopen("movimientos.dat", "rb")) != NULL){
 
 		fread(&mov, sizeof(mov), 1, MOVIMIENTOS);
