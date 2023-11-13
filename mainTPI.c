@@ -574,9 +574,9 @@ void agregarChofer(){
 				
 			}while(band==1);
 			
-			fclose(CHOFERES);
+			
 		}
-
+		fclose(CHOFERES);
 	}else{
 		printf("No se pudo abrir el archivo choferes");
 	}
@@ -639,10 +639,11 @@ void ModificarChofer(){
 		}
 		if(band == 0)
 			printf("\nNo se pudo encontrar el ID del chofer\n");
+		fclose(CHOFERES);
 	}
 	else
 		printf("error al abrir el archivo choferes\n");
-	fclose(CHOFERES);
+	
 }
 
 void choferesConMasPasajeros(){
