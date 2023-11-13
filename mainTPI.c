@@ -574,9 +574,9 @@ void agregarChofer(){
 				
 			}while(band==1);
 			
-			fclose(CHOFERES);
+			
 		}
-
+		fclose(CHOFERES);
 	}else{
 		printf("No se pudo abrir el archivo choferes");
 	}
