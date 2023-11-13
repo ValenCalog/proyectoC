@@ -309,7 +309,7 @@ void GenerarUsuario(){
 		printf("ingrese el DNI del usuario\n");
 		aux = scanf("%ld",&us.DNI);
 		while(aux==0){
-			printf("\nNo se ingresaron numeros validos, el dni no debe contener letras.");
+			printf("\nNo se ingresaron numeros validos, el dni no debe contener letras. Ingrese nuevamente: ");
 			fflush(stdin);
 			aux = scanf("%ld",&us.DNI);
 		}
@@ -333,21 +333,20 @@ void GenerarUsuario(){
 		//pedir y controlar fecha de nacimiento
 		printf("ingrese la fecha de nacimiento del usuario:\n dia: ");
 		scanf("%d",&us.FechaNac.dia);
-		printf("\nmes: ");
-		scanf("%d",&us.FechaNac.mes);
-		printf("\nanio: ");
-		scanf("%d",&us.FechaNac.anio);
-		
 		while(us.FechaNac.dia <= 0 || us.FechaNac.dia >= 32){
 			printf("\nel dia ingresado es invalido, ingreselo nuevamente: ");
 			scanf("%d",&us.FechaNac.dia);
 		}
+		printf("\nmes: ");
+		scanf("%d",&us.FechaNac.mes);
 		while(us.FechaNac.mes <= 0 || us.FechaNac.mes >= 13){
 			printf("\nel mes ingresado es invalido, ingreselo nuevamente: ");
 			scanf("%d",&us.FechaNac.mes);
 		}
+		printf("\nanio: ");
+		scanf("%d",&us.FechaNac.anio);
 		while((anio - us.FechaNac.anio) >= 110){
-			printf("\nel mes ingresado es invalido, ingreselo nuevamente: ");
+			printf("\nel anio ingresado es invalido, ingreselo nuevamente: ");
 			scanf("%d",&us.FechaNac.anio);
 		}
 		
@@ -358,8 +357,15 @@ void GenerarUsuario(){
 
 		//ingresar telefono
 		printf("\ningrese el numero de su telefono: ");
-		scanf("%ld",&us.telefono);
+		aux = scanf("%ld",&us.telefono);
+		while(aux==0){
+			printf("\nNo se ingresaron numeros validos, el nro de telefono no debe contener letras. Ingrese nuevamente: ");
+			fflush(stdin);
+			aux = scanf("%ld",&us.telefono);
+		}
 		
+
+
 			//ingresar el tipo
 		printf("\ningrese el tipo de beneficios:\n 0- sin beneficios\n 1- estudiante\n 2- persona con discapacidad\n 3- persona mayor de edad\n respuesta: ");
 		scanf("%d",&us.tipo);
@@ -541,7 +547,7 @@ int seEncuentraDniChofer(long dni){
 }
 
 void agregarChofer(){
-	int ultimoId, band, existe;
+	int ultimoId, band, existe, aux;
 	if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
 
 		ultimoId = generarIdChofer();
@@ -553,7 +559,12 @@ void agregarChofer(){
 			do{
 				band = 0;
 				printf("\nIngrese DNI del chofer: ");
-				scanf("%ld", &chofer.DNI);
+				aux = scanf("%ld", &chofer.DNI);
+				while(aux==0){
+					printf("\nNo se ingresaron numeros validos, el dni no debe contener letras.");
+					fflush(stdin);
+					aux = scanf("%ld", &chofer.DNI);
+				}
 				existe = seEncuentraDniChofer(chofer.DNI);
 				if(existe==0){
 						printf("\nIngrese nombre del chofer: ");
@@ -586,6 +597,12 @@ void agregarChofer(){
 						}
 						printf("\nIngrese su telefono: ");
 						scanf("%ld", &chofer.telefono);
+						aux = scanf("%ld", &chofer.telefono);
+						while(aux==0){
+							printf("\nNo se ingresaron numeros validos, el telefono no debe contener letras.");
+							fflush(stdin);
+							aux = scanf("%ld", &chofer.telefono);
+						}
 						fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
 				}else{
 					if(existe==-1){
@@ -625,7 +642,7 @@ int generarIdChofer(){
 }
 
 void ModificarChofer(){
-	int buscarId, band = 0;
+	int buscarId, band = 0, aux;
 	
 	if((CHOFERES = fopen("choferes.dat","a+b")) != NULL){
 		printf("ingrese el ID del chofer para modificar sus datos\n");
@@ -670,7 +687,12 @@ void ModificarChofer(){
 				fflush(stdin);
 				fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
 				printf("\ningrese el nuevo numero telefonico: ");
-				scanf("%ld",&chofer.telefono);
+				aux = scanf("%ld",&chofer.telefono);
+				while(aux == 0){
+					printf("\nNo se ingresaron numeros validos, el telefono no debe contener letras.");
+					fflush(stdin);
+					aux = scanf("%ld", &chofer.telefono);
+				}
 				printf("\nIngrese el nuevo correo electronico: ");
 				fflush(stdin);
 				fgets(chofer.email, sizeof(chofer.email), stdin);
