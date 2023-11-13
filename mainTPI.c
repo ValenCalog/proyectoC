@@ -95,6 +95,7 @@ void pagarPasajeTarjeta();
 void PrimerTurno();
 int compararDosFechas(struct Fecha fecha1, struct Fecha fecha2);
 void movimientosEntreDosFechas();
+void showaccountcredit();
 
 int main() {
 	int opc,confirmar;
@@ -1385,4 +1386,31 @@ void movimientosEntreDosFechas(){
 	}
 	
 
+}
+
+
+
+void showaccountcredit(){
+	long int accountdni = 0;
+	time_t houracc = time(NULL);
+	struct tm hr = *localtime(&houracc);
+	if ((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL && (USUARIOS = fopen("usuarios.dat", "r+b")) != NULL)
+		{
+		printf("ingrese su DNI\n");
+		scanf("%ld", &accountdni);
+		fread(&us, sizeof(us), 1, USUARIOS);
+			while (!feof(USUARIOS)){
+				if (accountdni==us.DNI){
+					fread(&cuenta, sizeof(cuenta),1, CUENTAS);
+					while (!feof(CUENTAS)){
+						if (us.id==cuenta.idUsuario){
+							printf("Su saldo es de %d\n %02d %02d %02d", cuenta.saldo, hr.tm_hour, hr.tm_min, hr.tm_sec);
+							break;
+						}
+						fread(&cuenta, sizeof(cuenta),1, CUENTAS);
+					}
+				}
+				fread(&us, sizeof(us), 1, USUARIOS);
+			}
+	}
 }
