@@ -478,10 +478,11 @@ void ListarUsuarios(){
 			printf("----------------\n +Id: %d\n +Nombre y apellido: %s\n +fecha de nacimiento: %d/%d/%d\n +DNI: %ld\n +Telefono: %ld\n +Direccion: %s\n----------------\n",us.id,us.NomApe,us.FechaNac.dia,us.FechaNac.mes,us.FechaNac.anio,us.DNI,us.telefono,us.direccion);
 			fread(&us,sizeof(us),1,USUARIOS);
 		}
+		fclose(USUARIOS);
 	}
 	else
 		printf("error al abrir el archivo usuarios\n");
-	fclose(USUARIOS);
+	
 }
 
 void CantBeneficios(){
