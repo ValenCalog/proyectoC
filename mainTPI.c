@@ -616,7 +616,8 @@ void ModificarChofer(){
 				band++;
 				
 				printf("-----------\n|ingrese los nuevos datos|\n-----------\n Nombre y apellido: ");
-				gets(chofer.NomApe);
+				fflush(stdin);
+				fgets(chofer.NomApe, sizeof(chofer.NomApe), stdin);
 				printf("\n|Fecha de nacimiento|\n");
 				printf("Dia: ");
 				scanf("%d",&chofer.fechaNac.mes);
@@ -625,14 +626,13 @@ void ModificarChofer(){
 				printf("\nanio: ");
 				scanf("%d",&chofer.fechaNac.anio);
 				printf("\nIngrese la direccion nueva: ");
-				gets(chofer.direccion);
+				fflush(stdin);
+				fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
 				printf("\ningrese el nuevo numero telefonico: ");
 				scanf("%ld",&chofer.telefono);
 				printf("\nIngrese el nuevo correo electronico: ");
-				gets(chofer.email);
-				printf("\nIngrese el nuevo DNI: ");
-				scanf("%ld",&chofer.DNI);
-
+				fflush(stdin);
+				fgets(chofer.email, sizeof(chofer.email), stdin);
 				fwrite(&chofer,sizeof(chofer),1,CHOFERES);
 			}
 			fread(&chofer,sizeof(chofer),1,CHOFERES);
