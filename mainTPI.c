@@ -626,7 +626,7 @@ void ModificarChofer(){
 				fgets(chofer.NomApe, sizeof(chofer.NomApe), stdin);
 				printf("\n|Fecha de nacimiento|\n");
 				printf("Dia: ");
-				scanf("%d",&chofer.fechaNac.mes);
+				scanf("%d",&chofer.fechaNac.dia);
 				printf("\nmes: ");
 				scanf("%d",&chofer.fechaNac.mes);
 				printf("\nanio: ");
