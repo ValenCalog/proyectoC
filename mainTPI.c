@@ -396,12 +396,13 @@ int generarIdCuenta(){
 	if((CUENTAS = fopen("cuentas.dat","rb")) != NULL){
 		fseek(CUENTAS, 0, SEEK_END);
 		
-		if(ftell(CUENTAS) > 0){
-			fseek(CUENTAS,sizeof(cuenta)*-1,SEEK_END);
+		if(ftell(CUENTAS) > 0){ 
+			fseek(CUENTAS,sizeof(cuenta)*-1,SEEK_END); 
 			fread(&cuenta,sizeof(cuenta),1,CUENTAS);
 			fclose(CUENTAS);
 			return(cuenta.idCuenta);
 		}else{
+			//si el archivo estuviera vacio ftell devolveria 0
 			return 0;
 		}
 		
