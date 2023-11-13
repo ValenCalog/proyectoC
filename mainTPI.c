@@ -600,18 +600,17 @@ void agregarChofer(){
 }
 
 int generarIdChofer(){
+	int aux = 0;
 	if((CHOFERES = fopen("choferes.dat","rb")) != NULL){
 		fseek(CHOFERES, 0, SEEK_END);
 		
 		if(ftell(CHOFERES) > 0){
 			fseek(CHOFERES,(long int)sizeof(chofer)*-1,SEEK_END);
 			fread(&chofer,sizeof(chofer),1,CHOFERES);
-			fclose(CHOFERES);
-			return(chofer.id);
-		}else{
-			return 0;
+			aux = chofer.id;
 		}
-		
+		fclose(CHOFERES);
+		return aux;
 	}else{
 		return -1;
 	}
