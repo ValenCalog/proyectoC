@@ -894,8 +894,8 @@ void cargaDeSaldo(){
 		int opc, IdUsuario, band = 0;
 		printf("Ingrese un numero de dni");
 		scanf("%ld", &dniBuscar);
-		IdUsuario = seEncuentraDniUsuario(dniBuscar);
 		do{
+			IdUsuario = seEncuentraDniUsuario(dniBuscar);
 			band = 0;
 			if((IdUsuario != -1)){
 				rec.DNI = dniBuscar;
