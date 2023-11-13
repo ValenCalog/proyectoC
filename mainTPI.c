@@ -609,13 +609,19 @@ void ModificarChofer(){
 		scanf("%d",&buscarId);
 		
 		fread(&chofer,sizeof(chofer),1,CHOFERES);
-		while(!feof(CHOFERES)){
+		while(!feof(CHOFERES) && band == 0){
 			
 			if(buscarId == chofer.id){
-				fseek(CHOFERES,(long int)sizeof(chofer) * (-1),SEEK_CUR);
 				band++;
-				
-				printf("-----------\n|ingrese los nuevos datos|\n-----------\n Nombre y apellido: ");
+			}else{
+				fread(&chofer,sizeof(chofer),1,CHOFERES);
+			}
+			
+		}
+		if(band == 0){
+			printf("\nNo se pudo encontrar el ID del chofer\n");
+		}else{
+			printf("-----------\n|ingrese los nuevos datos|\n-----------\n Nombre y apellido: ");
 				fflush(stdin);
 				fgets(chofer.NomApe, sizeof(chofer.NomApe), stdin);
 				printf("\n|Fecha de nacimiento|\n");
@@ -633,12 +639,10 @@ void ModificarChofer(){
 				printf("\nIngrese el nuevo correo electronico: ");
 				fflush(stdin);
 				fgets(chofer.email, sizeof(chofer.email), stdin);
+				fseek(CHOFERES,(long int)sizeof(chofer) * (-1),SEEK_CUR);
 				fwrite(&chofer,sizeof(chofer),1,CHOFERES);
-			}
-			fread(&chofer,sizeof(chofer),1,CHOFERES);
 		}
-		if(band == 0)
-			printf("\nNo se pudo encontrar el ID del chofer\n");
+			
 		fclose(CHOFERES);
 	}
 	else
