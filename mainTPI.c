@@ -237,7 +237,7 @@ void menuConsultas(){
 					ListarUsuarios();
 					break;
 				case 3:
-					//3.Mostrar movimientos efectuados entre dos fechas
+					movimientosEntreDosFechas();
 					break;
 				case 4:
 					buscarRecargasPorDni();
