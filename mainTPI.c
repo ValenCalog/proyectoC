@@ -1235,10 +1235,17 @@ void ModificarUnidad(){
 		scanf("%d",&buscarID);
 		
 		fread(&unidad,sizeof(unidad),1,UNIDADES);
-		while(!feof(UNIDADES)){
+		while(!feof(UNIDADES) && (encontro == 0)){
 			if(buscarID == unidad.idUnidad){
 				encontro = 1;
-				//id
+			}else{
+				fread(&unidad,sizeof(unidad),1,UNIDADES);
+			}
+		}
+		if(encontro == 0){
+			printf("no se encontro a la unidad");
+		}else{
+			//id
 				unidad.idUnidad =  buscarID;
 				//pedir datos nuevos
 				printf("ingrese el numero de la unidad\n");
@@ -1269,11 +1276,22 @@ void ModificarUnidad(){
 				
 				printf("Ingrese la fecha de alta de la unidad\n Año");
 				scanf("%d", &unidad.FechaAlta.anio);
+				while(unidad.FechaAlta.anio < 0){
+					printf("\nIngrese un año valido: ");
+					scanf("%d", &unidad.FechaAlta.anio);
+				}
 				printf("mes\n");
 				scanf("%d", &unidad.FechaAlta.mes);
+				while(unidad.FechaAlta.mes < 1 || unidad.FechaAlta.mes > 12){
+					printf("\nIngrese un mes valido: ");
+					scanf("%d", &unidad.FechaAlta.mes);
+				}
 				printf("día\n");
 				scanf("%d", &unidad.FechaAlta.dia);
-				
+				while((unidad.FechaAlta.dia < 1) || (unidad.FechaAlta.dia > 31)){
+					printf("\nIngrese un anio valido: ");
+					scanf("%d", &unidad.FechaAlta.anio);
+				}
 				printf("Esta adaptada la unidad para discapacitados? presione 1 para confirmar y 0 para negar\n");
 				scanf("%d", &unidad.adaptado);
 				while(unidad.adaptado != 0 && unidad.adaptado !=1)
@@ -1283,10 +1301,6 @@ void ModificarUnidad(){
 				}
 				fseek(UNIDADES,(long int) sizeof(unidad) * (-1),SEEK_CUR);
 				fwrite(&unidad, sizeof(unidad),1, UNIDADES);
-			}
-		}
-		if(encontro == 0){
-			printf("no se encontro a la unidad");
 		}
 	}
 	else
