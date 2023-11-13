@@ -397,7 +397,7 @@ int generarIdCuenta(){
 		fseek(CUENTAS, 0, SEEK_END);
 		
 		if(ftell(CUENTAS) > 0){ 
-			fseek(CUENTAS,sizeof(cuenta)*-1,SEEK_END); 
+			fseek(CUENTAS,(long int)sizeof(cuenta)*-1,SEEK_END); 
 			fread(&cuenta,sizeof(cuenta),1,CUENTAS);
 			fclose(CUENTAS);
 			return(cuenta.idCuenta);
@@ -416,7 +416,7 @@ long generarNroDeTarjeta(){
 		fseek(CUENTAS, 0, SEEK_END);
 		
 		if(ftell(CUENTAS) > 0){
-			fseek(CUENTAS,sizeof(cuenta)*-1,SEEK_END);
+			fseek(CUENTAS,(long int)sizeof(cuenta)*-1,SEEK_END);
 			fread(&cuenta,sizeof(cuenta),1,CUENTAS);
 			fclose(CUENTAS);
 			return(cuenta.nroDeTarjeta);
@@ -718,7 +718,7 @@ void choferesConMasPasajeros(){
 								if(encontroAux){
 									//si ya esta escrito el dni, le sumo uno a la cantidad de pasajeros
 									aux.cantidadPasajeros = aux.cantidadPasajeros +1;
-									fseek(auxParaContar, sizeof(aux) * -1, SEEK_CUR);
+									fseek(auxParaContar, (long int)sizeof(aux) * -1, SEEK_CUR);
 									fwrite(&aux, sizeof(aux), 1, auxParaContar);
 								}else{
 									//si no esta escrito el dni, lo escribo y seteo los pasajeros en uno
@@ -1190,8 +1190,9 @@ void addunit(){
 			scanf("%d", &unidad.adaptado);
 		}
 		fwrite(&unidad, sizeof(unidad),1, UNIDADES);	
-		}
 		fclose(UNIDADES);
+		}
+		
 	else 
 		printf("error al abrir el archivo unidades\n");
 }
@@ -1201,7 +1202,7 @@ void ModificarUnidad(){
 	
 	if((UNIDADES = fopen("UNIDADES.dat","r+b")) != NULL){
 		printf("ingrese el ID de la unidad a buscar: ");
-		scnaf("%d",&buscarID);
+		scanf("%d",&buscarID);
 		
 		fread(&unidad,sizeof(unidad),1,UNIDADES);
 		while(!feof(UNIDADES)){
@@ -1250,7 +1251,7 @@ void ModificarUnidad(){
 					printf("El identificador de discapacitados proporcionado no es valido, por favor ingrese 0 para am y 1 para pm\n");
 					scanf("%d", &unidad.adaptado);
 				}
-				fseek(UNIDADES, sizeof(unidad) * (-1),SEEK_CUR);
+				fseek(UNIDADES,(long int) sizeof(unidad) * (-1),SEEK_CUR);
 				fwrite(&unidad, sizeof(unidad),1, UNIDADES);
 			}
 		}
@@ -1260,7 +1261,7 @@ void ModificarUnidad(){
 	}
 	else
 		printf("error al abrir el archivo para realizar la modificacion\n");
-	fclose(UNIDADES):
+	fclose(UNIDADES);
 }
 
 // Los objetos de valor de mi casa se encuentra en el siguiente enlace: https://www.youtube.com/watch?v=dQw4w9WgXcQ
@@ -1448,7 +1449,7 @@ void showaccountcredit(){
 
 void buscarMovimientosUsuario() {
 	char NomApebusc[40];
-	int Encontro == 0;
+	int Encontro = 0;
 	if ((USUARIOS = fopen("Usuarios.dat","rb"))!=NULL) {
 		if ((MOVIMIENTOS = fopen("movimientos.dat","rb"))!=NULL){
 			puts("Ingrese un nombre y apellido");
