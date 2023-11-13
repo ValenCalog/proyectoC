@@ -1565,3 +1565,32 @@ void ListarChoferes(){
 		printf("error al abrir el archivo choferes\n");
 	}
 
+void unistlist()
+{
+	if ((UNIDADES = fopen ("unidades.dat", "rb"))!= NULL);
+	{
+		fread(&unidad, sizeof(unidad),1,UNIDADES);
+		while (!feof(CHOFERES))
+		{
+			printf ("\n Id: %d \n Numero de unidad: %d \n Tiene %d asientos \n Corresponde al modelo %s de la marca %s \n Fue dado de alta %d %d %d y cuenta con %f Km\n se encuentra conducida por el chofer con DNI %d", unidad.idUnidad, unidad.NroUnidad, unidad.asientos, unidad.marca, unidad.modelo, unidad.FechaAlta.dia, unidad.FechaAlta.mes, unidad.FechaAlta.anio, unidad.km, unidad.DNIC);
+			if (unidad.turno==1)
+			{
+				printf("\nCircula por el turno tarde 12:00-23:59");
+			}
+			else 
+			printf ("\nCircula por el turno mañana 00:00-11:59");
+			
+			if (unidad.adaptado==1)
+			{
+				printf("La unidad se encuentra adaptada para discapacitados");
+			}
+			else 
+			printf ("la unidad no admite invalidos");
+		}
+	}
+}
+			
+			
+		
+	
+
