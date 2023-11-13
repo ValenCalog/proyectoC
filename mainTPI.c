@@ -1160,15 +1160,15 @@ void addunit(){
 		}
 		fwrite(&unidad, sizeof(unidad),1, UNIDADES);	
 		}
+		fclose(UNIDADES);
 	else 
 		printf("error al abrir el archivo unidades\n");
-	fclose(UNIDADES);
 }
 
 void ModificarUnidad(){
 	int buscarID, encontro = 0;
 	
-	if((UNIDADES = fopen("Unidades.dat","r+b")) != NULL){
+	if((UNIDADES = fopen("UNIDADES.dat","r+b")) != NULL){
 		printf("ingrese el ID de la unidad a buscar: ");
 		scnaf("%d",&buscarID);
 		
