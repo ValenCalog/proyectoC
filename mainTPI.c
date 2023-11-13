@@ -99,7 +99,7 @@ void showaccountcredit();
 void buscarMovimientosUsuario();
 int nroDeTelefonoEsCorrecto(long nroDeTelefono);
 void ListarChoferes();
-void unistlist();
+void unitslist();
 int existeNroDeUnidad(int nroUnidad);
 
 
@@ -1630,7 +1630,7 @@ void ListarChoferes(){
 		printf("error al abrir el archivo choferes\n");
 	}
 
-void unistlist()
+void unitslist()
 {
 	if ((UNIDADES = fopen ("unidades.dat", "rb"))!= NULL);
 	{
