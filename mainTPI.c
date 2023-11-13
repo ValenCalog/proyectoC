@@ -1128,14 +1128,12 @@ void addunit(){
 		if (feof(UNIDADES))
 		{
 			unidad.idUnidad=1;
-			fwrite (&unidad, sizeof(unidad),1,UNIDADES);
 			rewind(UNIDADES);
 		}
 		else {
 			fseek(UNIDADES, (long int)sizeof(unidad) * (-1), SEEK_END);
 			fread(&unidad, sizeof(unidad),1, UNIDADES);
 			unidad.idUnidad++;
-			fwrite(&unidad, sizeof(unidad),1, UNIDADES);
 			rewind(UNIDADES);
 		}
 		do {
