@@ -93,6 +93,8 @@ void buscarRecargasPorDni();
 int seEncuentraDniChofer(long dni);
 void pagarPasajeTarjeta();
 void PrimerTurno();
+int compararDosFechas(struct Fecha fecha1, struct Fecha fecha2);
+void movimientosEntreDosFechas();
 
 int main() {
 	int opc,confirmar;
@@ -1301,4 +1303,86 @@ void PrimerTurno(){
 	else
 		printf("no se abrio el archivo\n");
 	fclose(MOVIMIENTOS);
+}
+
+
+int compararDosFechas(struct Fecha fecha1, struct Fecha fecha2){
+	int band;
+	//1:la primera fecha es mayor, 2:la segunda fecha es mayor, 0:son iguales
+	if(fecha1.anio > fecha2.anio){
+		//la primera fecha es mayor
+		band = 1;
+	}else{
+		if(fecha2.anio > fecha1.anio){
+			//la segunda fecha es mayor
+			band = 2;
+		}else{
+			if(fecha1.anio == fecha2.anio){
+				//Si las fechas son iguales entonces me fijo el mes
+				if(fecha1.mes > fecha2.mes){
+					//la fecha 1 es mayor
+					band = 1; 
+				}else{
+					if(fecha2.mes > fecha1.mes){
+						//la fecha 2 es mayor
+						band = 2;
+					}else{
+						if(fecha1.mes == fecha2.mes){
+							//si los meses son iguales comparo los dias
+							if (fecha1.dia > fecha2.dia){
+								// la fecha 1 es mayor
+								band = 1;
+							}else{
+								if(fecha2.dia > fecha1.dia){
+									// la fecha 2 es mayor
+									band = 2;
+								}else{
+									//las fechas son iguales
+									band = 0;
+								}
+							}
+							
+						}
+					}
+					
+				}
+			}
+		}
+	}
+}
+
+void movimientosEntreDosFechas(){
+
+	struct Fecha fechaInicio;
+	struct Fecha fechaFinal;
+	printf("\nPrimera fecha.");
+	printf("\nAño: ");
+	scanf("%d", &fechaInicio.anio);
+	printf("\nMes: ");
+	scanf("%d", &fechaInicio.mes);
+	printf("\nDia: ");
+	scanf("%d", &fechaInicio.dia);
+	printf("\n\nFecha final.");
+	printf("\nAño: ");
+	scanf("%d", &fechaFinal.anio);
+	printf("\nMes: ");
+	scanf("%d", &fechaFinal.mes);
+	printf("\nDia: ");
+	scanf("%d", &fechaFinal.dia);
+	if((MOVIMIENTOS = fopen("movimientos.dat", "rb")) != NULL){
+
+		fread(&mov, sizeof(mov), 1, MOVIMIENTOS);
+		while(!feof(MOVIMIENTOS)){
+
+			if((compararDosFechas(mov.fecha, fechaInicio) < 2 )&& (compararDosFechas(fechaFinal, mov.fecha) < 2)){
+				printf("\nDNI: %ld, NroDeTarjeta/NroDeTelefono: %ld, Origen: %s, Destino: %s, Saldo: %f, Fecha: %d/%d/%d, Hora: %d:%d:%d", mov.DNI, mov.NroTarjetaOTelefono, mov.origen, mov.destino, mov.SaldoUso, mov.fecha.anio, mov.fecha.mes, mov.fecha.dia, mov.hora.hora, mov.hora.min, mov.hora.seg);
+			}
+			fread(&mov, sizeof(mov), 1, MOVIMIENTOS);
+		}
+
+	}else{
+		printf("No se pudo abrir el archivo movimientos.");
+	}
+	
+
 }
