@@ -268,7 +268,7 @@ void menuConsultas(){
 					ListarChoferes();
 					break;
 				case 10:
-					unistlist();
+					unitslist();
 					break;
 				default:
 					printf("No se ingreso una opcion valida");
