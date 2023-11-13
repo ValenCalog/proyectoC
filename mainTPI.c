@@ -374,7 +374,7 @@ void GenerarUsuario(){
 
 
 			//ingresar el tipo
-		printf("\ningrese el tipo de beneficios:\n 0- sin beneficios\n 1- estudiante\n 2- persona con discapacidad\n 3- persona mayor de edad\n respuesta: ");
+		printf("\ningrese el tipo de beneficios:\n 0- sin beneficios\n 1- estudiante\n 2- persona con discapacidad\n 3- persona mayor de edad\n 4-Excombatiente Malvinas \nrespuesta: ");
 		scanf("%d",&us.tipo);
 		while(us.tipo > 4 || us.tipo < 0){
 			printf("\ningrese un dato valido: ");
