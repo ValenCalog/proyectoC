@@ -878,13 +878,13 @@ void cargaDeSaldo(){
 								if((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL){
 									printf("\nIngrese el monto a cargar: ");
 									scanf("%f", rec.monto);
+									printf("\nBoca de pago: ");
+									printf("\n1. Rapipago");
+									printf("\n2. Terminal de omnibus");
+									printf("\n3. Mini Super Ayacucho");
+									printf("\n4. Agencia IPLyC");
+									printf("\n5. Quiosco");
 									do{
-										printf("\nBoca de pago: ");
-										printf("\n1. Rapipago");
-										printf("\n2. Terminal de omnibus");
-										printf("\n3. Mini Super Ayacucho");
-										printf("\n4. Agencia IPLyC");
-										printf("\n5. Quiosco");
 										printf("\nIngrese su opcion: ");
 										scanf("%d", &opc);
 										switch (opc){
@@ -904,7 +904,7 @@ void cargaDeSaldo(){
 											strcpy(rec.BocaPago, "Quiosco");
 											break;
 										default:
-											printf("\nNo es numero valido.");
+											printf("\nNo es numero valido. Por favor intentelo de nuevo");
 											break;
 										}
 									}while((opc <1) || (opc >5));
@@ -956,15 +956,15 @@ void cargaDeSaldo(){
 					printf("Hubo un error al intentar general el numero de control");
 				}
 
-		}else{
-			if(IdUsuario == 0){
-				printf("No se encontro el dni del usuario, por favor ingrese uno valido. ");
-				scanf("%ld", dniBuscar);
-				band = 1;
 			}else{
-				printf("\nNo se pudo abrir el archivo usuarios.");
+				if(IdUsuario == 0){
+					printf("No se encontro el dni del usuario, por favor ingrese uno valido. ");
+					scanf("%ld", dniBuscar);
+					band = 1;
+				}else{
+					printf("\nNo se pudo abrir el archivo usuarios.");
+				}
 			}
-		}
 
 
 		}while(band == 1);
@@ -1058,7 +1058,7 @@ void usoDeBilleteraVirtual(){
 								scanf("%ld", mov.NroTarjetaOTelefono);
 							}
 							if(nroDeTelefonoEsCorrecto(mov.NroTarjetaOTelefono) == 1){
-									printf("\nNumero de unidad: ");
+								printf("\nNumero de unidad: ");
 								scanf("%d", mov.nroUnidad); // se tiene que verificar si existe numero de unidad
 								printf("\nOrigen: ");
 								fflush(stdin);
