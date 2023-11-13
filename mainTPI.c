@@ -1394,7 +1394,7 @@ void showaccountcredit(){
 	long int accountdni = 0;
 	time_t houracc = time(NULL);
 	struct tm hr = *localtime(&houracc);
-	if ((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL && (USUARIOS = fopen("usuarios.dat", "r+b")) != NULL)
+	if ((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL && (USUARIOS = fopen("Usuarios.dat", "r+b")) != NULL)
 		{
 		printf("ingrese su DNI\n");
 		scanf("%ld", &accountdni);
