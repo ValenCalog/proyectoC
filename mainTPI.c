@@ -556,10 +556,22 @@ void agregarChofer(){
 						printf("\nIngrese fecha de nacimiento ");
 						printf("\nDia: ");
 						scanf("%d", &chofer.fechaNac.dia);
+						while((chofer.fechaNac.dia > 31) || (chofer.fechaNac.dia < 1)){
+							printf("\nIngrese un dia valido: ");
+							scanf("%d",&chofer.fechaNac.dia);
+						}
 						printf("\nMes: ");
 						scanf("%d", &chofer.fechaNac.mes);
+						while((chofer.fechaNac.mes > 12) || (chofer.fechaNac.mes < 1)){
+							printf("\nIngrese un mes valido: ");
+							scanf("%d",&chofer.fechaNac.mes);
+						}
 						printf("\nAnio: ");
 						scanf("%d",&chofer.fechaNac.anio);
+						while(chofer.fechaNac.anio < 0){
+							printf("\nIngrese un anio valido: ");
+							scanf("%d",&chofer.fechaNac.anio);
+						}
 						printf("\nIngrese su telefono: ");
 						scanf("%ld", &chofer.telefono);
 						fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
@@ -643,7 +655,7 @@ void ModificarChofer(){
 					printf("\nIngrese un anio valido: ");
 					scanf("%d",&chofer.fechaNac.anio);
 				}
-				
+
 				printf("\nIngrese la direccion nueva: ");
 				fflush(stdin);
 				fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
