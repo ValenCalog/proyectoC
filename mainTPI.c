@@ -98,6 +98,7 @@ void movimientosEntreDosFechas();
 void showaccountcredit();
 void buscarMovimientosUsuario();
 int nroDeTelefonoEsCorrecto(long nroDeTelefono);
+
 int main() {
 	int opc,confirmar;
 	do{
@@ -1262,8 +1263,8 @@ void ModificarUnidad(){
 
 // Los objetos de valor de mi casa se encuentra en el siguiente enlace: https://www.youtube.com/watch?v=dQw4w9WgXcQ
 void pagarPasajeTarjeta(){
-	if (((CUENTAS = fopen("cuentas.dat","r+b"))!=NULL){
-		if (((MOVIMIENTOS = fopen("movimientos.dat","ab"))!=NULL){
+	if ((CUENTAS = fopen("cuentas.dat","r+b"))!=NULL){
+		if ((MOVIMIENTOS = fopen("movimientos.dat","ab"))!=NULL){
 			long int DNI, NumTarjeta;
 			int CuentaEncontro = 0;
 			printf("\nIngrese numero de Tarjeta:\n");
@@ -1327,10 +1328,11 @@ void PrimerTurno(){
 		}
 		por = (cont * 100) / Ctotal;
 		printf("el porcentaje de pasajeros que viajaron en el anio es de: %.2f \n", por);
+		fclose(MOVIMIENTOS);
 	}
 	else
 		printf("no se abrio el archivo\n");
-	fclose(MOVIMIENTOS);
+	
 }
 
 
@@ -1448,8 +1450,8 @@ void buscarMovimientosUsuario() {
 	if ((USUARIOS = fopen("Usuarios.dat","rb"))!=NULL) {
 		if ((MOVIMIENTOS = fopen("movimientos.dat","rb"))!=NULL){
 			puts("Ingrese un nombre y apellido");
-			gets(NomApebusc);
 			fflush(stdin);
+			fgets(NomApebusc, sizeof(NomApebusc), stdin);
 			while (!feof(USUARIOS) && !Encontro){
 				if (strcmp(NomApebusc,us.NomApe)==0){
 					Encontro = 1;
