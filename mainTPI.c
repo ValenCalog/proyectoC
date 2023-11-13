@@ -234,7 +234,7 @@ void menuConsultas(){
 				system("cls");
 				switch (opc){
 				case 1:
-					//1.Consultar saldo"
+					showaccountcredit();
 					break;
 				case 2:
 					ListarUsuarios();
