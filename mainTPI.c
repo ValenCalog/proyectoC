@@ -1101,6 +1101,26 @@ int nroDeTelefonoEsCorrecto(long nroDeTelefono){
 	}
 }
 
+int existeNroDeUnidad(int nroUnidad){
+	int band = 0;
+	if((UNIDADES = fopen("UNIDADES.dat", "rb")) !=  NULL){
+
+		fread(&unidad, sizeof(unidad), 1, UNIDADES);
+		while(!feof(UNIDADES)){
+			if(unidad.NroUnidad == nroUnidad){
+				band = 1;
+			}else{
+				fread(&unidad, sizeof(unidad), 1, UNIDADES);
+			}
+		}
+		return band;
+		fclose(UNIDADES);
+	}else{
+		return -1;
+	}
+
+}
+
 void usoDeBilleteraVirtual(){
 	int band = 0;
 	if((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL){
@@ -1123,44 +1143,53 @@ void usoDeBilleteraVirtual(){
 							if(nroDeTelefonoEsCorrecto(mov.NroTarjetaOTelefono) == 1){
 								printf("\nNumero de unidad: ");
 								scanf("%d", mov.nroUnidad); // se tiene que verificar si existe numero de unidad
-								printf("\nOrigen: ");
-								fflush(stdin);
-								fgets(mov.origen, sizeof(mov.origen), stdin);
-								printf("\nDestino: ");
-								fflush(stdin);
-								fgets(mov.destino, sizeof(mov.destino), stdin);
-								printf("\nCantidad de saldo usado: ");
-								scanf("%f", mov.SaldoUso);
-								mov.hora.hora = tiempoActual(1);
-								mov.hora.min = tiempoActual(2);
-								mov.hora.seg = tiempoActual(3);
-								mov.fecha.anio = tiempoActual(4);
-								mov.fecha.mes = tiempoActual(5);
-								mov.fecha.dia = tiempoActual(6);
-								int encontroCuenta = 0;
-								fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
-
-								while((!feof(CUENTAS)) && (!encontroCuenta)){
-
-									if(cuenta.idUsuario == IdUsuario){
-										encontroCuenta = 1;
-									}else{
-										fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
-									}
+								while(existeNroDeUnidad(mov.nroUnidad) == 0){
+									printf("\nEl nro de unidad proporcionado no existe, ingrese uno valido: ");
+									scanf("%d", mov.nroUnidad);
 								}
+								if(existeNroDeUnidad(mov.nroUnidad) == 1){
+									printf("\nOrigen: ");
+									fflush(stdin);
+									fgets(mov.origen, sizeof(mov.origen), stdin);
+									printf("\nDestino: ");
+									fflush(stdin);
+									fgets(mov.destino, sizeof(mov.destino), stdin);
+									printf("\nCantidad de saldo usado: ");
+									scanf("%f", mov.SaldoUso);
+									mov.hora.hora = tiempoActual(1);
+									mov.hora.min = tiempoActual(2);
+									mov.hora.seg = tiempoActual(3);
+									mov.fecha.anio = tiempoActual(4);
+									mov.fecha.mes = tiempoActual(5);
+									mov.fecha.dia = tiempoActual(6);
+									int encontroCuenta = 0;
+									fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
 
-								if(encontroCuenta){
-									if(cuenta.saldo<=mov.SaldoUso){
-										cuenta.saldo = cuenta.saldo - mov.SaldoUso;
-										fseek(CUENTAS, (long int)sizeof(cuenta)*-1, SEEK_CUR);
-										fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
-										fwrite(&mov, sizeof(mov), 1, MOVIMIENTOS);
+									while((!feof(CUENTAS)) && (!encontroCuenta)){
+
+										if(cuenta.idUsuario == IdUsuario){
+											encontroCuenta = 1;
+										}else{
+											fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
+										}
+									}
+
+									if(encontroCuenta){
+										if(cuenta.saldo<=mov.SaldoUso){
+											cuenta.saldo = cuenta.saldo - mov.SaldoUso;
+											fseek(CUENTAS, (long int)sizeof(cuenta)*-1, SEEK_CUR);
+											fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
+											fwrite(&mov, sizeof(mov), 1, MOVIMIENTOS);
+										}else{
+											printf("\nSaldo insuficiente.");
+										}
 									}else{
-										printf("\nSaldo insuficiente.");
+										printf("\nSe produjo un error.");
 									}
 								}else{
-									printf("\nSe produjo un error.");
+									printf("\nNo se pudo abrir el archivo de unidades para comprobar si existia la unidad.");
 								}
+								
 							}else{
 								printf("\nHubo un error al confirmar el numero de telefono.");
 							}
