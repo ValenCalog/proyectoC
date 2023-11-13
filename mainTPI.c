@@ -1559,14 +1559,14 @@ void ListarChoferes(){
 
 	if((CHOFERES = fopen("choferes.dat","rb")) != NULL){
 		
-		fread(&chofere,sizeof(chofer),1,CHOFERES);
+		fread(&chofer, sizeof(chofer),1,CHOFERES);
 		while(!feof(CHOFERES)){
 			printf("----------------\n +Id: %d\n +Nombre y apellido: %s\n +fecha de nacimiento: %d/%d/%d\n +DNI: %ld\n +Telefono: %ld\n +Direccion: %s\n +Email: %s\n----------------\n",chofer.id, chofer.NomApe, chofer.fechaNac.dia,chofer.fechaNac.mes, chofer.fechaNac.anio, chofer.DNI, chofer.telefono, chofer.direccion, chofer.email);
-			fread(&chofere,sizeof(chofer),1,CHOFERES);
+			fread(&chofer,sizeof(chofer),1,CHOFERES);
 		}
 		fclose(CHOFERES);
 	}
 	else
 		printf("error al abrir el archivo choferes\n");
 	}
-}
+
