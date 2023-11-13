@@ -440,7 +440,7 @@ void ModificarUsuario(){
 			if(buscarid == us.id){
 				//ingresar los datos nuevamente (menos el id)
 				printf("ingrese el Nombre y Apellido nuenvamente: \n");
-				gets(us.NomApe);
+				fgets(us.NomApe, sizeof(us.NomApe), stdin);
 				fflush(stdin);
 				printf("ingresar el DNI nuevamente\n");
 				scanf("%d",&us.DNI);
@@ -451,7 +451,7 @@ void ModificarUsuario(){
 				printf("anio:\n");
 				scanf("%d",&us.FechaNac.anio);
 				printf("ingrese la nueva direccion:\n");
-				gets(us.direccion);
+				fgets(us.direccion, sizeof(us.direccion), stdin);
 				fflush(stdin);
 				printf("ingrese el telefono nuevamente:\n");
 				scanf("%ld",&us.telefono);
@@ -1228,11 +1228,11 @@ void ModificarUnidad(){
 				
 				printf("Ingrese el nombre de la compañia manufacturera de la unidad\n");
 				fflush(stdin);
-				gets(unidad.marca);
+				fgets(unidad.marca, sizeof(unidad.marca), stdin);
 				
 				printf("ingrese el modelo de la unidad\n");
 				fflush(stdin);
-				gets(unidad.modelo);
+				fgets(unidad.modelo, sizeof(unidad.modelo), stdin);
 				
 				printf("Ingrese el kilometraje de la unidad\n");
 				scanf("%f", &unidad.km);
