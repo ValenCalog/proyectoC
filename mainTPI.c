@@ -229,7 +229,8 @@ void menuConsultas(){
 		printf("\n6.Buscar movimientos de un usario particular ingresando su nombre.");
 		printf("\n7.Buscar chofer o choferes con mas pasajeros en un mes en especifico");
 		printf("\n8.Ver porcentaje de pasajeros que viajan en el primer turno del año");
-		printf("\n9.Volver atras");
+		printf("\n9.Listar Choferes");
+		printf("\n10.Volver atras");
 				printf("\nIngrese su opcion:");
 				scanf("%d", &opc);
 				system("cls");
@@ -260,6 +261,7 @@ void menuConsultas(){
 					PrimerTurno();
 					break;
 				case 9:
+					ListarChoferes();
 					break;
 				default:
 					printf("No se ingreso una opcion valida");
@@ -281,7 +283,7 @@ int ObtenerAnioActual() {
 }
 
 void GenerarUsuario(){
-	int BandId = 0, anio = ObtenerAnioActual();
+	int BandId = 0, anio = ObtenerAnioActual(), aux;
 	long int compDNI;
 	
 	if((USUARIOS = fopen("Usuarios.dat","a+b")) != NULL){
@@ -305,8 +307,13 @@ void GenerarUsuario(){
 		
 		//pedir y verificar DNI
 		printf("ingrese el DNI del usuario\n");
-		scanf("%ld",&us.DNI);
-		
+		aux = scanf("%ld",&us.DNI);
+		while(aux==0){
+			printf("\nNo se ingresaron numeros validos, el dni no debe contener letras.");
+			fflush(stdin);
+			aux = scanf("%ld",&us.DNI);
+		}
+
 		compDNI = us.DNI;
 		fread(&us,sizeof(us),1,USUARIOS);
 		while(!feof(USUARIOS)){
