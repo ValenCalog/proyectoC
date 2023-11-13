@@ -455,9 +455,9 @@ void ModificarUsuario(){
 				fflush(stdin);
 				printf("ingrese el telefono nuevamente:\n");
 				scanf("%ld",&us.telefono);
-				printf("\ningrese el nuevo tipo de beneficios:\n 0- sin beneficios\n 1- estudiante\n 2- persona con discapacidad\n 3- persona mayor de edad\n respuesta: ");
+				printf("\ningrese el nuevo tipo de beneficios:\n 0- sin beneficios\n 1- estudiante\n 2- persona con discapacidad\n 3- persona mayor de edad\n 4-  Beneficio Ex-Combatiente de Malvinas\n respuesta: ");
 				scanf("%d",&us.tipo);
-				while(us.tipo != 0 || us.tipo != 1 || us.tipo != 2 || us.tipo != 3){
+				while(us.tipo != 0 || us.tipo != 1 || us.tipo != 2 || us.tipo != 3 || us.tipo != 4){
 					printf("\ningrese un dato valido: ");
 					scanf("%d",&us.tipo);
 				}
