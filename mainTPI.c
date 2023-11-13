@@ -97,7 +97,7 @@ int compararDosFechas(struct Fecha fecha1, struct Fecha fecha2);
 void movimientosEntreDosFechas();
 void showaccountcredit();
 void buscarMovimientosUsuario();
-
+int nroDeTelefonoEsCorrecto(long nroDeTelefono);
 int main() {
 	int opc,confirmar;
 	do{
