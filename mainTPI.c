@@ -1087,11 +1087,14 @@ void usoDeBilleteraVirtual(){
 								}
 
 								if(encontroCuenta){
-
-									cuenta.saldo = cuenta.saldo - mov.SaldoUso;
-									fseek(CUENTAS, (long int)sizeof(cuenta)*-1, SEEK_CUR);
-									fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
-									fwrite(&mov, sizeof(mov), 1, MOVIMIENTOS);
+									if(cuenta.saldo<=mov.SaldoUso){
+										cuenta.saldo = cuenta.saldo - mov.SaldoUso;
+										fseek(CUENTAS, (long int)sizeof(cuenta)*-1, SEEK_CUR);
+										fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
+										fwrite(&mov, sizeof(mov), 1, MOVIMIENTOS);
+									}else{
+										printf("\nSaldo insuficiente.");
+									}
 								}else{
 									printf("\nSe produjo un error.");
 								}
