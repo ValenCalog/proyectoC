@@ -96,6 +96,7 @@ void PrimerTurno();
 int compararDosFechas(struct Fecha fecha1, struct Fecha fecha2);
 void movimientosEntreDosFechas();
 void showaccountcredit();
+void buscarMovimientosUsuario();
 
 int main() {
 	int opc,confirmar;
@@ -247,7 +248,7 @@ void menuConsultas(){
 					CantBeneficios();
 					break;
 				case 6:
-					//6.Buscar movimientos de un usario particular ingresando su nombre
+					buscarMovimientosUsuario();
 					break;
 					
 				case 7:
@@ -1413,4 +1414,31 @@ void showaccountcredit(){
 				fread(&us, sizeof(us), 1, USUARIOS);
 			}
 	}
+}
+
+void buscarMovimientosUsuario() {
+	char NomApebusc[40];
+	int Encontro == 0;
+	if ((USUARIOS = fopen("Usuarios.dat","rb"))!=NULL) {
+		if ((MOVIMIENTOS = fopen("movimientos.dat","rb"))!=NULL){
+			puts("Ingrese un nombre y apellido");
+			gets(NomApebusc);
+			fflush(stdin);
+			while (!feof(USUARIOS) && !Encontro){
+				if (strcmp(NomApebusc,us.NomApe)==0){
+					Encontro = 1;
+				} else
+					fread(&us,sizeof(us),1,USUARIOS);					
+			}
+			while (!feof(MOVIMIENTOS)){
+				if (us.DNI == mov.DNI){
+					printf("DNI:\n%ld\n\nNumero Tarjeta o Telefono:\nld\n\nOrigen:\n%s\n\nDestino:\n%s\n\nPrecio:\n%.2f\n\nNro Unidad:\n%d\n\nFecha:\n%d/%d%d\n\nHora:\n%d/%d",&mov.DNI,&mov.NroTarjetaOTelefono,&mov.origen,&mov.destino,&mov.SaldoUso,&mov.nroUnidad,&mov.fecha.dia,&mov.fecha.mes,&mov.fecha.anio,&mov.hora.hora,&mov.hora.min);
+					printf("\n************************************************\n\n************************************************");
+				} else
+					fread(&mov,sizeof(mov),1,MOVIMIENTOS);
+			}
+		} else
+			puts("Error al abrir el archivo movimientos");
+	} else
+		puts("Error al abrir el archivo Usuarios");
 }
