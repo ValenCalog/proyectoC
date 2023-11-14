@@ -299,7 +299,7 @@ int ObtenerAnioActual() {
 }
 
 void GenerarUsuario(){
-	int BandId = 0, anio = ObtenerAnioActual(), aux;
+	int BandId = 0, anio = ObtenerAnioActual(), aux, c;
 	long int compDNI;
 	
 	if((USUARIOS = fopen("Usuarios.dat","a+b")) != NULL){
@@ -323,7 +323,7 @@ void GenerarUsuario(){
 		aux = scanf("%ld",&us.DNI);
 		while(aux==0){
 			printf("\nNo se ingresaron numeros validos, el dni no debe contener letras. Ingrese nuevamente: ");
-			fflush(stdin);
+			while ((c = getchar()) != '\n' && c != EOF);
 			aux = scanf("%ld",&us.DNI);
 		}
 
@@ -339,7 +339,7 @@ void GenerarUsuario(){
 		rewind(USUARIOS);
 		//ingresar nombre y apellido
 		printf("ingrese el nombre y apellido del usuario\n");
-		fflush(stdin);
+		while ((c = getchar()) != '\n' && c != EOF);
 		fgets(us.NomApe, sizeof(us.NomApe), stdin);
 
 		
@@ -365,7 +365,7 @@ void GenerarUsuario(){
 		
 		//ingresar direccion
 		printf("\ningrese la direccion del ususario: ");
-		fflush(stdin);
+		while ((c = getchar()) != '\n' && c != EOF);
 		fgets(us.direccion, sizeof(us.direccion), stdin);
 
 		//ingresar telefono
@@ -373,7 +373,7 @@ void GenerarUsuario(){
 		aux = scanf("%lld",&us.telefono);
 		while(aux==0){
 			printf("\nNo se ingresaron numeros validos, el nro de telefono no debe contener letras. Ingrese nuevamente: ");
-			fflush(stdin);
+			while ((c = getchar()) != '\n' && c != EOF);
 			aux = scanf("%lld",&us.telefono);
 		}
 		
