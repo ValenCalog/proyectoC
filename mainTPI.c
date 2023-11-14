@@ -581,7 +581,7 @@ int seEncuentraDniChofer(long dni){
 }
 
 void agregarChofer(){
-	int ultimoId, band, existe, aux, c;
+	int ultimoId, band, existe, aux;
 	ultimoId = generarIdChofer();
 	long int dniAux;
 	if(ultimoId==(-1)){
@@ -600,14 +600,14 @@ void agregarChofer(){
 				existe = seEncuentraDniChofer(chofer.DNI);
 				if(existe==0){
 						if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
-							while ((c = getchar()) != '\n' && c != EOF);
 							printf("\nIngrese nombre del chofer: ");
+							fflush(stdin);
 							fgets(chofer.NomApe, sizeof(chofer.NomApe), stdin);
-							while ((c = getchar()) != '\n' && c != EOF);
 							printf("\nIngrese direccion: ");
+							fflush(stdin);
 							fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
-							while ((c = getchar()) != '\n' && c != EOF);
 							printf("\nIngrese email: ");
+							fflush(stdin);
 							fgets(chofer.email, sizeof(chofer.email), stdin);
 							printf("\nIngrese fecha de nacimiento ");
 							printf("\nDia: ");
@@ -1045,6 +1045,7 @@ void cargaDeSaldo(){
 										
 										if(encontroCuenta){
 											cuenta.saldo = cuenta.saldo + rec.monto;
+											printf("Cuenta saldo: %f", cuenta.saldo);
 											fseek(CUENTAS,(long int)sizeof(cuenta) *-1, SEEK_CUR);
 											fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
 											fwrite(&rec, sizeof(rec), 1, RECARGAS);
@@ -1195,14 +1196,14 @@ void usoDeBilleteraVirtual(){
 							scanf("%lld", mov.NroTarjetaOTelefono);
 							while(nroDeTelefonoEsCorrecto(mov.NroTarjetaOTelefono) == 0){
 								printf("\nEl numero de telefono que se ingreso no coincide con el de la cuenta. Ingrese nuevamente: ");
-								scanf("%lld", mov.NroTarjetaOTelefono);
+								scanf("%lld", &mov.NroTarjetaOTelefono);
 							}
 							if(nroDeTelefonoEsCorrecto(mov.NroTarjetaOTelefono) == 1){
 								printf("\nNumero de unidad: ");
-								scanf("%d", mov.nroUnidad); // se tiene que verificar si existe numero de unidad
+								scanf("%d", &mov.nroUnidad); // se tiene que verificar si existe numero de unidad
 								while(existeNroDeUnidad(mov.nroUnidad) == 0){
 									printf("\nEl nro de unidad proporcionado no existe, ingrese uno valido: ");
-									scanf("%d", mov.nroUnidad);
+									scanf("%d", &mov.nroUnidad);
 								}
 								if(existeNroDeUnidad(mov.nroUnidad) == 1){
 									printf("\nOrigen: ");
@@ -1212,7 +1213,7 @@ void usoDeBilleteraVirtual(){
 									fflush(stdin);
 									fgets(mov.destino, sizeof(mov.destino), stdin);
 									printf("\nCantidad de saldo usado: ");
-									scanf("%f", mov.SaldoUso);
+									scanf("%f", &mov.SaldoUso);
 									mov.hora.hora = tiempoActual(1);
 									mov.hora.min = tiempoActual(2);
 									mov.hora.seg = tiempoActual(3);
