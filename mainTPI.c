@@ -308,122 +308,121 @@ void GenerarUsuario(){
 	
 	if((USUARIOS = fopen("Usuarios.dat","a+b")) != NULL){
 		
-		//generar una id
-		fread(&us,sizeof(us),1,USUARIOS);
-		//existe un registro
-		if(!feof(USUARIOS)){
-			fseek(USUARIOS,(long int)sizeof(us) * (-1), SEEK_END);
+			int idCuentaAux = generarIdCuenta();
+			long long int nroTarjetaAux = generarNroDeTarjeta();
+		if((CUENTAS = fopen("cuentas.dat", "a+b")) != NULL){
+
+			//generar una id
 			fread(&us,sizeof(us),1,USUARIOS);
-			us.id++;
-		}
-		//no existe un registro aun
-		else{
-			us.id = 1;
-			rewind(USUARIOS);
-		}
-		
-		//pedir y verificar DNI
-		printf("ingrese el DNI del usuario\n");
-		aux = scanf("%ld",&us.DNI);
-		while(aux==0){
-			printf("\nNo se ingresaron numeros validos, el dni no debe contener letras. Ingrese nuevamente: ");
-			fflush(stdin);
+			//existe un registro
+			if(!feof(USUARIOS)){
+				fseek(USUARIOS,(long int)sizeof(us) * (-1), SEEK_END);
+				fread(&us,sizeof(us),1,USUARIOS);
+				us.id++;
+			}
+			//no existe un registro aun
+			else{
+				us.id = 1;
+				rewind(USUARIOS);
+			}
+			
+			//pedir y verificar DNI
+			printf("ingrese el DNI del usuario\n");
 			aux = scanf("%ld",&us.DNI);
-		}
-
-		compDNI = us.DNI;
-		fread(&us,sizeof(us),1,USUARIOS);
-		while(!feof(USUARIOS)){
-			while(compDNI == us.DNI){
-				printf("los usuarios no pueden tener el mismo DNI\n ingreselo nuevamente: ");
-				scanf("%ld",&us.DNI);
+			while(aux==0){
+				printf("\nNo se ingresaron numeros validos, el dni no debe contener letras. Ingrese nuevamente: ");
+				fflush(stdin);
+				aux = scanf("%ld",&us.DNI);
 			}
+
+			compDNI = us.DNI;
 			fread(&us,sizeof(us),1,USUARIOS);
-		}
-		rewind(USUARIOS);
-		//ingresar nombre y apellido
-		printf("ingrese el nombre y apellido del usuario\n");
-		fflush(stdin);
-		fgets(us.NomApe, sizeof(us.NomApe), stdin);
-
-		
-		//pedir y controlar fecha de nacimiento
-		printf("ingrese la fecha de nacimiento del usuario:\ndia: ");
-		scanf("%d",&us.FechaNac.dia);
-		while(us.FechaNac.dia <= 0 || us.FechaNac.dia >= 32){
-			printf("\nel dia ingresado es invalido, ingreselo nuevamente: ");
-			scanf("%d",&us.FechaNac.dia);
-		}
-		printf("\nmes: ");
-		scanf("%d",&us.FechaNac.mes);
-		while(us.FechaNac.mes <= 0 || us.FechaNac.mes >= 13){
-			printf("\nel mes ingresado es invalido, ingreselo nuevamente: ");
-			scanf("%d",&us.FechaNac.mes);
-		}
-		printf("\nanio: ");
-		scanf("%d",&us.FechaNac.anio);
-		while((anio - us.FechaNac.anio) >= 110){
-			printf("\nel anio ingresado es invalido, ingreselo nuevamente: ");
-			scanf("%d",&us.FechaNac.anio);
-		}
-		
-		//ingresar direccion
-		printf("\ningrese la direccion del ususario: ");
-		fflush(stdin);
-		fgets(us.direccion, sizeof(us.direccion), stdin);
-
-		//ingresar telefono
-		printf("\ningrese el numero de su telefono: ");
-		aux = scanf("%lld",&us.telefono);
-		while(aux==0){
-			printf("\nNo se ingresaron numeros validos, el nro de telefono no debe contener letras. Ingrese nuevamente: ");
-			fflush(stdin);
-			aux = scanf("%lld",&us.telefono);
-		}
-		
-
-
-			//ingresar el tipo
-		printf("\ningrese el tipo de beneficios:\n 0- sin beneficios\n 1- estudiante\n 2- persona con discapacidad\n 3- persona mayor de edad\n 4-Excombatiente Malvinas \nrespuesta: ");
-		scanf("%d",&us.tipo);
-		while(us.tipo > 4 || us.tipo < 0){
-			printf("\ningrese un dato valido: ");
-			scanf("%d",&us.tipo);
-		}
-
-			//genero la cuenta:
-			if((CUENTAS = fopen("cuentas.dat", "a+b")) != NULL){
-
-				if(generarIdCuenta() != -1){
-					if (generarNroDeTarjeta() != -1){
-						cuenta.idCuenta = generarIdCuenta()+1;
-						printf("\nId cuenta: %d", cuenta.idCuenta);
-						cuenta.idUsuario = us.id;	
-						printf("\nId usuario: %d", cuenta.idUsuario);
-						cuenta.nroDeTarjeta = generarNroDeTarjeta()+1;
-						printf("\nNro de tarjeta: %lld", cuenta.nroDeTarjeta);
-						cuenta.saldo = 0;
-
-						us.idCuenta = cuenta.idCuenta;
-						 //recien se registra el usuario cuando la cuenta tambien se registra correctamnete
-						size_t elementosEscritos = fwrite(&us, sizeof(us), 1, USUARIOS);
-						if (elementosEscritos != 1) {
-    						printf("Error al escribir en el archivo de usuarios\n");
-						}
-						size_t elementosEscritos2 = fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
-						if (elementosEscritos2 != 1) {
-    						printf("Error al escribir en el archivo de cuentas\n");
-						}
-					}else{
-						printf("\nHubo un error al generar el id de la cuenta.");
-					}
-				}else{
-					printf("\nHubo un error al generar el id de la cuenta. ");
+			while(!feof(USUARIOS)){
+				while(compDNI == us.DNI){
+					printf("los usuarios no pueden tener el mismo DNI\n ingreselo nuevamente: ");
+					scanf("%ld",&us.DNI);
 				}
-				fclose(CUENTAS);
-			}else{
-				printf("Hubo un error al abrir el archivo cuentas");
+				fread(&us,sizeof(us),1,USUARIOS);
 			}
+			rewind(USUARIOS);
+			//ingresar nombre y apellido
+			printf("ingrese el nombre y apellido del usuario\n");
+			fflush(stdin);
+			fgets(us.NomApe, sizeof(us.NomApe), stdin);
+
+			
+			//pedir y controlar fecha de nacimiento
+			printf("ingrese la fecha de nacimiento del usuario:\ndia: ");
+			scanf("%d",&us.FechaNac.dia);
+			while(us.FechaNac.dia <= 0 || us.FechaNac.dia >= 32){
+				printf("\nel dia ingresado es invalido, ingreselo nuevamente: ");
+				scanf("%d",&us.FechaNac.dia);
+			}
+			printf("\nmes: ");
+			scanf("%d",&us.FechaNac.mes);
+			while(us.FechaNac.mes <= 0 || us.FechaNac.mes >= 13){
+				printf("\nel mes ingresado es invalido, ingreselo nuevamente: ");
+				scanf("%d",&us.FechaNac.mes);
+			}
+			printf("\nanio: ");
+			scanf("%d",&us.FechaNac.anio);
+			while((anio - us.FechaNac.anio) >= 110){
+				printf("\nel anio ingresado es invalido, ingreselo nuevamente: ");
+				scanf("%d",&us.FechaNac.anio);
+			}
+			
+			//ingresar direccion
+			printf("\ningrese la direccion del ususario: ");
+			fflush(stdin);
+			fgets(us.direccion, sizeof(us.direccion), stdin);
+
+			//ingresar telefono
+			printf("\ningrese el numero de su telefono: ");
+			aux = scanf("%lld",&us.telefono);
+			while(aux==0){
+				printf("\nNo se ingresaron numeros validos, el nro de telefono no debe contener letras. Ingrese nuevamente: ");
+				fflush(stdin);
+				aux = scanf("%lld",&us.telefono);
+			}
+			
+
+
+				//ingresar el tipo
+			printf("\ningrese el tipo de beneficios:\n 0- sin beneficios\n 1- estudiante\n 2- persona con discapacidad\n 3- persona mayor de edad\n 4-Excombatiente Malvinas \nrespuesta: ");
+			scanf("%d",&us.tipo);
+			while(us.tipo > 4 || us.tipo < 0){
+				printf("\ningrese un dato valido: ");
+				scanf("%d",&us.tipo);
+			}
+			//genero la cuenta:
+
+			if(idCuentaAux != -1){
+
+				if(nroTarjetaAux != -1){
+
+					cuenta.idCuenta = idCuentaAux+1;
+					cuenta.nroDeTarjeta = nroTarjetaAux+1;
+					cuenta.saldo = 0;
+					cuenta.idUsuario = us.id;
+					printf("\nid cuenta: %d, nro tarj: %lld, saldo: %f, idUs: %d", cuenta.idCuenta, cuenta.nroDeTarjeta, cuenta.saldo, cuenta.idUsuario);
+					fwrite(&us, sizeof(us), 1, USUARIOS);
+					fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
+					
+				}else{
+					printf("\nError al generar el nro de tarjeta");
+				}
+
+
+			}else{
+				printf("\nError al generar el id de la cuenta");
+			}
+
+
+		fclose(CUENTAS);
+		}else{
+			printf("\nError al querer abrir el archivo cuentas.");
+		}
+			
 
 	fclose(USUARIOS);
 	}
