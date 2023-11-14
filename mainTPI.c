@@ -277,6 +277,8 @@ void menuConsultas(){
 				case 11:
 					ListarCuentas();
 					break;
+				case 12:
+					break;
 				default:
 					printf("No se ingreso una opcion valida");
 					break;
