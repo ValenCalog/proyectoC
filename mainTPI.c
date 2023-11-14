@@ -1200,7 +1200,7 @@ void usoDeBilleteraVirtual(){
 									}
 
 									if(encontroCuenta){
-										if(cuenta.saldo<=mov.SaldoUso){
+										if(cuenta.saldo>=mov.SaldoUso){
 											cuenta.saldo = cuenta.saldo - mov.SaldoUso;
 											fseek(CUENTAS, (long int)sizeof(cuenta)*-1, SEEK_CUR);
 											fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
