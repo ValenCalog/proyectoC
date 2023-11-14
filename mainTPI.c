@@ -1634,19 +1634,19 @@ void showaccountcredit(){
 		{
 		printf("ingrese su DNI\n");
 		scanf("%ld", &accountdni);
-		fread(&us, sizeof(us), 1, USUARIOS);
-			while (!feof(USUARIOS)){
+	
+			while (fread(&us, sizeof(us), 1, USUARIOS)){
 				if (accountdni==us.DNI){
-					fread(&cuenta, sizeof(cuenta),1, CUENTAS);
-					while (!feof(CUENTAS)){
+					
+					while (fread(&cuenta, sizeof(cuenta),1, CUENTAS)){
 						if (us.id==cuenta.idUsuario){
-							printf("Su saldo es de %d\n %02d %02d %02d", cuenta.saldo, hr.tm_hour, hr.tm_min, hr.tm_sec);
+							printf("Su saldo es de %.2f\n %02d %02d %02d", cuenta.saldo, hr.tm_hour, hr.tm_min, hr.tm_sec);
 							break;
 						}
-						fread(&cuenta, sizeof(cuenta),1, CUENTAS);
+						
 					}
 				}
-				fread(&us, sizeof(us), 1, USUARIOS);
+				
 			}
 	}
 }
