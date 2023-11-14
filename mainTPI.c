@@ -431,6 +431,7 @@ int generarIdCuenta(){
 			return(cuenta.idCuenta);
 		}else{
 			//si el archivo estuviera vacio ftell devolveria 0
+			fclose(CUENTAS);
 			return 0;
 		}
 		
