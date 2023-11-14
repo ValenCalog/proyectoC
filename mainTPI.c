@@ -566,12 +566,11 @@ int seEncuentraDniChofer(long dni){
 	if((CHOFERES = fopen("choferes.dat", "rb")) != NULL){
 		
 		fread(&chofer, sizeof(chofer), 1, CHOFERES);
-
 		while((!feof(CHOFERES)) && (!encontro)){
 			if(chofer.DNI == dni){
 				encontro = chofer.id;
 			}else{
-				fread(&us, sizeof(us), 1, USUARIOS);
+				fread(&chofer, sizeof(chofer), 1, CHOFERES);
 			}
 		}
 		fclose(CHOFERES);
@@ -584,7 +583,7 @@ int seEncuentraDniChofer(long dni){
 void agregarChofer(){
 	int ultimoId, band, existe, aux;
 	ultimoId = generarIdChofer();
-
+	long int dniAux;
 	if(ultimoId==(-1)){
 			printf("Hubo un error al intentar abrir el archivo chofer");
 	}else{
@@ -593,14 +592,13 @@ void agregarChofer(){
 			do{
 				band = 0;
 				printf("\nIngrese DNI del chofer: ");
-				aux = scanf("%ld", &chofer.DNI);
+				scanf("%ld", &chofer.DNI);
 				while(aux==0){
 					printf("\nNo se ingresaron numeros validos, el dni no debe contener letras.");
 					fflush(stdin);
 					aux = scanf("%ld", &chofer.DNI);
 				}
 				existe = seEncuentraDniChofer(chofer.DNI);
-
 				if(existe==0){
 						if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
 							printf("\nIngrese nombre del chofer: ");
