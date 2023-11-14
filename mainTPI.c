@@ -581,7 +581,7 @@ int seEncuentraDniChofer(long dni){
 }
 
 void agregarChofer(){
-	int ultimoId, band, existe, aux;
+	int ultimoId, band, existe, aux, c;
 	ultimoId = generarIdChofer();
 	long int dniAux;
 	if(ultimoId==(-1)){
@@ -595,20 +595,20 @@ void agregarChofer(){
 				scanf("%ld", &chofer.DNI);
 				while(aux==0){
 					printf("\nNo se ingresaron numeros validos, el dni no debe contener letras.");
-					fflush(stdin);
+					while ((c = getchar()) != '\n' && c != EOF);
 					aux = scanf("%ld", &chofer.DNI);
 				}
 				existe = seEncuentraDniChofer(chofer.DNI);
 				if(existe==0){
 						if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
 							printf("\nIngrese nombre del chofer: ");
-							fflush(stdin);
+							while ((c = getchar()) != '\n' && c != EOF);
 							fgets(chofer.NomApe, sizeof(chofer.NomApe), stdin);
 							printf("\nIngrese direccion: ");
-							fflush(stdin);
+							while ((c = getchar()) != '\n' && c != EOF);
 							fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
 							printf("\nIngrese email: ");
-							fflush(stdin);
+							while ((c = getchar()) != '\n' && c != EOF);
 							fgets(chofer.email, sizeof(chofer.email), stdin);
 							printf("\nIngrese fecha de nacimiento ");
 							printf("\nDia: ");
@@ -633,7 +633,7 @@ void agregarChofer(){
 							aux = scanf("%lld", &chofer.telefono);
 							while(aux==0){
 								printf("\nNo se ingresaron numeros validos, el telefono no debe contener letras.");
-								fflush(stdin);
+								while ((c = getchar()) != '\n' && c != EOF);
 								aux = scanf("%lld", &chofer.telefono);
 							}
 							size_t elementosEscritos = fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
