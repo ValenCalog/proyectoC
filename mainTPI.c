@@ -305,15 +305,12 @@ void GenerarUsuario(){
 	if((USUARIOS = fopen("Usuarios.dat","a+b")) != NULL){
 		
 		//generar una id
-		
 		fread(&us,sizeof(us),1,USUARIOS);
-		
 		//existe un registro
 		if(!feof(USUARIOS)){
 			fseek(USUARIOS,(long int)sizeof(us) * (-1), SEEK_END);
 			fread(&us,sizeof(us),1,USUARIOS);
 			us.id++;
-			rewind(USUARIOS);
 		}
 		//no existe un registro aun
 		else{
