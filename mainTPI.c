@@ -587,7 +587,6 @@ void agregarChofer(){
 	if(ultimoId==(-1)){
 			printf("Hubo un error al intentar abrir el archivo chofer");
 	}else{
-			chofer.id = ultimoId+1;
 			
 			do{
 				band = 0;
@@ -636,6 +635,8 @@ void agregarChofer(){
 								fflush(stdin);
 								aux = scanf("%lld", &chofer.telefono);
 							}
+							chofer.id = ultimoId+1;
+							printf("\nChofer id: %d", chofer.id);
 							size_t elementosEscritos = fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
 							if (elementosEscritos != 1) {
 								printf("Error al escribir en el archivo de choferes\n");
