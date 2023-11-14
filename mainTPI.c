@@ -1196,14 +1196,14 @@ void usoDeBilleteraVirtual(){
 							scanf("%lld", mov.NroTarjetaOTelefono);
 							while(nroDeTelefonoEsCorrecto(mov.NroTarjetaOTelefono) == 0){
 								printf("\nEl numero de telefono que se ingreso no coincide con el de la cuenta. Ingrese nuevamente: ");
-								scanf("%lld", mov.NroTarjetaOTelefono);
+								scanf("%lld", &mov.NroTarjetaOTelefono);
 							}
 							if(nroDeTelefonoEsCorrecto(mov.NroTarjetaOTelefono) == 1){
 								printf("\nNumero de unidad: ");
-								scanf("%d", mov.nroUnidad); // se tiene que verificar si existe numero de unidad
+								scanf("%d", &mov.nroUnidad); // se tiene que verificar si existe numero de unidad
 								while(existeNroDeUnidad(mov.nroUnidad) == 0){
 									printf("\nEl nro de unidad proporcionado no existe, ingrese uno valido: ");
-									scanf("%d", mov.nroUnidad);
+									scanf("%d", &mov.nroUnidad);
 								}
 								if(existeNroDeUnidad(mov.nroUnidad) == 1){
 									printf("\nOrigen: ");
@@ -1213,7 +1213,7 @@ void usoDeBilleteraVirtual(){
 									fflush(stdin);
 									fgets(mov.destino, sizeof(mov.destino), stdin);
 									printf("\nCantidad de saldo usado: ");
-									scanf("%f", mov.SaldoUso);
+									scanf("%f", &mov.SaldoUso);
 									mov.hora.hora = tiempoActual(1);
 									mov.hora.min = tiempoActual(2);
 									mov.hora.seg = tiempoActual(3);
@@ -1636,7 +1636,7 @@ void showaccountcredit(){
 		printf("ingrese su DNI\n");
 		scanf("%ld", &accountdni);
 		fread(&us, sizeof(us), 1, USUARIOS);
-			while (!feof(USUARIOS)){
+		while (!feof(USUARIOS)){
 				if (accountdni==us.DNI){
 					fread(&cuenta, sizeof(cuenta),1, CUENTAS);
 					while (!feof(CUENTAS)){
