@@ -1004,9 +1004,8 @@ void cargaDeSaldo(){
 										rec.fecha.anio = tiempoActual(4);
 										rec.fecha.mes = tiempoActual(5);
 										rec.fecha.dia = tiempoActual(6);
-										fprintf(archivo, "DNI: %ld , Nro. Control: %ld, Monto: %f, Boca de pago: %s, Fecha: %d/%d/%d, Hora: %d:%d:%d", rec.DNI, rec.NroCtrl, rec.monto, rec.BocaPago, rec.fecha.dia, rec.fecha.mes, rec.fecha.anio, rec.hora.hora, rec.hora.min, rec.hora.seg);
-										fclose(archivo);
-										fwrite(&rec, sizeof(rec), 1, RECARGAS);
+										
+									
 					
 										int encontroCuenta = 0;
 										fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
@@ -1023,11 +1022,13 @@ void cargaDeSaldo(){
 											cuenta.saldo = cuenta.saldo + rec.monto;
 											fseek(CUENTAS,(long int)sizeof(cuenta) *-1, SEEK_CUR);
 											fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
+											fwrite(&rec, sizeof(rec), 1, RECARGAS);
+											fprintf(archivo, "DNI: %ld , Nro. Control: %ld, Monto: %f, Boca de pago: %s, Fecha: %d/%d/%d, Hora: %d:%d:%d", rec.DNI, rec.NroCtrl, rec.monto, rec.BocaPago, rec.fecha.dia, rec.fecha.mes, rec.fecha.anio, rec.hora.hora, rec.hora.min, rec.hora.seg);
 											printf("\nLa recarga se realizo con exito. ");
 										}else{
 											printf("\nNo se encontro el Id de usuario en el archivo cuentas.");
 										}
-
+										fclose(archivo);
 										fclose(CUENTAS);
 
 									}else{
@@ -1042,6 +1043,7 @@ void cargaDeSaldo(){
 					}else{
 						printf("Hubo un error al intentar general el numero de control");
 					}
+					fclose(RECARGAS);
 				}else{
 					printf("\nError al abrir el archivo recargas");
 				}
