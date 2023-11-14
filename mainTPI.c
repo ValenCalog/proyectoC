@@ -1721,6 +1721,7 @@ void unitslist()
 			}
 			else 
 			printf ("la unidad no esta adaptada para discapacitados");
+			fread(&unidad, sizeof(unidad),1,UNIDADES);
 		}
 	}
 }
