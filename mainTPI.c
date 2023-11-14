@@ -955,94 +955,97 @@ void cargaDeSaldo(){
 			IdUsuario = seEncuentraDniUsuario(dniBuscar);
 			band = 0;
 			if((IdUsuario != -1)){
-				rec.DNI = dniBuscar;
-				aux= generarNroDeControl();
-				if(aux !=-1){
-					rec.NroCtrl = aux+1;
-					if((RECARGAS = fopen("recargas.dat", "a+b"))!= NULL){
-						sprintf(nombre, "%ld%ld", rec.DNI, rec.NroCtrl);
-						strcat(nombre, ".txt");
-						if((archivo = fopen(nombre, "w"))!= NULL){
-								if((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL){
-									printf("\nIngrese el monto a cargar: ");
-									scanf("%f", rec.monto);
-									printf("\nBoca de pago: ");
-									printf("\n1. Rapipago");
-									printf("\n2. Terminal de omnibus");
-									printf("\n3. Mini Super Ayacucho");
-									printf("\n4. Agencia IPLyC");
-									printf("\n5. Quiosco");
-									do{
-										printf("\nIngrese su opcion: ");
-										scanf("%d", &opc);
-										switch (opc){
-										case 1:
-											strcpy(rec.BocaPago, "Rapipago");
-											break;
-										case 2:
-											strcpy(rec.BocaPago, "Terminal de omnibus");
-											break;
-										case 3:
-											strcpy(rec.BocaPago, "Mini Super Ayacucho");
-											break;
-										case 4:
-											strcpy(rec.BocaPago, "Agencia IPLyC");
-											break;
-										case 5:
-											strcpy(rec.BocaPago, "Quiosco");
-											break;
-										default:
-											printf("\nNo es numero valido. Por favor intentelo de nuevo");
-											break;
-										}
-									}while((opc <1) || (opc >5));
+				if((RECARGAS = fopen("recargas.dat", "a+b"))!= NULL){
+						rec.DNI = dniBuscar;
+					aux= generarNroDeControl();
+					if(aux !=-1){
+						rec.NroCtrl = aux+1;
+						
+							sprintf(nombre, "%ld%ld", rec.DNI, rec.NroCtrl);
+							strcat(nombre, ".txt");
+							if((archivo = fopen(nombre, "w"))!= NULL){
+									if((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL){
+										printf("\nIngrese el monto a cargar: ");
+										scanf("%f", rec.monto);
+										printf("\nBoca de pago: ");
+										printf("\n1. Rapipago");
+										printf("\n2. Terminal de omnibus");
+										printf("\n3. Mini Super Ayacucho");
+										printf("\n4. Agencia IPLyC");
+										printf("\n5. Quiosco");
+										do{
+											printf("\nIngrese su opcion: ");
+											scanf("%d", &opc);
+											switch (opc){
+											case 1:
+												strcpy(rec.BocaPago, "Rapipago");
+												break;
+											case 2:
+												strcpy(rec.BocaPago, "Terminal de omnibus");
+												break;
+											case 3:
+												strcpy(rec.BocaPago, "Mini Super Ayacucho");
+												break;
+											case 4:
+												strcpy(rec.BocaPago, "Agencia IPLyC");
+												break;
+											case 5:
+												strcpy(rec.BocaPago, "Quiosco");
+												break;
+											default:
+												printf("\nNo es numero valido. Por favor intentelo de nuevo");
+												break;
+											}
+										}while((opc <1) || (opc >5));
 
-									rec.hora.hora = tiempoActual(1);
-									rec.hora.min = tiempoActual(2);
-									rec.hora.seg = tiempoActual(3);
-									rec.fecha.anio = tiempoActual(4);
-									rec.fecha.mes = tiempoActual(5);
-									rec.fecha.dia = tiempoActual(6);
-									fprintf(archivo, "DNI: %ld , Nro. Control: %ld, Monto: %f, Boca de pago: %s, Fecha: %d/%d/%d, Hora: %d:%d:%d", rec.DNI, rec.NroCtrl, rec.monto, rec.BocaPago, rec.fecha.dia, rec.fecha.mes, rec.fecha.anio, rec.hora.hora, rec.hora.min, rec.hora.seg);
-									fclose(archivo);
-									fwrite(&rec, sizeof(rec), 1, RECARGAS);
-				
-									int encontroCuenta = 0;
-									fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
-									while((!feof(CUENTAS)) && (!encontroCuenta)){
-
-										if(cuenta.idUsuario == IdUsuario){
-											encontroCuenta = 1;
-										}else{
-											fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
-										}
-									}
-									
-									if(encontroCuenta){
-										cuenta.saldo = cuenta.saldo + rec.monto;
-										fseek(CUENTAS,(long int)sizeof(cuenta) *-1, SEEK_CUR);
-										fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
-										printf("\nLa recarga se realizo con exito. ");
-									}else{
-										printf("\nNo se encontro el Id de usuario en el archivo cuentas.");
-									}
-
-									fclose(CUENTAS);
-
-								}else{
-									printf("No se puedo abrir el archivo cuentas para actualizar el saldo.");
-								}
-						}else{
-							printf("\nHubo un error al generar el ticket de la recarga.");
-						}
-								fclose(RECARGAS);
-					}else{
-						printf("\nNo se pudo guardar el nroDeControl en el archivo auxiliar de recargas");
-					}
+										rec.hora.hora = tiempoActual(1);
+										rec.hora.min = tiempoActual(2);
+										rec.hora.seg = tiempoActual(3);
+										rec.fecha.anio = tiempoActual(4);
+										rec.fecha.mes = tiempoActual(5);
+										rec.fecha.dia = tiempoActual(6);
+										fprintf(archivo, "DNI: %ld , Nro. Control: %ld, Monto: %f, Boca de pago: %s, Fecha: %d/%d/%d, Hora: %d:%d:%d", rec.DNI, rec.NroCtrl, rec.monto, rec.BocaPago, rec.fecha.dia, rec.fecha.mes, rec.fecha.anio, rec.hora.hora, rec.hora.min, rec.hora.seg);
+										fclose(archivo);
+										fwrite(&rec, sizeof(rec), 1, RECARGAS);
 					
+										int encontroCuenta = 0;
+										fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
+										while((!feof(CUENTAS)) && (!encontroCuenta)){
+
+											if(cuenta.idUsuario == IdUsuario){
+												encontroCuenta = 1;
+											}else{
+												fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
+											}
+										}
+										
+										if(encontroCuenta){
+											cuenta.saldo = cuenta.saldo + rec.monto;
+											fseek(CUENTAS,(long int)sizeof(cuenta) *-1, SEEK_CUR);
+											fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
+											printf("\nLa recarga se realizo con exito. ");
+										}else{
+											printf("\nNo se encontro el Id de usuario en el archivo cuentas.");
+										}
+
+										fclose(CUENTAS);
+
+									}else{
+										printf("No se puedo abrir el archivo cuentas para actualizar el saldo.");
+									}
+							}else{
+								printf("\nHubo un error al generar el ticket de la recarga.");
+							}
+									
+						
+						
+					}else{
+						printf("Hubo un error al intentar general el numero de control");
+					}
 				}else{
-					printf("Hubo un error al intentar general el numero de control");
+					printf("\nError al abrir el archivo recargas");
 				}
+				
 
 			}else{
 				if(IdUsuario == 0){
@@ -1120,6 +1123,7 @@ int nroDeTelefonoEsCorrecto(long long int nroDeTelefono){
 				fread(&us, sizeof(us), 1, USUARIOS);
 			}
 		}
+		fclose(USUARIOS);
 		return encontro;
 	}else{
 		return -1;
