@@ -14,7 +14,7 @@ struct Hora{
 //estructuras principales
 struct Usuario{
 	int id, tipo, idCuenta;
-	long int DNI
+	long int DNI;
 	long long int telefono;
 	char NomApe[40], direccion[40];
 	struct Fecha FechaNac;
