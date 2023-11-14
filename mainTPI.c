@@ -618,7 +618,6 @@ void agregarChofer(){
 							scanf("%d",&chofer.fechaNac.anio);
 						}
 						printf("\nIngrese su telefono: ");
-						scanf("%lld", &chofer.telefono);
 						aux = scanf("%lld", &chofer.telefono);
 						while(aux==0){
 							printf("\nNo se ingresaron numeros validos, el telefono no debe contener letras.");
