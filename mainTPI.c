@@ -117,6 +117,7 @@ int main() {
 	printf("\n4. Pagar boleto con tarjeta.");
 	printf("\n5. Pagar boleto con numero de telefono.");
 	printf("\n0. Salir del programa");
+	printf("\n----------------------------------------");	
 	printf("\nIngrese su opcion: ");
 	scanf("%d", &opc);
 	system("cls");
@@ -155,7 +156,7 @@ void menuModificaciones(){
 	int opc, confirmar;
 
 	do{
-		
+	printf("\n-----------------MODIFICACIONES-----------------");		
 	printf("\n1. Agregar usuarios");
 	printf("\n2. Modificar usuarios");
 	printf("\n3. Agregar choferes");
@@ -163,6 +164,7 @@ void menuModificaciones(){
 	printf("\n5. Agregar unidades");
 	printf("\n6. Modificar unidades");
 	printf("\n7. Volver al menu principal");
+	printf("\n------------------------------------------------");	
 	printf("\nIngrese su opcion: ");
 	scanf("%d", &opc);
 	confirmar = 0;
@@ -227,6 +229,7 @@ void menuConsultas(){
 	int opc, confirmar;
 
 	do{
+		printf("\n-----------------CONSULTAS-----------------");	
 		printf("\n1.Consultar saldo");
 		printf("\n2.Listar usuarios");
 		printf("\n3.Mostrar movimientos efectuados entre dos fechas");
@@ -239,6 +242,7 @@ void menuConsultas(){
 		printf("\n10.Listar unidades");
 		printf("\n11.Listar cuentas");
 		printf("\n12.Volver atras");
+		printf("\n-------------------------------------------");
 				printf("\nIngrese su opcion:");
 				scanf("%d", &opc);
 				system("cls");
