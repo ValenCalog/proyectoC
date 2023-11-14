@@ -600,14 +600,25 @@ void agregarChofer(){
 				existe = seEncuentraDniChofer(chofer.DNI);
 				if(existe==0){
 						if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
+							while ((c = getchar()) != '\n' && c != EOF);
 							printf("\nIngrese nombre del chofer: ");
+<<<<<<< HEAD
 							fflush(stdin);
+=======
+>>>>>>> 409e2e4dbfa34dcf2477a96b6ef94ccb2ebe4910
 							fgets(chofer.NomApe, sizeof(chofer.NomApe), stdin);
+							while ((c = getchar()) != '\n' && c != EOF);
 							printf("\nIngrese direccion: ");
+<<<<<<< HEAD
 							fflush(stdin);
 							fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
 							printf("\nIngrese email: ");
 							fflush(stdin);
+=======
+							fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
+							while ((c = getchar()) != '\n' && c != EOF);
+							printf("\nIngrese email: ");
+>>>>>>> 409e2e4dbfa34dcf2477a96b6ef94ccb2ebe4910
 							fgets(chofer.email, sizeof(chofer.email), stdin);
 							printf("\nIngrese fecha de nacimiento ");
 							printf("\nDia: ");
