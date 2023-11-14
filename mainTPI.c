@@ -1705,7 +1705,7 @@ void unitslist()
 	if ((UNIDADES = fopen ("unidades.dat", "rb"))!= NULL);
 	{
 		fread(&unidad, sizeof(unidad),1,UNIDADES);
-		while (!feof(CHOFERES))
+		while (!feof(UNIDADES))
 		{
 			printf ("\n Id: %d \n Numero de unidad: %d \n Tiene %d asientos \n Corresponde al modelo %s de la marca %s \n Fue dado de alta %d %d %d y cuenta con %f Km\n se encuentra conducida por el chofer con DNI %d", unidad.idUnidad, unidad.NroUnidad, unidad.asientos, unidad.marca, unidad.modelo, unidad.FechaAlta.dia, unidad.FechaAlta.mes, unidad.FechaAlta.anio, unidad.km, unidad.DNIC);
 			if (unidad.turno==1)
