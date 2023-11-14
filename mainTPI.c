@@ -1407,38 +1407,46 @@ void ModificarUnidad(){
 void pagarPasajeTarjeta(){
 	if ((CUENTAS = fopen("cuentas.dat","r+b"))!=NULL){
 		if ((MOVIMIENTOS = fopen("movimientos.dat","ab"))!=NULL){
-			long int DNI, NumTarjeta;
+			long int NumTarjeta;
 			int CuentaEncontro = 0;
-			printf("\nIngrese numero de Tarjeta:\n");
+			printf("\nIngrese numero de DNI:\n");
 			scanf("%lld",&NumTarjeta);
 			// Busca la cuenta de la tarjeta Fisica
 			while(!feof(CUENTAS) && !CuentaEncontro){
 				if (NumTarjeta == cuenta.nroDeTarjeta){
 					CuentaEncontro = 1;
+					puts("Se encontró la cuenta");
 				} else 
 					fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
 			}
-			puts("Ingrese nro de Unidad");
-			scanf("%s",&mov.nroUnidad);
-			puts("Ingrese origen del pasajero:");
-			scanf("%s",&mov.origen);
-			puts("Ingrese destino del pasajero:");
-			scanf("%s",&mov.destino);
-			puts("Saldo a descontar:");
-			scanf("%f",&mov.SaldoUso);
-			//Si no tenes plata te saca.
-			if(cuenta.saldo < mov.SaldoUso){
-				puts("SALDO INSUFICIENTE");
+			//Si cuenta existe entonces...
+			if(CuentaEncontro == 1){
+				puts("Ingrese nro de Unidad");
+				scanf("%s",&mov.nroUnidad);
+				puts("Ingrese origen del pasajero:");
+				scanf("%s",&mov.origen);
+				puts("Ingrese destino del pasajero:");
+				scanf("%s",&mov.destino);
+				puts("Saldo a descontar:");
+				scanf("%f",&mov.SaldoUso);
+				mov.hora.hora = tiempoActual(1);
+				mov.hora.min = tiempoActual(2);
+				mov.hora.seg = tiempoActual(3);
+				mov.fecha.anio = tiempoActual(4);
+				mov.fecha.mes = tiempoActual(5);
+				mov.fecha.dia = tiempoActual(6);
+				//Si no tenes plata te saca.
+				if(cuenta.saldo < mov.SaldoUso){
+					puts("SALDO INSUFICIENTE");
+				} else {
+					fwrite(&mov,sizeof(mov),1,MOVIMIENTOS);
+					cuenta.saldo = cuenta.saldo - mov.SaldoUso;
+					printf("\nSALDO RESTANTE: %.2f\n",cuenta.saldo);
+					fwrite(&cuenta,sizeof(cuenta),1,CUENTAS);
+				}	
+			} else {
+				puts("No se encontro ninguna cuenta que coincida con el numero de tarjeta ingresado :(");
 			}
-			mov.hora.hora = tiempoActual(1);
-			mov.hora.min = tiempoActual(2);
-			mov.hora.seg = tiempoActual(3);
-			mov.fecha.anio = tiempoActual(4);
-			mov.fecha.mes = tiempoActual(5);
-			mov.fecha.dia = tiempoActual(6);
-			fwrite(&mov,sizeof(mov),1,MOVIMIENTOS);
-			cuenta.saldo = cuenta.saldo - mov.SaldoUso;
-			fwrite(&cuenta,sizeof(cuenta),1,CUENTAS);	
 			fclose(MOVIMIENTOS);
 			fclose(CUENTAS);
 		} else
@@ -1629,18 +1637,24 @@ void buscarMovimientosUsuario() {
 				} else
 					fread(&us,sizeof(us),1,USUARIOS);					
 			}
-			while (!feof(MOVIMIENTOS)){
-				if (us.DNI == mov.DNI){
-					printf("DNI:\n%ld\n\nNumero Tarjeta o Telefono:\n%lld\n\nOrigen:\n%s\n\nDestino:\n%s\n\nPrecio:\n%.2f\n\nNro Unidad:\n%d\n\nFecha:\n%d/%d%d\n\nHora:\n%d/%d",&mov.DNI,&mov.NroTarjetaOTelefono,&mov.origen,&mov.destino,&mov.SaldoUso,&mov.nroUnidad,&mov.fecha.dia,&mov.fecha.mes,&mov.fecha.anio,&mov.hora.hora,&mov.hora.min);
-					printf("\n************************************************\n\n************************************************");
-				} else
-					fread(&mov,sizeof(mov),1,MOVIMIENTOS);
+			if (Encontro == 0){
+				puts("El usuario no existe");
+			} else	{
+				puts("************************************************MOVIMIENTOS************************************************");
+				while (!feof(MOVIMIENTOS)){
+					if (us.DNI == mov.DNI){
+						printf("DNI:\n%ld\n\nNumero Tarjeta o Telefono:\n%lld\n\nOrigen:\n%s\n\nDestino:\n%s\n\nPrecio:\n%.2f\n\nNro Unidad:\n%d\n\nFecha:\n%d/%d%d\n\nHora:\n%d/%d",&mov.DNI,&mov.NroTarjetaOTelefono,&mov.origen,&mov.destino,&mov.SaldoUso,&mov.nroUnidad,&mov.fecha.dia,&mov.fecha.mes,&mov.fecha.anio,&mov.hora.hora,&mov.hora.min);
+						printf("\n************************************************\n\n************************************************");
+					} else
+						fread(&mov,sizeof(mov),1,MOVIMIENTOS);
+				}
 			}
 		} else
 			puts("Error al abrir el archivo movimientos");
 	} else
 		puts("Error al abrir el archivo Usuarios");
 }
+
 
 void ListarChoferes(){
 
