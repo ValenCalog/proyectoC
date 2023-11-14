@@ -1246,7 +1246,7 @@ void usoDeBilleteraVirtual(){
 
 void addunit(){
 	int checkunitdoesnotexist = 0, foundunit;
-	
+	int c;
 	if ((UNIDADES = fopen("UNIDADES.dat", "a+b")) != NULL)
 	{
 		fread(&unidad, sizeof(unidad),1, UNIDADES);
@@ -1276,6 +1276,8 @@ void addunit(){
             foundunit = 1;
             printf("La unidad ya existe, por favor ingrese otro numero de unidad\n");
         }
+		else
+			unidad.NroUnidad= checkunitdoesnotexist;
     	}
 		} while (foundunit);
 	
@@ -1283,21 +1285,23 @@ void addunit(){
 
 		printf("ingrese dni del chofer\n");
 		scanf("%d", &unidad.DNIC);
-		printf("Ingrese 0 para asignar turno mañana o 1 para asignar turno tarde\n");	
+		printf("Ingrese 0 para asignar turno manana o 1 para asignar turno tarde\n");	
 		scanf("%d", &unidad.turno);
 		while(unidad.turno != 0 && unidad.turno !=1)
 		{
 			printf("El identificador de turno proporcionado no es valido, por favor ingrese 0 para am y 1 para pm\n");
 			scanf("%d", &unidad.turno);
 		}
-		printf("Ingrese el nombre de la compañia manufacturera de la unidad\n");
-		fflush(stdin);
-		fgets(unidad.marca,sizeof(unidad.marca),stdin);
+		while ((c = getchar()) != '\n' && c != EOF);
+		printf("Ingrese el nombre de la compania manufacturera de la unidad\n");
+		fgets(unidad.marca, sizeof(unidad.marca),stdin);
+		while ((c = getchar()) != '\n' && c != EOF);
 		printf("ingrese el modelo de la unidad\n");
-		fflush(stdin);
 		fgets(unidad.modelo, sizeof(unidad.modelo),stdin);
 		printf("Ingrese el kilometraje de la unidad\n");
 		scanf("%f", &unidad.km);
+		printf("Ingrese el numero de asientos de la unidad\n");
+		scanf("%f", &unidad.asientos);
 		printf("Ingrese la fecha de alta de la unidad\n Año");
 			scanf("%d", &unidad.FechaAlta.anio);
 			printf("mes\n");
