@@ -117,7 +117,7 @@ int main() {
 	printf("\n4. Pagar boleto con tarjeta.");
 	printf("\n5. Pagar boleto con numero de telefono.");
 	printf("\n0. Salir del programa");
-	printf("\n--------------------------------------");	
+	printf("\n----------------------------------------");	
 	printf("\nIngrese su opcion: ");
 	scanf("%d", &opc);
 	system("cls");
