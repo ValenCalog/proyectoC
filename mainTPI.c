@@ -464,8 +464,8 @@ void ModificarUsuario(){
 			if(buscarid == us.id){
 				//ingresar los datos nuevamente (menos el id)
 				printf("ingrese el Nombre y Apellido nuenvamente: \n");
+				flush(stdin);
 				fgets(us.NomApe, sizeof(us.NomApe), stdin);
-				fflush(stdin);
 				printf("ingresar el DNI nuevamente\n");
 				scanf("%d",&us.DNI);
 				printf("ingrese la nueva Fecha de nacimiento\n Dia:\n");
@@ -475,8 +475,8 @@ void ModificarUsuario(){
 				printf("anio:\n");
 				scanf("%d",&us.FechaNac.anio);
 				printf("ingrese la nueva direccion:\n");
-				fgets(us.direccion, sizeof(us.direccion), stdin);
 				fflush(stdin);
+				fgets(us.direccion, sizeof(us.direccion), stdin);
 				printf("ingrese el telefono nuevamente:\n");
 				scanf("%lld",&us.telefono);
 				printf("\ningrese el nuevo tipo de beneficios:\n 0- sin beneficios\n 1- estudiante\n 2- persona con discapacidad\n 3- persona mayor de edad\n 4-  Beneficio Ex-Combatiente de Malvinas\n respuesta: ");
