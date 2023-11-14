@@ -1297,7 +1297,7 @@ void addunit(){
 		rewind(UNIDADES);
 
 		printf("ingrese dni del chofer\n");
-		scanf("%d", &unidad.DNIC);
+		scanf("%d", &unidad.DNIC); //VERIFICAR QUE EXISTA EL DNI DEL CHOFER con existeDniChofer
 		printf("Ingrese 0 para asignar turno manana o 1 para asignar turno tarde\n");	
 		scanf("%d", &unidad.turno);
 		while(unidad.turno != 0 && unidad.turno !=1)
