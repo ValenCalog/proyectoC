@@ -1717,10 +1717,10 @@ void unitslist()
 			
 			if (unidad.adaptado==1)
 			{
-				printf("La unidad se encuentra adaptada para discapacitados");
+				printf("\nLa unidad se encuentra adaptada para discapacitados");
 			}
 			else 
-			printf ("la unidad no esta adaptada para discapacitados");
+			printf ("\nla unidad no esta adaptada para discapacitados");
 			fread(&unidad, sizeof(unidad),1,UNIDADES);
 		}
 	}
