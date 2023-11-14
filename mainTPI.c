@@ -581,7 +581,7 @@ int seEncuentraDniChofer(long dni){
 }
 
 void agregarChofer(){
-	int ultimoId, band, existe, aux, c;
+	int ultimoId, band, existe, aux;
 	ultimoId = generarIdChofer();
 	long int dniAux;
 	if(ultimoId==(-1)){
@@ -594,20 +594,20 @@ void agregarChofer(){
 				scanf("%ld", &chofer.DNI);
 				while(aux==0){
 					printf("\nNo se ingresaron numeros validos, el dni no debe contener letras.");
-					while ((c = getchar()) != '\n' && c != EOF);
+					fflush(stdin);
 					aux = scanf("%ld", &chofer.DNI);
 				}
 				existe = seEncuentraDniChofer(chofer.DNI);
 				if(existe==0){
 						if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
 							printf("\nIngrese nombre del chofer: ");
-							while ((c = getchar()) != '\n' && c != EOF);
+							fflush(stdin);
 							fgets(chofer.NomApe, sizeof(chofer.NomApe), stdin);
 							printf("\nIngrese direccion: ");
-							while ((c = getchar()) != '\n' && c != EOF);
+							fflush(stdin);
 							fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
 							printf("\nIngrese email: ");
-							while ((c = getchar()) != '\n' && c != EOF);
+							fflush(stdin);
 							fgets(chofer.email, sizeof(chofer.email), stdin);
 							printf("\nIngrese fecha de nacimiento ");
 							printf("\nDia: ");
@@ -632,7 +632,7 @@ void agregarChofer(){
 							aux = scanf("%lld", &chofer.telefono);
 							while(aux==0){
 								printf("\nNo se ingresaron numeros validos, el telefono no debe contener letras.");
-								while ((c = getchar()) != '\n' && c != EOF);
+								fflush(stdin);
 								aux = scanf("%lld", &chofer.telefono);
 							}
 							chofer.id = ultimoId+1;
@@ -942,17 +942,17 @@ void buscarRecargasPorDni(){
 }
 
 long generarNroDeControl(){
+	long aux = 900000;
 	if((RECARGAS = fopen("recargas.dat", "rb")) != NULL){
 		fseek(RECARGAS, 0, SEEK_END);
 		
 		if(ftell(RECARGAS) > 0){
 			fseek(RECARGAS, (long int)sizeof(rec) *-1,SEEK_END);
 			fread(&rec, sizeof(rec), 1, RECARGAS);
-			return(rec.NroCtrl);
-		}else{
-			return 900000;
+			aux = rec.NroCtrl;
 		}
-		
+		fclose(RECARGAS);
+		return aux;
 	}else{
 		return -1;
 	}
@@ -967,27 +967,37 @@ void cargaDeSaldo(){
 		printf("Ingrese un numero de dni");
 		scanf("%ld", &dniBuscar);
 		do{
+		
 			IdUsuario = seEncuentraDniUsuario(dniBuscar);
+			
 			band = 0;
 			if((IdUsuario != -1)){
-				if((RECARGAS = fopen("recargas.dat", "a+b"))!= NULL){
-						rec.DNI = dniBuscar;
+				
+					
 					aux= generarNroDeControl();
 					if(aux !=-1){
-						rec.NroCtrl = aux+1;
 						
+						if((RECARGAS = fopen("recargas.dat", "a+b"))!= NULL){
+							rec.DNI = dniBuscar;
+							rec.NroCtrl = aux+1;
+				
 							sprintf(nombre, "%ld%ld", rec.DNI, rec.NroCtrl);
 							strcat(nombre, ".txt");
+							
 							if((archivo = fopen(nombre, "w"))!= NULL){
 									if((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL){
+
 										printf("\nIngrese el monto a cargar: ");
-										scanf("%f", rec.monto);
+										scanf("%f", &rec.monto);
+
+								
 										printf("\nBoca de pago: ");
 										printf("\n1. Rapipago");
 										printf("\n2. Terminal de omnibus");
 										printf("\n3. Mini Super Ayacucho");
 										printf("\n4. Agencia IPLyC");
 										printf("\n5. Quiosco");
+
 										do{
 											printf("\nIngrese su opcion: ");
 											scanf("%d", &opc);
@@ -1012,7 +1022,7 @@ void cargaDeSaldo(){
 												break;
 											}
 										}while((opc <1) || (opc >5));
-
+										
 										rec.hora.hora = tiempoActual(1);
 										rec.hora.min = tiempoActual(2);
 										rec.hora.seg = tiempoActual(3);
@@ -1053,16 +1063,17 @@ void cargaDeSaldo(){
 								printf("\nHubo un error al generar el ticket de la recarga.");
 							}
 									
+							fclose(RECARGAS);
+						}else{
+							printf("\nError al abrir el archivo recargas");
+						}
+
 						
 						
 					}else{
 						printf("Hubo un error al intentar general el numero de control");
 					}
-					fclose(RECARGAS);
-				}else{
-					printf("\nError al abrir el archivo recargas");
-				}
-				
+					
 
 			}else{
 				if(IdUsuario == 0){
