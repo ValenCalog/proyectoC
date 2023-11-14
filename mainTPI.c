@@ -575,6 +575,7 @@ int seEncuentraDniChofer(long dni){
 				fread(&us, sizeof(us), 1, USUARIOS);
 			}
 		}
+		fclose(CHOFERES);
 		return encontro;
 	}else{
 		return -1;
