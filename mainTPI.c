@@ -412,6 +412,7 @@ void GenerarUsuario(){
 			}else{
 				printf("Hubo un error al abrir el archivo cuentas");
 			}
+			
 		fclose(USUARIOS);
 	}
 	else
