@@ -1438,7 +1438,7 @@ void pagarPasajeTarjeta(){
 		if ((MOVIMIENTOS = fopen("movimientos.dat","ab"))!=NULL){
 			long int NumTarjeta;
 			int CuentaEncontro = 0;
-			printf("\nIngrese numero de DNI:\n");
+			printf("\nIngrese numero de tarjeta:\n");
 			scanf("%lld",&NumTarjeta);
 			// Busca la cuenta de la tarjeta Fisica
 			while(!feof(CUENTAS) && !CuentaEncontro){
