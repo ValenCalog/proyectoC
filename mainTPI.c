@@ -1692,7 +1692,7 @@ void unitslist()
 				printf("La unidad se encuentra adaptada para discapacitados");
 			}
 			else 
-			printf ("la unidad no admite invalidos");
+			printf ("la unidad no esta adaptada para discapacitados");
 		}
 	}
 }
