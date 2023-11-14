@@ -667,7 +667,7 @@ int generarIdChofer(){
 void ModificarChofer(){
 	int buscarId, band = 0, aux;
 	
-	if((CHOFERES = fopen("choferes.dat","a+b")) != NULL){
+	if((CHOFERES = fopen("choferes.dat","r+b")) != NULL){
 		printf("ingrese el ID del chofer para modificar sus datos\n");
 		scanf("%d",&buscarId);
 		fread(&chofer,sizeof(chofer),1,CHOFERES);
