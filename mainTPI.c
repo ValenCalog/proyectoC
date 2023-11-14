@@ -306,7 +306,7 @@ void GenerarUsuario(){
 	int BandId = 0, anio = ObtenerAnioActual(), aux;
 	long int compDNI;
 	
-	if((USUARIOS = fopen("Usuarios.dat","r+b")) != NULL){
+	if((USUARIOS = fopen("Usuarios.dat","a+b")) != NULL){
 		
 		//generar una id
 		fread(&us,sizeof(us),1,USUARIOS);
@@ -392,7 +392,7 @@ void GenerarUsuario(){
 		}
 
 			//genero la cuenta:
-			if((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL){
+			if((CUENTAS = fopen("cuentas.dat", "a+b")) != NULL){
 
 				if(generarIdCuenta() != -1){
 					if (generarNroDeTarjeta() != -1){
