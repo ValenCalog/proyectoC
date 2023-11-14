@@ -104,7 +104,7 @@ int nroDeTelefonoEsCorrecto(long long int nroDeTelefono);
 void ListarChoferes();
 void unitslist();
 int existeNroDeUnidad(int nroUnidad);
-
+void ListarCuentas();
 
 int main() {
 	int opc,confirmar;
@@ -237,7 +237,8 @@ void menuConsultas(){
 		printf("\n8.Ver porcentaje de pasajeros que viajan en el primer turno del año");
 		printf("\n9.Listar Choferes");
 		printf("\n10.Listar unidades");
-		printf("\n11.Volver atras");
+		printf("\n11.Listar cuentas");
+		printf("\n12.Volver atras");
 				printf("\nIngrese su opcion:");
 				scanf("%d", &opc);
 				system("cls");
@@ -272,6 +273,9 @@ void menuConsultas(){
 					break;
 				case 10:
 					unitslist();
+					break;
+				case 11:
+					ListarCuentas();
 					break;
 				default:
 					printf("No se ingreso una opcion valida");
