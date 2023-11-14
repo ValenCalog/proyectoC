@@ -283,7 +283,7 @@ void menuConsultas(){
 					printf("No se ingreso una opcion valida");
 					break;
 				}
-	}while(opc!=9);
+	}while(opc!=12);
 
 				
 }
