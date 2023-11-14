@@ -302,7 +302,7 @@ void GenerarUsuario(){
 	int BandId = 0, anio = ObtenerAnioActual(), aux;
 	long int compDNI;
 	
-	if((USUARIOS = fopen("Usuarios.dat","a+b")) != NULL){
+	if((USUARIOS = fopen("Usuarios.dat","r+b")) != NULL){
 		
 		//generar una id
 		fread(&us,sizeof(us),1,USUARIOS);
@@ -388,7 +388,7 @@ void GenerarUsuario(){
 		}
 
 			//genero la cuenta:
-			if((CUENTAS = fopen("cuentas.dat", "a+b")) != NULL){
+			if((CUENTAS = fopen("cuentas.dat", "r+b")) != NULL){
 
 				if(generarIdCuenta() != -1){
 					if (generarNroDeTarjeta() != -1){
@@ -397,8 +397,16 @@ void GenerarUsuario(){
 						cuenta.nroDeTarjeta = generarNroDeTarjeta()+1;
 						cuenta.saldo = 0;
 						us.idCuenta = cuenta.idCuenta;
-						fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
-						fwrite(&us,sizeof(us),1,USUARIOS); //recien se registra el usuario cuando la cuenta tambien se registra correctamnete
+						 //recien se registra el usuario cuando la cuenta tambien se registra correctamnete
+						size_t elementosEscritos = fwrite(&us, sizeof(us), 1, USUARIOS);
+						if (elementosEscritos != 1) {
+    						printf("Error al escribir en el archivo de usuarios\n");
+						}
+						 
+						size_t elementosEscritos2 = fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
+						if (elementosEscritos2 != 1) {
+    						printf("Error al escribir en el archivo de cuentas\n");
+						}
 					}else{
 						printf("\nHubo un error al generar el id de la cuenta.");
 					}
@@ -413,7 +421,7 @@ void GenerarUsuario(){
 				printf("Hubo un error al abrir el archivo cuentas");
 			}
 
-		fclose(USUARIOS);
+	fclose(USUARIOS);
 	}
 	else
 		printf("error al abrir el archivo de usuarios\n");
