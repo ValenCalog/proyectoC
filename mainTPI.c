@@ -949,7 +949,7 @@ void cargaDeSaldo(){
 		long dniBuscar, aux;
 		char nombre[30];
 		int opc, IdUsuario, band = 0;
-		printf("Ingrese un numero de dni: ");
+		printf("Ingrese un numero de dni");
 		scanf("%ld", &dniBuscar);
 		do{
 			IdUsuario = seEncuentraDniUsuario(dniBuscar);
@@ -1041,7 +1041,7 @@ void cargaDeSaldo(){
 					}
 					
 				}else{
-					printf("Hubo un error al intentar generar el numero de control");
+					printf("Hubo un error al intentar general el numero de control");
 				}
 
 			}else{
@@ -1200,7 +1200,7 @@ void usoDeBilleteraVirtual(){
 									}
 
 									if(encontroCuenta){
-										if(cuenta.saldo<=mov.SaldoUso){
+										if(cuenta.saldo>=mov.SaldoUso){
 											cuenta.saldo = cuenta.saldo - mov.SaldoUso;
 											fseek(CUENTAS, (long int)sizeof(cuenta)*-1, SEEK_CUR);
 											fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
