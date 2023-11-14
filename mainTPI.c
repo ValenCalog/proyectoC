@@ -464,7 +464,7 @@ void ModificarUsuario(){
 			if(buscarid == us.id){
 				//ingresar los datos nuevamente (menos el id)
 				printf("ingrese el Nombre y Apellido nuenvamente: \n");
-				flush(stdin);
+				fflush(stdin);
 				fgets(us.NomApe, sizeof(us.NomApe), stdin);
 				printf("ingresar el DNI nuevamente\n");
 				scanf("%d",&us.DNI);
