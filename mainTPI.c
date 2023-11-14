@@ -1257,7 +1257,7 @@ void addunit(){
 			fread(&unidad, sizeof(unidad),1, UNIDADES);
 			unidad.idUnidad++;
 		}
-		
+
 		do {
 			printf("ingrese el numero de la unidad\n");
 			scanf("%d", &unidad.NroUnidad);
@@ -1299,7 +1299,7 @@ void addunit(){
 		printf("Ingrese el kilometraje de la unidad\n");
 		scanf("%f", &unidad.km);
 		printf("Ingrese el numero de asientos de la unidad\n");
-		scanf("%f", &unidad.asientos);
+		scanf("%d", &unidad.asientos);
 		printf("Ingrese la fecha de alta de la unidad\n Año");
 			scanf("%d", &unidad.FechaAlta.anio);
 			printf("mes\n");
