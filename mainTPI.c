@@ -299,7 +299,7 @@ int ObtenerAnioActual() {
 }
 
 void GenerarUsuario(){
-	int BandId = 0, anio = ObtenerAnioActual(), aux, c;
+	int BandId = 0, anio = ObtenerAnioActual(), aux;
 	long int compDNI;
 	
 	if((USUARIOS = fopen("Usuarios.dat","a+b")) != NULL){
@@ -323,7 +323,7 @@ void GenerarUsuario(){
 		aux = scanf("%ld",&us.DNI);
 		while(aux==0){
 			printf("\nNo se ingresaron numeros validos, el dni no debe contener letras. Ingrese nuevamente: ");
-			while ((c = getchar()) != '\n' && c != EOF);
+			fflush(stdin);
 			aux = scanf("%ld",&us.DNI);
 		}
 
@@ -339,7 +339,7 @@ void GenerarUsuario(){
 		rewind(USUARIOS);
 		//ingresar nombre y apellido
 		printf("ingrese el nombre y apellido del usuario\n");
-		while ((c = getchar()) != '\n' && c != EOF);
+		fflush(stdin);
 		fgets(us.NomApe, sizeof(us.NomApe), stdin);
 
 		
@@ -365,7 +365,7 @@ void GenerarUsuario(){
 		
 		//ingresar direccion
 		printf("\ningrese la direccion del ususario: ");
-		while ((c = getchar()) != '\n' && c != EOF);
+		fflush(stdin);
 		fgets(us.direccion, sizeof(us.direccion), stdin);
 
 		//ingresar telefono
@@ -373,7 +373,7 @@ void GenerarUsuario(){
 		aux = scanf("%lld",&us.telefono);
 		while(aux==0){
 			printf("\nNo se ingresaron numeros validos, el nro de telefono no debe contener letras. Ingrese nuevamente: ");
-			while ((c = getchar()) != '\n' && c != EOF);
+			fflush(stdin);
 			aux = scanf("%lld",&us.telefono);
 		}
 		
@@ -1260,22 +1260,24 @@ void addunit(){
 			rewind(UNIDADES);
 		}
 		do {
-    	printf("ingrese el numero de la unidad\n");
-    	scanf("%d", &unidad.NroUnidad);
-   		rewind(UNIDADES);
-		checkunitdoesnotexist = unidad.NroUnidad;
-		foundunit = 0; 
-    	while (!feof(UNIDADES) && !foundunit)
-    	{
-        fread(&unidad,sizeof(unidad),1,UNIDADES);
-        if (unidad.NroUnidad == checkunitdoesnotexist)
-        {
-            foundunit = 1;
-            printf("La unidad ya existe, por favor ingrese otro numero de unidad\n");
-        }
-		else
-			unidad.NroUnidad= checkunitdoesnotexist;
-    	}
+			printf("ingrese el numero de la unidad\n");
+			scanf("%d", &unidad.NroUnidad);
+			rewind(UNIDADES);
+			checkunitdoesnotexist = unidad.NroUnidad;
+			foundunit = 0; 
+			fread(&unidad,sizeof(unidad),1,UNIDADES);
+			while (!feof(UNIDADES) && !foundunit)
+			{
+			
+			if (unidad.NroUnidad == checkunitdoesnotexist)
+			{
+				foundunit = 1;
+				printf("La unidad ya existe, por favor ingrese otro numero de unidad\n");
+			}
+			else
+				unidad.NroUnidad= checkunitdoesnotexist;
+			fread(&unidad,sizeof(unidad),1,UNIDADES);
+			}
 		} while (foundunit);
 	
 		rewind(UNIDADES);
@@ -1314,7 +1316,7 @@ void addunit(){
 		}
 		fwrite(&unidad, sizeof(unidad),1, UNIDADES);	
 		fclose(UNIDADES);
-		}
+	}
 		
 	else 
 		printf("error al abrir el archivo unidades\n");
