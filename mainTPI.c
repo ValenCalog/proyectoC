@@ -22,7 +22,7 @@ struct Usuario{
 
 struct Cuenta{
 	int idCuenta, idUsuario;
-	long nroDeTarjeta;
+	long long int nroDeTarjeta;
 	float saldo;
 }cuenta;
 
@@ -90,7 +90,7 @@ void usoDeBilleteraVirtual();
 void addunit();
 void ModificarUnidad();
 int generarIdCuenta();
-long generarNroDeTarjeta();
+long long int generarNroDeTarjeta();
 void choferesConMasPasajeros();
 void buscarRecargasPorDni();
 int seEncuentraDniChofer(long dni);
@@ -435,7 +435,7 @@ int generarIdCuenta(){
 	}
 }
 
-long generarNroDeTarjeta(){
+long long int generarNroDeTarjeta(){
 	if((CUENTAS = fopen("cuentas.dat","rb")) != NULL){
 		fseek(CUENTAS, 0, SEEK_END);
 		
@@ -1386,7 +1386,7 @@ void pagarPasajeTarjeta(){
 			long int DNI, NumTarjeta;
 			int CuentaEncontro = 0;
 			printf("\nIngrese numero de Tarjeta:\n");
-			scanf("%ld",&NumTarjeta);
+			scanf("%lld",&NumTarjeta);
 			// Busca la cuenta de la tarjeta Fisica
 			while(!feof(CUENTAS) && !CuentaEncontro){
 				if (NumTarjeta == cuenta.nroDeTarjeta){
@@ -1631,7 +1631,22 @@ void ListarChoferes(){
 	}
 	else
 		printf("error al abrir el archivo choferes\n");
+}
+
+void ListarCuentas(){
+
+	if((CUENTAS = fopen("cuentas.dat","rb")) != NULL){
+		
+		fread(&cuenta, sizeof(cuenta),1,CUENTAS);
+		while(!feof(CUENTAS)){
+			printf("\n------------\nId cuenta: %d\nId usuario: %d\nNroDeTarjeta: %lld\nSaldo: %f\n------------", cuenta.idCuenta, cuenta.idUsuario, cuenta.nroDeTarjeta, cuenta.saldo);
+			fread(&cuenta, sizeof(cuenta),1,CUENTAS);
+		}
+		fclose(CUENTAS);
 	}
+	else
+		printf("error al abrir el archivo choferes\n");
+}
 
 void unitslist()
 {
