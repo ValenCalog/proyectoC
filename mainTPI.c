@@ -1251,14 +1251,13 @@ void addunit(){
 		if (feof(UNIDADES))
 		{
 			unidad.idUnidad=1;
-			rewind(UNIDADES);
 		}
 		else {
 			fseek(UNIDADES, (long int)sizeof(unidad) * (-1), SEEK_END);
 			fread(&unidad, sizeof(unidad),1, UNIDADES);
 			unidad.idUnidad++;
-			rewind(UNIDADES);
 		}
+		
 		do {
 			printf("ingrese el numero de la unidad\n");
 			scanf("%d", &unidad.NroUnidad);
