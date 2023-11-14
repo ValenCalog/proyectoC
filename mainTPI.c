@@ -14,7 +14,8 @@ struct Hora{
 //estructuras principales
 struct Usuario{
 	int id, tipo, idCuenta;
-	long int DNI, telefono;
+	long int DNI
+	long long int telefono;
 	char NomApe[40], direccion[40];
 	struct Fecha FechaNac;
 }us;
@@ -42,13 +43,15 @@ struct Unidad{
 
 struct Chofer{
 	int id;
-	long int DNI, telefono;
+	long int DNI;
+	long long int telefono;
 	char NomApe[40], direccion[40], email[40];
 	struct Fecha fechaNac;
 }chofer;
 
 struct Movimiento{
-	long int DNI, NroTarjetaOTelefono;
+	long int DNI;
+	long long int NroTarjetaOTelefono;
 	char origen[25], destino[25];
 	float SaldoUso;
 	int nroUnidad;
@@ -97,7 +100,7 @@ int compararDosFechas(struct Fecha fecha1, struct Fecha fecha2);
 void movimientosEntreDosFechas();
 void showaccountcredit();
 void buscarMovimientosUsuario();
-int nroDeTelefonoEsCorrecto(long nroDeTelefono);
+int nroDeTelefonoEsCorrecto(long long int nroDeTelefono);
 void ListarChoferes();
 void unistlist();
 int existeNroDeUnidad(int nroUnidad);
@@ -364,11 +367,11 @@ void GenerarUsuario(){
 
 		//ingresar telefono
 		printf("\ningrese el numero de su telefono: ");
-		aux = scanf("%ld",&us.telefono);
+		aux = scanf("%lld",&us.telefono);
 		while(aux==0){
 			printf("\nNo se ingresaron numeros validos, el nro de telefono no debe contener letras. Ingrese nuevamente: ");
 			fflush(stdin);
-			aux = scanf("%ld",&us.telefono);
+			aux = scanf("%lld",&us.telefono);
 		}
 		
 
@@ -475,7 +478,7 @@ void ModificarUsuario(){
 				fgets(us.direccion, sizeof(us.direccion), stdin);
 				fflush(stdin);
 				printf("ingrese el telefono nuevamente:\n");
-				scanf("%ld",&us.telefono);
+				scanf("%lld",&us.telefono);
 				printf("\ningrese el nuevo tipo de beneficios:\n 0- sin beneficios\n 1- estudiante\n 2- persona con discapacidad\n 3- persona mayor de edad\n 4-  Beneficio Ex-Combatiente de Malvinas\n respuesta: ");
 				scanf("%d",&us.tipo);
 				while(us.tipo != 0 || us.tipo != 1 || us.tipo != 2 || us.tipo != 3 || us.tipo != 4){
@@ -496,7 +499,7 @@ void ListarUsuarios(){
 		
 		fread(&us,sizeof(us),1,USUARIOS);
 		while(!feof(USUARIOS)){
-			printf("----------------\n +Id: %d\n +Nombre y apellido: %s\n +fecha de nacimiento: %d/%d/%d\n +DNI: %ld\n +Telefono: %ld\n +Direccion: %s\n----------------\n",us.id,us.NomApe,us.FechaNac.dia,us.FechaNac.mes,us.FechaNac.anio,us.DNI,us.telefono,us.direccion);
+			printf("----------------\n +Id: %d\n +Nombre y apellido: %s\n +fecha de nacimiento: %d/%d/%d\n +DNI: %ld\n +Telefono: %lld\n +Direccion: %s\n----------------\n",us.id,us.NomApe,us.FechaNac.dia,us.FechaNac.mes,us.FechaNac.anio,us.DNI,us.telefono,us.direccion);
 			fread(&us,sizeof(us),1,USUARIOS);
 		}
 		fclose(USUARIOS);
@@ -603,12 +606,12 @@ void agregarChofer(){
 							scanf("%d",&chofer.fechaNac.anio);
 						}
 						printf("\nIngrese su telefono: ");
-						scanf("%ld", &chofer.telefono);
-						aux = scanf("%ld", &chofer.telefono);
+						scanf("%lld", &chofer.telefono);
+						aux = scanf("%lld", &chofer.telefono);
 						while(aux==0){
 							printf("\nNo se ingresaron numeros validos, el telefono no debe contener letras.");
 							fflush(stdin);
-							aux = scanf("%ld", &chofer.telefono);
+							aux = scanf("%lld", &chofer.telefono);
 						}
 						fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
 				}else{
@@ -694,11 +697,11 @@ void ModificarChofer(){
 				fflush(stdin);
 				fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
 				printf("\ningrese el nuevo numero telefonico: ");
-				aux = scanf("%ld",&chofer.telefono);
+				aux = scanf("%lld",&chofer.telefono);
 				while(aux == 0){
 					printf("\nNo se ingresaron numeros validos, el telefono no debe contener letras.");
 					fflush(stdin);
-					aux = scanf("%ld", &chofer.telefono);
+					aux = scanf("%lld", &chofer.telefono);
 				}
 				printf("\nIngrese el nuevo correo electronico: ");
 				fflush(stdin);
@@ -1091,7 +1094,7 @@ int tiempoActual(int tipo){
 	}
 }
 
-int nroDeTelefonoEsCorrecto(long nroDeTelefono){
+int nroDeTelefonoEsCorrecto(long long int nroDeTelefono){
 	int encontro = 0;
 	if((USUARIOS = fopen("Usuarios.dat", "rb")) != NULL){
 		fread(&us, sizeof(us), 1, USUARIOS);
@@ -1142,10 +1145,10 @@ void usoDeBilleteraVirtual(){
 					IdUsuario = seEncuentraDniUsuario(mov.DNI);
 					if( (IdUsuario != -1) && (IdUsuario !=0)){
 							printf("\nIngrese su numero de telefono: ");
-							scanf("%ld", mov.NroTarjetaOTelefono);
+							scanf("%lld", mov.NroTarjetaOTelefono);
 							while(nroDeTelefonoEsCorrecto(mov.NroTarjetaOTelefono) == 0){
 								printf("\nEl numero de telefono que se ingreso no coincide con el de la cuenta. Ingrese nuevamente: ");
-								scanf("%ld", mov.NroTarjetaOTelefono);
+								scanf("%lld", mov.NroTarjetaOTelefono);
 							}
 							if(nroDeTelefonoEsCorrecto(mov.NroTarjetaOTelefono) == 1){
 								printf("\nNumero de unidad: ");
@@ -1549,7 +1552,7 @@ void movimientosEntreDosFechas(){
 		while(!feof(MOVIMIENTOS)){
 
 			if((compararDosFechas(mov.fecha, fechaInicio) < 2 )&& (compararDosFechas(fechaFinal, mov.fecha) < 2)){
-				printf("\nDNI: %ld, NroDeTarjeta/NroDeTelefono: %ld, Origen: %s, Destino: %s, Saldo: %f, Fecha: %d/%d/%d, Hora: %d:%d:%d", mov.DNI, mov.NroTarjetaOTelefono, mov.origen, mov.destino, mov.SaldoUso, mov.fecha.anio, mov.fecha.mes, mov.fecha.dia, mov.hora.hora, mov.hora.min, mov.hora.seg);
+				printf("\nDNI: %ld, NroDeTarjeta/NroDeTelefono: %lld, Origen: %s, Destino: %s, Saldo: %f, Fecha: %d/%d/%d, Hora: %d:%d:%d", mov.DNI, mov.NroTarjetaOTelefono, mov.origen, mov.destino, mov.SaldoUso, mov.fecha.anio, mov.fecha.mes, mov.fecha.dia, mov.hora.hora, mov.hora.min, mov.hora.seg);
 			}
 			fread(&mov, sizeof(mov), 1, MOVIMIENTOS);
 		}
@@ -1604,7 +1607,7 @@ void buscarMovimientosUsuario() {
 			}
 			while (!feof(MOVIMIENTOS)){
 				if (us.DNI == mov.DNI){
-					printf("DNI:\n%ld\n\nNumero Tarjeta o Telefono:\nld\n\nOrigen:\n%s\n\nDestino:\n%s\n\nPrecio:\n%.2f\n\nNro Unidad:\n%d\n\nFecha:\n%d/%d%d\n\nHora:\n%d/%d",&mov.DNI,&mov.NroTarjetaOTelefono,&mov.origen,&mov.destino,&mov.SaldoUso,&mov.nroUnidad,&mov.fecha.dia,&mov.fecha.mes,&mov.fecha.anio,&mov.hora.hora,&mov.hora.min);
+					printf("DNI:\n%ld\n\nNumero Tarjeta o Telefono:\n%lld\n\nOrigen:\n%s\n\nDestino:\n%s\n\nPrecio:\n%.2f\n\nNro Unidad:\n%d\n\nFecha:\n%d/%d%d\n\nHora:\n%d/%d",&mov.DNI,&mov.NroTarjetaOTelefono,&mov.origen,&mov.destino,&mov.SaldoUso,&mov.nroUnidad,&mov.fecha.dia,&mov.fecha.mes,&mov.fecha.anio,&mov.hora.hora,&mov.hora.min);
 					printf("\n************************************************\n\n************************************************");
 				} else
 					fread(&mov,sizeof(mov),1,MOVIMIENTOS);
@@ -1621,7 +1624,7 @@ void ListarChoferes(){
 		
 		fread(&chofer, sizeof(chofer),1,CHOFERES);
 		while(!feof(CHOFERES)){
-			printf("----------------\n +Id: %d\n +Nombre y apellido: %s\n +fecha de nacimiento: %d/%d/%d\n +DNI: %ld\n +Telefono: %ld\n +Direccion: %s\n +Email: %s\n----------------\n",chofer.id, chofer.NomApe, chofer.fechaNac.dia,chofer.fechaNac.mes, chofer.fechaNac.anio, chofer.DNI, chofer.telefono, chofer.direccion, chofer.email);
+			printf("----------------\n +Id: %d\n +Nombre y apellido: %s\n +fecha de nacimiento: %d/%d/%d\n +DNI: %ld\n +Telefono: %lld\n +Direccion: %s\n +Email: %s\n----------------\n",chofer.id, chofer.NomApe, chofer.fechaNac.dia,chofer.fechaNac.mes, chofer.fechaNac.anio, chofer.DNI, chofer.telefono, chofer.direccion, chofer.email);
 			fread(&chofer,sizeof(chofer),1,CHOFERES);
 		}
 		fclose(CHOFERES);
