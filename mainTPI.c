@@ -397,16 +397,19 @@ void GenerarUsuario(){
 				if(generarIdCuenta() != -1){
 					if (generarNroDeTarjeta() != -1){
 						cuenta.idCuenta = generarIdCuenta()+1;
+						printf("\nId cuenta: %d", cuenta.idCuenta);
 						cuenta.idUsuario = us.id;	
+						printf("\nId usuario: %d", cuenta.idUsuario);
 						cuenta.nroDeTarjeta = generarNroDeTarjeta()+1;
+						printf("\nNro de tarjeta: %lld", cuenta.nroDeTarjeta);
 						cuenta.saldo = 0;
+
 						us.idCuenta = cuenta.idCuenta;
 						 //recien se registra el usuario cuando la cuenta tambien se registra correctamnete
 						size_t elementosEscritos = fwrite(&us, sizeof(us), 1, USUARIOS);
 						if (elementosEscritos != 1) {
     						printf("Error al escribir en el archivo de usuarios\n");
 						}
-						 
 						size_t elementosEscritos2 = fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
 						if (elementosEscritos2 != 1) {
     						printf("Error al escribir en el archivo de cuentas\n");
@@ -414,9 +417,6 @@ void GenerarUsuario(){
 					}else{
 						printf("\nHubo un error al generar el id de la cuenta.");
 					}
-					
-					
-					
 				}else{
 					printf("\nHubo un error al generar el id de la cuenta. ");
 				}
@@ -637,9 +637,10 @@ void agregarChofer(){
 							fflush(stdin);
 							aux = scanf("%lld", &chofer.telefono);
 						}
-						
-						fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
-						printf("se guardo el chofer");
+						size_t elementosEscritos = fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
+						if (elementosEscritos != 1) {
+    						printf("Error al escribir en el archivo de choferes\n");
+						}
 				}else{
 					if(existe==-1){
 						printf("\nHubo un error al intentar verificar si existia el registro de un chofer con ese DNI.");
