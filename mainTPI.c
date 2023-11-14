@@ -1145,7 +1145,7 @@ int nroDeTelefonoEsCorrecto(long long int nroDeTelefono){
 	int encontro = 0;
 	if((USUARIOS = fopen("Usuarios.dat", "rb")) != NULL){
 		fread(&us, sizeof(us), 1, USUARIOS);
-		while((!feof(USUARIOS)) && encontro){
+		while((!feof(USUARIOS)) && (!encontro)){
 			if(us.telefono == nroDeTelefono){
 				encontro = 1;
 			}else{
@@ -1164,15 +1164,16 @@ int existeNroDeUnidad(int nroUnidad){
 	if((UNIDADES = fopen("UNIDADES.dat", "rb")) !=  NULL){
 
 		fread(&unidad, sizeof(unidad), 1, UNIDADES);
-		while(!feof(UNIDADES)){
+		while(!feof(UNIDADES) && (!band)){
 			if(unidad.NroUnidad == nroUnidad){
 				band = 1;
 			}else{
 				fread(&unidad, sizeof(unidad), 1, UNIDADES);
 			}
 		}
-		return band;
 		fclose(UNIDADES);
+		return band;
+		
 	}else{
 		return -1;
 	}
@@ -1193,7 +1194,8 @@ void usoDeBilleteraVirtual(){
 					IdUsuario = seEncuentraDniUsuario(mov.DNI);
 					if( (IdUsuario != -1) && (IdUsuario !=0)){
 							printf("\nIngrese su numero de telefono: ");
-							scanf("%lld", mov.NroTarjetaOTelefono);
+							scanf("%lld", &mov.NroTarjetaOTelefono);
+							printf("%lld", nroDeTelefonoEsCorrecto(mov.NroTarjetaOTelefono));
 							while(nroDeTelefonoEsCorrecto(mov.NroTarjetaOTelefono) == 0){
 								printf("\nEl numero de telefono que se ingreso no coincide con el de la cuenta. Ingrese nuevamente: ");
 								scanf("%lld", &mov.NroTarjetaOTelefono);
@@ -1238,6 +1240,8 @@ void usoDeBilleteraVirtual(){
 											fseek(CUENTAS, (long int)sizeof(cuenta)*-1, SEEK_CUR);
 											fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
 											fwrite(&mov, sizeof(mov), 1, MOVIMIENTOS);
+											printf("\nOperacion exitosa");
+											printf("\nSaldo restante: %f", cuenta.saldo);
 										}else{
 											printf("\nSaldo insuficiente.");
 										}
