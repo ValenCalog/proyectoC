@@ -459,14 +459,21 @@ long long int generarNroDeTarjeta(){
 
 void ModificarUsuario(){
 	int buscarid;
+	int band = 0;
 	
-	if((USUARIOS = fopen("Usuarios.dat","a+b")) != NULL){
+	if((USUARIOS = fopen("Usuarios.dat","r+b")) != NULL){
 		printf("ingrese el id del usuario a buscar: \n");
 		scanf("%d",&buscarid);
 		fread(&us,sizeof(us),1,USUARIOS);
-		while(!feof(USUARIOS)){
+		while(!feof(USUARIOS) && band == 0){
 			if(buscarid == us.id){
-				//ingresar los datos nuevamente (menos el id)
+				band = 1;
+			}else{
+
+			}
+		}
+		if(band){
+			//ingresar los datos nuevamente (menos el id)
 				printf("ingrese el Nombre y Apellido nuenvamente: \n");
 				fflush(stdin);
 				fgets(us.NomApe, sizeof(us.NomApe), stdin);
@@ -485,11 +492,12 @@ void ModificarUsuario(){
 				scanf("%lld",&us.telefono);
 				printf("\ningrese el nuevo tipo de beneficios:\n 0- sin beneficios\n 1- estudiante\n 2- persona con discapacidad\n 3- persona mayor de edad\n 4-  Beneficio Ex-Combatiente de Malvinas\n respuesta: ");
 				scanf("%d",&us.tipo);
-				while(us.tipo != 0 || us.tipo != 1 || us.tipo != 2 || us.tipo != 3 || us.tipo != 4){
+				while(us.tipo > 4 || us.tipo <0){
 					printf("\ningrese un dato valido: ");
 					scanf("%d",&us.tipo);
 				}
-			}
+		}else{
+			printf("\nEl id no existe.");
 		}
 	}
 	else
@@ -514,7 +522,7 @@ void ListarUsuarios(){
 }
 
 void CantBeneficios(){
-	int cant = 0, contEst = 0, contDisc = 0, contMay = 0;
+	int cant = 0, contEst = 0, contDisc = 0, contMay = 0, contEx = 0;
 	if((USUARIOS = fopen("Usuarios.dat","rb")) != NULL){
 		
 		fread(&us,sizeof(us),1,USUARIOS);
@@ -524,6 +532,7 @@ void CantBeneficios(){
 				switch(us.tipo){
 					case 1: contEst++;break;
 					case 2: contDisc++;break;
+					case 4: contEx++;break;
 					default: contMay++;break;
 				}
 			}
@@ -531,7 +540,7 @@ void CantBeneficios(){
 		}
 		if(cant != 0){
 			printf("La cantidad de usuarios con beneficios son: %d\n",cant);
-			printf("Cantidad de usuarios con beneficio estudiantil: %d\n Cantidad de usuarios con beneficio por discapacidad: %d\n Cantidad de usuarios con beneficio por ser mayor de edad: %d\n",contEst,contDisc,contMay);
+			printf("Cantidad de usuarios con beneficio estudiantil: %d\n Cantidad de usuarios con beneficio por discapacidad: %d\n Cantidad de usuarios con beneficio por ser mayor de edad: %d\nCantidad de usuarios con beneficios Ex combatiente de malvinas: %d\n",contEst,contDisc,contMay, contEx);
 		}
 		else
 			printf("No hay usuarios con beneficios\n");
