@@ -412,7 +412,7 @@ void GenerarUsuario(){
 			}else{
 				printf("Hubo un error al abrir el archivo cuentas");
 			}
-			
+
 		fclose(USUARIOS);
 	}
 	else
@@ -440,18 +440,17 @@ int generarIdCuenta(){
 }
 
 long long int generarNroDeTarjeta(){
+	long long int nro = 100000;
 	if((CUENTAS = fopen("cuentas.dat","rb")) != NULL){
 		fseek(CUENTAS, 0, SEEK_END);
 		
 		if(ftell(CUENTAS) > 0){
 			fseek(CUENTAS,(long int)sizeof(cuenta)*-1,SEEK_END);
 			fread(&cuenta,sizeof(cuenta),1,CUENTAS);
-			fclose(CUENTAS);
-			return(cuenta.nroDeTarjeta);
-		}else{
-			return 100000;
+			nro = cuenta.nroDeTarjeta;
 		}
-		
+		fclose(CUENTAS);
+		return nro;
 	}else{
 		return -1;
 	}
