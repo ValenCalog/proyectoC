@@ -583,9 +583,10 @@ int seEncuentraDniChofer(long dni){
 
 void agregarChofer(){
 	int ultimoId, band, existe, aux;
+	ultimoId = generarIdChofer();
 	if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
 
-		ultimoId = generarIdChofer();
+		
 		if(ultimoId==(-1)){
 			printf("Hubo un error al intentar abrir el archivo chofer");
 		}else{
