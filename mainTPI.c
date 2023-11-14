@@ -229,6 +229,7 @@ void menuConsultas(){
 	int opc, confirmar;
 
 	do{
+		printf("\n-----------------CONSULTAS-----------------");	
 		printf("\n1.Consultar saldo");
 		printf("\n2.Listar usuarios");
 		printf("\n3.Mostrar movimientos efectuados entre dos fechas");
@@ -241,6 +242,7 @@ void menuConsultas(){
 		printf("\n10.Listar unidades");
 		printf("\n11.Listar cuentas");
 		printf("\n12.Volver atras");
+		printf("\n-------------------------------------------");
 				printf("\nIngrese su opcion:");
 				scanf("%d", &opc);
 				system("cls");
