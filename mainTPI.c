@@ -624,7 +624,9 @@ void agregarChofer(){
 							fflush(stdin);
 							aux = scanf("%lld", &chofer.telefono);
 						}
+						
 						fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
+						printf("se guardo el chofer");
 				}else{
 					if(existe==-1){
 						printf("\nHubo un error al intentar verificar si existia el registro de un chofer con ese DNI.");
