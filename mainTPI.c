@@ -348,7 +348,7 @@ void GenerarUsuario(){
 
 		
 		//pedir y controlar fecha de nacimiento
-		printf("ingrese la fecha de nacimiento del usuario:\n dia: ");
+		printf("ingrese la fecha de nacimiento del usuario:\ndia: ");
 		scanf("%d",&us.FechaNac.dia);
 		while(us.FechaNac.dia <= 0 || us.FechaNac.dia >= 32){
 			printf("\nel dia ingresado es invalido, ingreselo nuevamente: ");
