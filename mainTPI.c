@@ -584,12 +584,10 @@ int seEncuentraDniChofer(long dni){
 void agregarChofer(){
 	int ultimoId, band, existe, aux;
 	ultimoId = generarIdChofer();
-	if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
 
-		
-		if(ultimoId==(-1)){
+	if(ultimoId==(-1)){
 			printf("Hubo un error al intentar abrir el archivo chofer");
-		}else{
+	}else{
 			chofer.id = ultimoId+1;
 			
 			do{
@@ -602,46 +600,53 @@ void agregarChofer(){
 					aux = scanf("%ld", &chofer.DNI);
 				}
 				existe = seEncuentraDniChofer(chofer.DNI);
+
 				if(existe==0){
-						printf("\nIngrese nombre del chofer: ");
-						fflush(stdin);
-						fgets(chofer.NomApe, sizeof(chofer.NomApe), stdin);
-						printf("\nIngrese direccion: ");
-						fflush(stdin);
-						fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
-						printf("\nIngrese email: ");
-						fflush(stdin);
-						fgets(chofer.email, sizeof(chofer.email), stdin);
-						printf("\nIngrese fecha de nacimiento ");
-						printf("\nDia: ");
-						scanf("%d", &chofer.fechaNac.dia);
-						while((chofer.fechaNac.dia > 31) || (chofer.fechaNac.dia < 1)){
-							printf("\nIngrese un dia valido: ");
-							scanf("%d",&chofer.fechaNac.dia);
-						}
-						printf("\nMes: ");
-						scanf("%d", &chofer.fechaNac.mes);
-						while((chofer.fechaNac.mes > 12) || (chofer.fechaNac.mes < 1)){
-							printf("\nIngrese un mes valido: ");
-							scanf("%d",&chofer.fechaNac.mes);
-						}
-						printf("\nAnio: ");
-						scanf("%d",&chofer.fechaNac.anio);
-						while(chofer.fechaNac.anio < 0){
-							printf("\nIngrese un anio valido: ");
-							scanf("%d",&chofer.fechaNac.anio);
-						}
-						printf("\nIngrese su telefono: ");
-						aux = scanf("%lld", &chofer.telefono);
-						while(aux==0){
-							printf("\nNo se ingresaron numeros validos, el telefono no debe contener letras.");
+						if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
+							printf("\nIngrese nombre del chofer: ");
 							fflush(stdin);
+							fgets(chofer.NomApe, sizeof(chofer.NomApe), stdin);
+							printf("\nIngrese direccion: ");
+							fflush(stdin);
+							fgets(chofer.direccion, sizeof(chofer.direccion), stdin);
+							printf("\nIngrese email: ");
+							fflush(stdin);
+							fgets(chofer.email, sizeof(chofer.email), stdin);
+							printf("\nIngrese fecha de nacimiento ");
+							printf("\nDia: ");
+							scanf("%d", &chofer.fechaNac.dia);
+							while((chofer.fechaNac.dia > 31) || (chofer.fechaNac.dia < 1)){
+								printf("\nIngrese un dia valido: ");
+								scanf("%d",&chofer.fechaNac.dia);
+							}
+							printf("\nMes: ");
+							scanf("%d", &chofer.fechaNac.mes);
+							while((chofer.fechaNac.mes > 12) || (chofer.fechaNac.mes < 1)){
+								printf("\nIngrese un mes valido: ");
+								scanf("%d",&chofer.fechaNac.mes);
+							}
+							printf("\nAnio: ");
+							scanf("%d",&chofer.fechaNac.anio);
+							while(chofer.fechaNac.anio < 0){
+								printf("\nIngrese un anio valido: ");
+								scanf("%d",&chofer.fechaNac.anio);
+							}
+							printf("\nIngrese su telefono: ");
 							aux = scanf("%lld", &chofer.telefono);
+							while(aux==0){
+								printf("\nNo se ingresaron numeros validos, el telefono no debe contener letras.");
+								fflush(stdin);
+								aux = scanf("%lld", &chofer.telefono);
+							}
+							size_t elementosEscritos = fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
+							if (elementosEscritos != 1) {
+								printf("Error al escribir en el archivo de choferes\n");
+							}
+							fclose(CHOFERES);
+						}else{
+							printf("\nError al abrir archivo choferes");
 						}
-						size_t elementosEscritos = fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
-						if (elementosEscritos != 1) {
-    						printf("Error al escribir en el archivo de choferes\n");
-						}
+						
 				}else{
 					if(existe==-1){
 						printf("\nHubo un error al intentar verificar si existia el registro de un chofer con ese DNI.");
@@ -654,11 +659,9 @@ void agregarChofer(){
 			}while(band==1);
 			
 			
-		}
-		fclose(CHOFERES);
-	}else{
-		printf("No se pudo abrir el archivo choferes");
 	}
+		
+	
 
 }
 
