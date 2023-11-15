@@ -80,6 +80,7 @@ void CantBeneficios();
 void agregarChofer();
 int generarIdChofer();
 void ModificarChofer();
+
 long generarNroDeControl();
 int ObtenerAnioActual();
 void cargaDeSaldo();
@@ -202,7 +203,7 @@ void menuModificaciones(){
 		do
 		{
 			addunit();
-			printf("desea añadir otra unidad? ingrese 1 para confirmar\n");
+			printf("desea aniadir otra unidad? ingrese 1 para confirmar\n");
 			scanf("%d", &confirmar);
 		} while (confirmar==1);
 		break;
@@ -237,7 +238,7 @@ void menuConsultas(){
 		printf("\n5.Cantidad de usuarios con beneficios.");
 		printf("\n6.Buscar movimientos de un usario particular ingresando su nombre.");
 		printf("\n7.Buscar chofer o choferes con mas pasajeros en un mes en especifico");
-		printf("\n8.Ver porcentaje de pasajeros que viajan en el primer turno del año");
+		printf("\n8.Ver porcentaje de pasajeros que viajan en el primer turno del anio");
 		printf("\n9.Listar Choferes");
 		printf("\n10.Listar unidades");
 		printf("\n11.Listar cuentas");
@@ -299,7 +300,7 @@ int ObtenerAnioActual() {
     time(&tiempo); // Obtiene la hora actual
     tiempoinfo = localtime(&tiempo); // Convierte la hora actual a una estructura tm
 
-    return tiempoinfo->tm_year + 1900; // Devuelve el año actual
+    return tiempoinfo->tm_year + 1900; // Devuelve el anio actual
 }
 
 void GenerarUsuario(){
@@ -1326,42 +1327,43 @@ void addunit(){
 		rewind(UNIDADES);
 
 		printf("ingrese dni del chofer\n");
-		scanf("%d", &unidad.DNIC); //VERIFICAR QUE EXISTA EL DNI DEL CHOFER con existeDniChofer
-		printf("Ingrese 0 para asignar turno manana o 1 para asignar turno tarde\n");	
-		scanf("%d", &unidad.turno);
-		while(unidad.turno != 0 && unidad.turno !=1)
-		{
+		scanf("%ld", &unidad.DNIC); //VERIFICAR QUE EXISTA EL DNI DEL CHOFER con existeDniChofer
+		if (seEncuentraDniChofer(unidad.DNIC) != 0 && seEncuentraDniChofer(unidad.DNIC) != -1){
+			printf("Ingrese 0 para asignar turno manana o 1 para asignar turno tarde\n");	
+			scanf("%d", &unidad.turno);
+			while(unidad.turno != 0 && unidad.turno !=1)
+			{
 			printf("El identificador de turno proporcionado no es valido, por favor ingrese 0 para am y 1 para pm\n");
 			scanf("%d", &unidad.turno);
-		}
-		while ((c = getchar()) != '\n' && c != EOF);
-		printf("Ingrese el nombre de la compania manufacturera de la unidad\n");
-		fgets(unidad.marca, sizeof(unidad.marca),stdin);
-		while ((c = getchar()) != '\n' && c != EOF);
-		printf("ingrese el modelo de la unidad\n");
-		fgets(unidad.modelo, sizeof(unidad.modelo),stdin);
-		printf("Ingrese el kilometraje de la unidad\n");
-		scanf("%f", &unidad.km);
-		printf("Ingrese el numero de asientos de la unidad\n");
-		scanf("%d", &unidad.asientos);
-		printf("Ingrese la fecha de alta de la unidad\n Año");
+			}
+			while ((c = getchar()) != '\n' && c != EOF);
+			printf("Ingrese el nombre de la compania manufacturera de la unidad\n");
+			fgets(unidad.marca, sizeof(unidad.marca),stdin);
+			while ((c = getchar()) != '\n' && c != EOF);
+			printf("ingrese el modelo de la unidad\n");
+			fgets(unidad.modelo, sizeof(unidad.modelo),stdin);
+			printf("Ingrese el kilometraje de la unidad\n");
+			scanf("%f", &unidad.km);
+			printf("Ingrese el numero de asientos de la unidad\n");
+			scanf("%d", &unidad.asientos);
+			printf("Ingrese la fecha de alta de la unidad\n Anio");
 			scanf("%d", &unidad.FechaAlta.anio);
 			printf("mes\n");
 			scanf("%d", &unidad.FechaAlta.mes);
 			printf("día\n");
 			scanf("%d", &unidad.FechaAlta.dia);
-		printf("Esta adaptada la unidad para discapacitados? presione 1 para confirmar y 0 para negar\n");
-		scanf("%d", &unidad.adaptado);
-		while(unidad.adaptado != 0 && unidad.adaptado !=1)
-		{
+			printf("Esta adaptada la unidad para discapacitados? presione 1 para confirmar y 0 para negar\n");
+			scanf("%d", &unidad.adaptado);
+			while(unidad.adaptado != 0 && unidad.adaptado !=1)
+			{
 			printf("El identificador de discapacitados proporcionado no es valido, por favor ingrese 0 para am y 1 para pm\n");
 			scanf("%d", &unidad.adaptado);
-		}
-		fwrite(&unidad, sizeof(unidad),1, UNIDADES);	
+			}
+			fwrite(&unidad, sizeof(unidad),1, UNIDADES);
+		} else
+			puts("No existe ningun chofer que coincida con el DNI ingresado");
 		fclose(UNIDADES);
-	}
-		
-	else 
+	} else 
 		printf("error al abrir el archivo unidades\n");
 }
 
@@ -1392,7 +1394,7 @@ void ModificarUnidad(){
 				printf("ingrese dni del chofer\n");
 				scanf("%d", &unidad.DNIC);
 				
-				printf("Ingrese 0 para asignar turno mañana o 1 para asignar turno tarde\n");	
+				printf("Ingrese 0 para asignar turno manana o 1 para asignar turno tarde\n");	
 				scanf("%d", &unidad.turno);
 				
 				while(unidad.turno != 0 && unidad.turno !=1)
@@ -1401,7 +1403,7 @@ void ModificarUnidad(){
 					scanf("%d", &unidad.turno);
 				}
 				
-				printf("Ingrese el nombre de la compañia manufacturera de la unidad\n");
+				printf("Ingrese el nombre de la compania manufacturera de la unidad\n");
 				fflush(stdin);
 				fgets(unidad.marca, sizeof(unidad.marca), stdin);
 				
@@ -1412,10 +1414,10 @@ void ModificarUnidad(){
 				printf("Ingrese el kilometraje de la unidad\n");
 				scanf("%f", &unidad.km);
 				
-				printf("Ingrese la fecha de alta de la unidad\n Año");
+				printf("Ingrese la fecha de alta de la unidad\n Anio");
 				scanf("%d", &unidad.FechaAlta.anio);
 				while(unidad.FechaAlta.anio < 0){
-					printf("\nIngrese un año valido: ");
+					printf("\nIngrese un anio valido: ");
 					scanf("%d", &unidad.FechaAlta.anio);
 				}
 				printf("mes\n");
@@ -1449,8 +1451,8 @@ void ModificarUnidad(){
 // Los objetos de valor de mi casa se encuentra en el siguiente enlace: https://www.youtube.com/watch?v=dQw4w9WgXcQ
 void pagarPasajeTarjeta(){
 	if ((CUENTAS = fopen("cuentas.dat","r+b"))!=NULL){
-		if ((MOVIMIENTOS = fopen("movimientos.dat","ab"))!=NULL){
-			long int NumTarjeta;
+		if ((MOVIMIENTOS = fopen("movimientos.dat","a+b"))!=NULL){
+			long long int NumTarjeta;
 			int CuentaEncontro = 0;
 			printf("\nIngrese numero de tarjeta:\n");
 			scanf("%lld",&NumTarjeta);
@@ -1464,29 +1466,41 @@ void pagarPasajeTarjeta(){
 			}
 			//Si cuenta existe entonces...
 			if(CuentaEncontro == 1){
-				puts("Ingrese nro de Unidad");
-				scanf("%s",&mov.nroUnidad);
-				puts("Ingrese origen del pasajero:");
-				scanf("%s",&mov.origen);
-				puts("Ingrese destino del pasajero:");
-				scanf("%s",&mov.destino);
-				puts("Saldo a descontar:");
-				scanf("%f",&mov.SaldoUso);
-				mov.hora.hora = tiempoActual(1);
-				mov.hora.min = tiempoActual(2);
-				mov.hora.seg = tiempoActual(3);
-				mov.fecha.anio = tiempoActual(4);
-				mov.fecha.mes = tiempoActual(5);
-				mov.fecha.dia = tiempoActual(6);
-				//Si no tenes plata te saca.
-				if(cuenta.saldo < mov.SaldoUso){
-					puts("SALDO INSUFICIENTE");
-				} else {
-					fwrite(&mov,sizeof(mov),1,MOVIMIENTOS);
-					cuenta.saldo = cuenta.saldo - mov.SaldoUso;
-					printf("\nSALDO RESTANTE: %.2f\n",cuenta.saldo);
-					fwrite(&cuenta,sizeof(cuenta),1,CUENTAS);
-				}	
+				puts("Ingrese su numero de DNI");
+				scanf("%ld",&mov.DNI);
+				if(seEncuentraDniUsuario(mov.DNI) == cuenta.idUsuario){
+					puts("Ingrese nro de Unidad");
+					scanf("%s",&mov.nroUnidad);
+					puts("Ingrese origen del pasajero:");
+					scanf("%s",&mov.origen);
+					puts("Ingrese destino del pasajero:");
+					scanf("%s",&mov.destino);
+					puts("Saldo a descontar:");
+					scanf("%f",&mov.SaldoUso);
+					mov.hora.hora = tiempoActual(1);
+					mov.hora.min = tiempoActual(2);
+					mov.hora.seg = tiempoActual(3);
+					mov.fecha.anio = tiempoActual(4);
+					mov.fecha.mes = tiempoActual(5);
+					mov.fecha.dia = tiempoActual(6);
+					//Si no tenes plata te saca.
+					if(cuenta.saldo < mov.SaldoUso){
+						puts("SALDO INSUFICIENTE");
+					} else {
+						fwrite(&mov,sizeof(mov),1,MOVIMIENTOS);
+						cuenta.saldo = cuenta.saldo - mov.SaldoUso;
+						printf("\nSALDO RESTANTE: %f\n",cuenta.saldo);
+						fseek(CUENTAS, (long int)sizeof(cuenta)*-1, SEEK_CUR);
+						size_t actCuenta = fwrite(&cuenta,sizeof(cuenta),1,CUENTAS);
+						if (actCuenta == 0){
+							puts("Error no se cargo nada");
+						}
+					}	
+
+				}else{
+						printf("\nIngrese un DNI que exista.");
+			}
+				
 			} else {
 				puts("No se encontro ninguna cuenta que coincida con el numero de tarjeta ingresado :(");
 			}
@@ -1520,7 +1534,7 @@ void PrimerTurno(){
 			fread(&mov,sizeof(mov),1,MOVIMIENTOS);
 		}
 		por = (cont * 100) / Ctotal;
-		printf("el porcentaje de pasajeros que viajaron en el anio es de: %.2f \n", por);
+		printf("el porcentaje de pasajeros que viajaron en el anio es de: %.1f \n", por);
 		fclose(MOVIMIENTOS);
 	}
 	else
@@ -1580,7 +1594,7 @@ void movimientosEntreDosFechas(){
 	struct Fecha fechaInicio;
 	struct Fecha fechaFinal;
 	printf("\nPrimera fecha.");
-	printf("\nAño: ");
+	printf("\nAnio: ");
 	scanf("%d", &fechaInicio.anio);
 	while(fechaInicio.anio < 1){
 		printf("\nIngrese un anio valido: ");
@@ -1602,7 +1616,7 @@ void movimientosEntreDosFechas(){
 	}
 
 	printf("\n\nFecha final.");
-	printf("\nAño: ");
+	printf("\nAnio: ");
 	scanf("%d", &fechaFinal.anio);
 	while(fechaFinal.anio < 1){
 		printf("\nIngrese un anio valido: ");
@@ -1656,7 +1670,7 @@ void showaccountcredit(){
 					
 					while (fread(&cuenta, sizeof(cuenta),1, CUENTAS)){
 						if (us.id==cuenta.idUsuario){
-							printf("Su saldo es de %.2f\n %02d %02d %02d", cuenta.saldo, hr.tm_hour, hr.tm_min, hr.tm_sec);
+							printf("Su saldo es de %f\n %02d %02d %02d", cuenta.saldo, hr.tm_hour, hr.tm_min, hr.tm_sec);
 							break;
 						}
 						
@@ -1689,7 +1703,7 @@ void buscarMovimientosUsuario() {
 				fread(&mov, sizeof(mov), 1, MOVIMIENTOS);
 				while (!feof(MOVIMIENTOS)){
 					if (us.DNI == mov.DNI){
-						printf("DNI:\n%ld\n\nNumero Tarjeta o Telefono:\n%lld\n\nOrigen:\n%s\n\nDestino:\n%s\n\nPrecio:\n%.2f\n\nNro Unidad:\n%d\n\nFecha:\n%d/%d/%d\n\nHora:\n%d:%d",mov.DNI,mov.NroTarjetaOTelefono,mov.origen,mov.destino,mov.SaldoUso,mov.nroUnidad,mov.fecha.dia,mov.fecha.mes,mov.fecha.anio,mov.hora.hora,mov.hora.min);
+						printf("DNI:\n%ld\n\nNumero Tarjeta o Telefono:\n%lld\n\nOrigen:\n%s\n\nDestino:\n%s\n\nPrecio:\n%f\n\nNro Unidad:\n%d\n\nFecha:\n%d/%d/%d\n\nHora:\n%d:%d",mov.DNI,mov.NroTarjetaOTelefono,mov.origen,mov.destino,mov.SaldoUso,mov.nroUnidad,mov.fecha.dia,mov.fecha.mes,mov.fecha.anio,mov.hora.hora,mov.hora.min);
 						printf("\n************************************************\n\n************************************************");
 					}
 						fread(&mov,sizeof(mov),1,MOVIMIENTOS);
@@ -1734,7 +1748,7 @@ void ListarCuentas(){
 
 void unitslist()
 {
-	if ((UNIDADES = fopen ("unidades.dat", "rb"))!= NULL);
+	if ((UNIDADES = fopen ("UNIDADES.dat", "rb"))!= NULL);
 	{
 		fread(&unidad, sizeof(unidad),1,UNIDADES);
 		while (!feof(UNIDADES))
@@ -1745,7 +1759,7 @@ void unitslist()
 				printf("\nCircula por el turno tarde 12:00-23:59");
 			}
 			else 
-			printf ("\nCircula por el turno mañana 00:00-11:59");
+			printf ("\nCircula por el turno manana 00:00-11:59");
 			
 			if (unidad.adaptado==1)
 			{
