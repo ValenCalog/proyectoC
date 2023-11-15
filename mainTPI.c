@@ -482,6 +482,7 @@ void ModificarUsuario(){
 			}else{
 
 			}
+			fread(&us,sizeof(us),1,USUARIOS);
 		}
 		if(band){
 			//ingresar los datos nuevamente (menos el id)
