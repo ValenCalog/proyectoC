@@ -1679,9 +1679,9 @@ void buscarMovimientosUsuario() {
 				fread(&mov, sizeof(mov), 1, MOVIMIENTOS);
 				while (!feof(MOVIMIENTOS)){
 					if (us.DNI == mov.DNI){
-						printf("DNI:\n%ld\n\nNumero Tarjeta o Telefono:\n%lld\n\nOrigen:\n%s\n\nDestino:\n%s\n\nPrecio:\n%.2f\n\nNro Unidad:\n%d\n\nFecha:\n%d/%d/%d\n\nHora:\n%d/%d",mov.DNI,mov.NroTarjetaOTelefono,mov.origen,mov.destino,mov.SaldoUso,mov.nroUnidad,mov.fecha.dia,mov.fecha.mes,mov.fecha.anio,mov.hora.hora,mov.hora.min);
+						printf("DNI:\n%ld\n\nNumero Tarjeta o Telefono:\n%lld\n\nOrigen:\n%s\n\nDestino:\n%s\n\nPrecio:\n%.2f\n\nNro Unidad:\n%d\n\nFecha:\n%d/%d/%d\n\nHora:\n%d:%d",mov.DNI,mov.NroTarjetaOTelefono,mov.origen,mov.destino,mov.SaldoUso,mov.nroUnidad,mov.fecha.dia,mov.fecha.mes,mov.fecha.anio,mov.hora.hora,mov.hora.min);
 						printf("\n************************************************\n\n************************************************");
-					} else
+					}
 						fread(&mov,sizeof(mov),1,MOVIMIENTOS);
 				}
 			}
