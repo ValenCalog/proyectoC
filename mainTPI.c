@@ -1278,20 +1278,18 @@ void usoDeBilleteraVirtual(){
 
 void addunit(){
 	int checkunitdoesnotexist = 0, foundunit;
-	int c;
+	int c, unitid;
 	if ((UNIDADES = fopen("UNIDADES.dat", "a+b")) != NULL)
 	{
-		fread(&unidad, sizeof(unidad),1, UNIDADES);
-		
-		if (feof(UNIDADES))
-		{
-			unidad.idUnidad=1;
-		}
-		else {
-			fseek(UNIDADES, (long int)sizeof(unidad) * (-1), SEEK_END);
-			fread(&unidad, sizeof(unidad),1, UNIDADES);
-			unidad.idUnidad++;
-		}
+		if(!feof(UNIDADES)){
+				fseek(UNIDADES,(long int)sizeof(unidad) * (-1), SEEK_END);
+				fread(&unidad,sizeof(unidad),1,UNIDADES);
+				unitid=unidad.idUnidad + 1;
+			}
+			else{
+				unitid= unidad.idUnidad = 1;
+				rewind(USUARIOS);
+			}
 
 		do {
 			printf("ingrese el numero de la unidad\n");
@@ -1348,6 +1346,7 @@ void addunit(){
 			printf("El identificador de discapacitados proporcionado no es valido, por favor ingrese 0 para am y 1 para pm\n");
 			scanf("%d", &unidad.adaptado);
 		}
+		unidad.idUnidad = unitid;
 		fwrite(&unidad, sizeof(unidad),1, UNIDADES);	
 		fclose(UNIDADES);
 	}
