@@ -782,7 +782,7 @@ void choferesConMasPasajeros(){
 								fread(&mov, sizeof(mov), 1, MOVIMIENTOS);
 								while(!feof(MOVIMIENTOS)){
 									if(mov.fecha.mes == mesIngresado){
-									
+										printf("\nMovimiento %ld es del mes ingresado ", mov.DNI); //prueba
 										fread(&unidad, sizeof(unidad), 1, UNIDADES);
 										//busco en unidades el nro de unidad que se encuentra en el movimiento para sacar el dni del chofer:
 										while((!feof(UNIDADES)) && (!encontroUnidad)){
@@ -796,20 +796,20 @@ void choferesConMasPasajeros(){
 
 										if(encontroUnidad){
 											//al encontrar la unidad, escribo en un archivo auxiliar solo el dni
+											printf("\nTiene el nro de unidad %d", mov.nroUnidad); //prueba
 											fwrite(&unidad.DNIC, sizeof(unidad.DNIC), 1, auxDniChoferes);
 										}
 									}
 									fread(&mov, sizeof(mov), 1, MOVIMIENTOS);
 									rewind(UNIDADES);
 									encontroUnidad = 0;	
-										
 								}
-
+								printf("\nRecorri todo movimientos"); //prueba
 								encontroAux = 0;
 								rewind(auxDniChoferes);
 								fread(&unidad.DNIC, sizeof(unidad.DNIC), 1, auxDniChoferes);
 								while(!feof(auxDniChoferes)){
-
+									printf("\nUnidad.dnic : %ld", unidad.DNIC);
 									encontroAux = 0;
 									fread(&aux, sizeof(aux), 1, auxParaContar);
 									while((!feof(auxParaContar)) && (!encontroAux)){
@@ -831,7 +831,7 @@ void choferesConMasPasajeros(){
 										aux.cantidadPasajeros = 1;
 										fwrite(&aux, sizeof(aux), 1, auxParaContar);
 									}
-									
+									printf("\nDni %ld, cantidad: %d", aux.DNIC, aux.cantidadPasajeros);
 									rewind(auxParaContar);
 
 									fread(&unidad.DNIC, sizeof(unidad.DNIC), 1, auxDniChoferes);
