@@ -978,9 +978,9 @@ void cargaDeSaldo(){
 					if(aux !=-1){
 						
 						if((RECARGAS = fopen("recargas.dat", "a+b"))!= NULL){
+							
 							rec.DNI = dniBuscar;
 							rec.NroCtrl = aux+1;
-				
 							sprintf(nombre, "%ld%ld", rec.DNI, rec.NroCtrl);
 							strcat(nombre, ".txt");
 							
@@ -1049,6 +1049,7 @@ void cargaDeSaldo(){
 											fseek(CUENTAS,(long int)sizeof(cuenta) *-1, SEEK_CUR);
 											fwrite(&cuenta, sizeof(cuenta), 1, CUENTAS);
 											fwrite(&rec, sizeof(rec), 1, RECARGAS);
+											printf("\nNro de control: %lld", rec.NroCtrl);
 											fprintf(archivo, "DNI: %ld , Nro. Control: %ld, Monto: %f, Boca de pago: %s, Fecha: %d/%d/%d, Hora: %d:%d:%d", rec.DNI, rec.NroCtrl, rec.monto, rec.BocaPago, rec.fecha.dia, rec.fecha.mes, rec.fecha.anio, rec.hora.hora, rec.hora.min, rec.hora.seg);
 											printf("\nLa recarga se realizo con exito. ");
 										}else{
@@ -1664,6 +1665,7 @@ void buscarMovimientosUsuario() {
 			puts("Ingrese un nombre y apellido");
 			fflush(stdin);
 			fgets(NomApebusc, sizeof(NomApebusc), stdin);
+			fread(&us, sizeof(us), 1, USUARIOS);
 			while (!feof(USUARIOS) && !Encontro){
 				if (strcmp(NomApebusc,us.NomApe)==0){
 					Encontro = 1;
