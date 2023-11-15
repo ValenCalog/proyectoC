@@ -482,7 +482,6 @@ void ModificarUsuario(){
 			}else{
 
 			}
-			fread(&us,sizeof(us),1,USUARIOS);
 		}
 		if(band){
 			//ingresar los datos nuevamente (menos el id)
@@ -592,13 +591,13 @@ void agregarChofer(){
 			do{
 				band = 0;
 				printf("\nIngrese DNI del chofer: ");
-				scanf("%ld", &chofer.DNI);
+				aux = scanf("%ld", &dniAux);
 				while(aux==0){
 					printf("\nNo se ingresaron numeros validos, el dni no debe contener letras.");
 					fflush(stdin);
-					aux = scanf("%ld", &chofer.DNI);
+					aux = scanf("%ld", &dniAux);
 				}
-				existe = seEncuentraDniChofer(chofer.DNI);
+				existe = seEncuentraDniChofer(dniAux);
 				if(existe==0){
 						if((CHOFERES = fopen("choferes.dat", "a+b")) != NULL){
 							printf("\nIngrese nombre del chofer: ");
@@ -637,7 +636,7 @@ void agregarChofer(){
 								aux = scanf("%lld", &chofer.telefono);
 							}
 							chofer.id = ultimoId+1;
-							printf("\nChofer id: %d", chofer.id);
+							chofer.DNI = dniAux;
 							size_t elementosEscritos = fwrite(&chofer, sizeof(chofer), 1, CHOFERES);
 							if (elementosEscritos != 1) {
 								printf("Error al escribir en el archivo de choferes\n");
@@ -847,6 +846,7 @@ void choferesConMasPasajeros(){
 									}
 									fread(&aux, sizeof(aux), 1, auxParaContar);
 								}
+								printf("\nMax: %d", max);
 								encontroAux = 0;
 								rewind(auxParaContar);
 								printf("\nEl chofer o los choferes con mas pasajeros son: ");
@@ -1287,18 +1287,20 @@ void usoDeBilleteraVirtual(){
 
 void addunit(){
 	int checkunitdoesnotexist = 0, foundunit;
-	int c, unitid;
+	int c;
 	if ((UNIDADES = fopen("UNIDADES.dat", "a+b")) != NULL)
 	{
-		if(!feof(UNIDADES)){
-				fseek(UNIDADES,(long int)sizeof(unidad) * (-1), SEEK_END);
-				fread(&unidad,sizeof(unidad),1,UNIDADES);
-				unitid=unidad.idUnidad + 1;
-			}
-			else{
-				unitid= unidad.idUnidad = 1;
-				rewind(USUARIOS);
-			}
+		fread(&unidad, sizeof(unidad),1, UNIDADES);
+		
+		if (feof(UNIDADES))
+		{
+			unidad.idUnidad=1;
+		}
+		else {
+			fseek(UNIDADES, (long int)sizeof(unidad) * (-1), SEEK_END);
+			fread(&unidad, sizeof(unidad),1, UNIDADES);
+			unidad.idUnidad++;
+		}
 
 		do {
 			printf("ingrese el numero de la unidad\n");
@@ -1355,7 +1357,6 @@ void addunit(){
 			printf("El identificador de discapacitados proporcionado no es valido, por favor ingrese 0 para am y 1 para pm\n");
 			scanf("%d", &unidad.adaptado);
 		}
-		unidad.idUnidad = unitid;
 		fwrite(&unidad, sizeof(unidad),1, UNIDADES);	
 		fclose(UNIDADES);
 	}
