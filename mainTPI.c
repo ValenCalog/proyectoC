@@ -764,140 +764,148 @@ void choferesConMasPasajeros(){
 		long DNIC;
 		int cantidadPasajeros;
 	}aux;
-	if((CHOFERES = fopen("choferes.dat", "rb")) != NULL){
 
-		if((MOVIMIENTOS = fopen("movimientos.dat", "rb")) != NULL){
+	if(auxParaContar != NULL){
+		fclose(auxParaContar);
 
-			if((UNIDADES = fopen("UNIDADES.dat", "rb")) != NULL){
+		if((CHOFERES = fopen("choferes.dat", "rb")) != NULL){
 
-				if((auxDniChoferes = fopen("auxDniChoferes.dat", "a+b")) != NULL){
+			if((MOVIMIENTOS = fopen("movimientos.dat", "rb")) != NULL){
 
-					if(auxParaContar!= NULL){
-						if((auxParaContar = fopen("auxParaContar.dat", "r+b")) != NULL){
-							
+				if((UNIDADES = fopen("UNIDADES.dat", "rb")) != NULL){
 
-							fread(&mov, sizeof(mov), 1, MOVIMIENTOS);
-							while(!feof(MOVIMIENTOS)){
-								if(mov.fecha.mes == mesIngresado){
+					if((auxDniChoferes = fopen("auxDniChoferes.dat", "a+b")) != NULL){
+
+							if((auxParaContar = fopen("auxParaContar.dat", "r+b")) != NULL){
 								
-									fread(&unidad, sizeof(unidad), 1, UNIDADES);
-									//busco en unidades el nro de unidad que se encuentra en el movimiento para sacar el dni del chofer:
-									while((!feof(UNIDADES)) && (!encontroUnidad)){
-										
-										if(unidad.NroUnidad == mov.nroUnidad){
-											encontroUnidad = 1;
-										}else{
-											fread(&unidad, sizeof(unidad), 1, UNIDADES);
+
+								fread(&mov, sizeof(mov), 1, MOVIMIENTOS);
+								while(!feof(MOVIMIENTOS)){
+									if(mov.fecha.mes == mesIngresado){
+									
+										fread(&unidad, sizeof(unidad), 1, UNIDADES);
+										//busco en unidades el nro de unidad que se encuentra en el movimiento para sacar el dni del chofer:
+										while((!feof(UNIDADES)) && (!encontroUnidad)){
+											
+											if(unidad.NroUnidad == mov.nroUnidad){
+												encontroUnidad = 1;
+											}else{
+												fread(&unidad, sizeof(unidad), 1, UNIDADES);
+											}
+										}
+
+										if(encontroUnidad){
+											//al encontrar la unidad, escribo en un archivo auxiliar solo el dni
+											fwrite(&unidad.DNIC, sizeof(unidad.DNIC), 1, auxDniChoferes);
 										}
 									}
-
-									if(encontroUnidad){
-										//al encontrar la unidad, escribo en un archivo auxiliar solo el dni
-										fwrite(&unidad.DNIC, sizeof(unidad.DNIC), 1, auxDniChoferes);
-									}
+									fread(&mov, sizeof(mov), 1, MOVIMIENTOS);
+									rewind(UNIDADES);
+									encontroUnidad = 0;	
+										
 								}
-								fread(&mov, sizeof(mov), 1, MOVIMIENTOS);
-								rewind(UNIDADES);
-								encontroUnidad = 0;	
-									
-							}
-
-							encontroAux = 0;
-							rewind(auxDniChoferes);
-							fread(&unidad.DNIC, sizeof(unidad.DNIC), 1, auxDniChoferes);
-							while(!feof(auxDniChoferes)){
 
 								encontroAux = 0;
-								fread(&aux, sizeof(aux), 1, auxParaContar);
-								while((!feof(auxParaContar)) && (!encontroAux)){
-
-									if(unidad.DNIC == aux.DNIC){
-										encontroAux = 1;
-									}else{
-										fread(&aux, sizeof(aux), 1, auxParaContar);
-									}
-								}
-								if(encontroAux){
-									//si ya esta escrito el dni, le sumo uno a la cantidad de pasajeros
-									aux.cantidadPasajeros = aux.cantidadPasajeros +1;
-									fseek(auxParaContar, (long int)sizeof(aux) * -1, SEEK_CUR);
-									fwrite(&aux, sizeof(aux), 1, auxParaContar);
-								}else{
-									//si no esta escrito el dni, lo escribo y seteo los pasajeros en uno
-									aux.DNIC = unidad.DNIC;
-									aux.cantidadPasajeros = 1;
-									fwrite(&aux, sizeof(aux), 1, auxParaContar);
-								}
-								
-								rewind(auxParaContar);
-
+								rewind(auxDniChoferes);
 								fread(&unidad.DNIC, sizeof(unidad.DNIC), 1, auxDniChoferes);
-							}
+								while(!feof(auxDniChoferes)){
 
-							fread(&aux, sizeof(aux), 1, auxParaContar);
-							int max = aux.cantidadPasajeros;
-							while(!feof(auxParaContar)){
+									encontroAux = 0;
+									fread(&aux, sizeof(aux), 1, auxParaContar);
+									while((!feof(auxParaContar)) && (!encontroAux)){
 
-								if(aux.cantidadPasajeros >= max){
-									max = aux.cantidadPasajeros;
-								}
-								fread(&aux, sizeof(aux), 1, auxParaContar);
-							}
-							encontroAux = 0;
-							rewind(auxParaContar);
-							printf("\nEl chofer o los choferes con mas pasajeros son: ");
-							fread(&aux, sizeof(aux), 1, auxParaContar);
-							while(!feof(auxParaContar)){
-
-								if(aux.cantidadPasajeros == max){
-									fread(&chofer, sizeof(chofer), 1, CHOFERES);
-									while((!feof(CHOFERES)) && (!encontroAux)){
-										if(chofer.DNI == aux.DNIC){
+										if(unidad.DNIC == aux.DNIC){
 											encontroAux = 1;
 										}else{
-											fread(&chofer, sizeof(chofer), 1, CHOFERES);
+											fread(&aux, sizeof(aux), 1, auxParaContar);
 										}
 									}
 									if(encontroAux){
-										printf("\nNombre: %s, DNI: %ld", chofer.NomApe, chofer.DNI);
+										//si ya esta escrito el dni, le sumo uno a la cantidad de pasajeros
+										aux.cantidadPasajeros = aux.cantidadPasajeros +1;
+										fseek(auxParaContar, (long int)sizeof(aux) * -1, SEEK_CUR);
+										fwrite(&aux, sizeof(aux), 1, auxParaContar);
+									}else{
+										//si no esta escrito el dni, lo escribo y seteo los pasajeros en uno
+										aux.DNIC = unidad.DNIC;
+										aux.cantidadPasajeros = 1;
+										fwrite(&aux, sizeof(aux), 1, auxParaContar);
 									}
+									
+									rewind(auxParaContar);
+
+									fread(&unidad.DNIC, sizeof(unidad.DNIC), 1, auxDniChoferes);
+								}
+
+								fread(&aux, sizeof(aux), 1, auxParaContar);
+								int max = aux.cantidadPasajeros;
+								while(!feof(auxParaContar)){
+
+									if(aux.cantidadPasajeros >= max){
+										max = aux.cantidadPasajeros;
+									}
+									fread(&aux, sizeof(aux), 1, auxParaContar);
 								}
 								encontroAux = 0;
-								rewind(CHOFERES);
+								rewind(auxParaContar);
+								printf("\nEl chofer o los choferes con mas pasajeros son: ");
 								fread(&aux, sizeof(aux), 1, auxParaContar);
-									
+								while(!feof(auxParaContar)){
+
+									if(aux.cantidadPasajeros == max){
+										fread(&chofer, sizeof(chofer), 1, CHOFERES);
+										while((!feof(CHOFERES)) && (!encontroAux)){
+											if(chofer.DNI == aux.DNIC){
+												encontroAux = 1;
+											}else{
+												fread(&chofer, sizeof(chofer), 1, CHOFERES);
+											}
+										}
+										if(encontroAux){
+											printf("\nNombre: %s, DNI: %ld", chofer.NomApe, chofer.DNI);
+										}
+									}
+									encontroAux = 0;
+									rewind(CHOFERES);
+									fread(&aux, sizeof(aux), 1, auxParaContar);
+										
+								}
+								fclose(auxParaContar);
+								remove("auxParaContar.dat");	
+							}else{
+								printf("\nHubo un error al abrir el archivo auxiliar para contar.");
 							}
-							fclose(auxParaContar);
-							remove("auxParaContar.dat");	
-						}else{
-							printf("\nHubo un error al abrir el archivo auxiliar para contar.");
-						}
+							
 						
+
+					fclose(auxDniChoferes);
+					remove("auxDniChoferes.dat");
 					}else{
-						printf("\nHubo un error al crear el archivo auxiliar para contar");
+						printf("\nHubo un crear o abrir al abrir el archivo auxDniChoferes");
 					}
+					
 
-				fclose(auxDniChoferes);
-				remove("auxDniChoferes.dat");
+
+					
+				fclose(UNIDADES);
 				}else{
-					printf("\nHubo un crear o abrir al abrir el archivo auxDniChoferes");
+					printf("\nHubo un error al abrir el archivo unidades");
 				}
-				
-
-
-				
-			fclose(UNIDADES);
+			fclose(MOVIMIENTOS);
 			}else{
-				printf("\nHubo un error al abrir el archivo unidades");
+				printf("\nHubo un error al abrir el archivo movimientos");
 			}
-		fclose(MOVIMIENTOS);
+		fclose(CHOFERES);
 		}else{
-			printf("\nHubo un error al abrir el archivo movimientos");
+			printf("\nHubo un error al intentar abrir el archivo choferes");
 		}
-	fclose(CHOFERES);
+
+
 	}else{
-		printf("\nHubo un error al intentar abrir el archivo choferes");
+		printf("\nHa ocurrido un error");
 	}
+	
+	
 }
 
 void buscarRecargasPorDni(){
@@ -1563,6 +1571,7 @@ int compararDosFechas(struct Fecha fecha1, struct Fecha fecha2){
 			}
 		}
 	}
+	return band;
 }
 
 void movimientosEntreDosFechas(){
