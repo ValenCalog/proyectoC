@@ -80,7 +80,6 @@ void CantBeneficios();
 void agregarChofer();
 int generarIdChofer();
 void ModificarChofer();
-
 long generarNroDeControl();
 int ObtenerAnioActual();
 void cargaDeSaldo();
@@ -481,7 +480,7 @@ void ModificarUsuario(){
 			if(buscarid == us.id){
 				band = 1;
 			}else{
-
+				fread(&us,sizeof(us),1,USUARIOS);
 			}
 		}
 		if(band){
@@ -489,8 +488,6 @@ void ModificarUsuario(){
 				printf("ingrese el Nombre y Apellido nuenvamente: \n");
 				fflush(stdin);
 				fgets(us.NomApe, sizeof(us.NomApe), stdin);
-				printf("ingresar el DNI nuevamente\n");
-				scanf("%d",&us.DNI);
 				printf("ingrese la nueva Fecha de nacimiento\n Dia:\n");
 				scanf("%d",&us.FechaNac.dia);
 				printf("mes:\n");
@@ -508,6 +505,8 @@ void ModificarUsuario(){
 					printf("\ningrese un dato valido: ");
 					scanf("%d",&us.tipo);
 				}
+				fseek(USUARIOS, (long int)sizeof(us)*-1, SEEK_CUR);
+				fwrite(&us, sizeof(us), 1, USUARIOS);
 		}else{
 			printf("\nEl id no existe.");
 		}
@@ -1442,10 +1441,10 @@ void ModificarUnidad(){
 				fseek(UNIDADES,(long int) sizeof(unidad) * (-1),SEEK_CUR);
 				fwrite(&unidad, sizeof(unidad),1, UNIDADES);
 		}
-	}
-	else
+		fclose(UNIDADES);
+	}else
 		printf("error al abrir el archivo para realizar la modificacion\n");
-	fclose(UNIDADES);
+	
 }
 
 // Los objetos de valor de mi casa se encuentra en el siguiente enlace: https://www.youtube.com/watch?v=dQw4w9WgXcQ
@@ -1460,7 +1459,7 @@ void pagarPasajeTarjeta(){
 			while(!feof(CUENTAS) && !CuentaEncontro){
 				if (NumTarjeta == cuenta.nroDeTarjeta){
 					CuentaEncontro = 1;
-					puts("Se encontró la cuenta");
+					puts("Se encontro la cuenta");
 				} else 
 					fread(&cuenta, sizeof(cuenta), 1, CUENTAS);
 			}
